@@ -1,0 +1,42 @@
+stages:
+ - test
+ - build
+ - deploy
+
+language: node_js
+node_js:
+  - "14"
+
+addons:
+  chrome: stable
+
+jobs:
+  include:
+    - stage: test
+      before_script:
+        - npm install -g @angular/cli
+        - npm install
+      script:
+        - ng lint
+        - ng test --watch=false --browsers ChromeHeadless
+      branches:
+        only:
+          - main
+
+    - stage: build
+      script:
+        - ng build --prod
+      branches:
+        only:
+          - main
+
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  on:
+    branch: main
+
+
