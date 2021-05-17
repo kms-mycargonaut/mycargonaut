@@ -3,6 +3,10 @@ node_js:
   - 14
 cache: npm
 
+branches:
+  only:
+    - main
+
 install:
   - npm install -g @angular/cli
   - npm install
