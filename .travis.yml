@@ -1,41 +1,21 @@
-stages:
- - test
- - build
- - deploy
-
 language: node_js
 node_js:
-  - "14"
+  - 14
+cache: npm
 
-addons:
-  chrome: stable
+install:
+  - npm install -g @angular/cli
+  - npm install
 
-jobs:
-  include:
-    - stage: test
-      before_script:
-        - npm install -g @angular/cli
-        - npm install
-      script:
-        - ng lint
-        - ng test --watch=false --browsers ChromeHeadless
-      branches:
-        only:
-          - main
-
-    - stage: build
-      script:
-        - ng build --prod
-      branches:
-        only:
-          - main
-
+script:
+  - ng build --prod --base-href ./mycargonaut
 
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   keep_history: true
+  local_dir: dist/mycargonaut
   on:
     branch: main
 
