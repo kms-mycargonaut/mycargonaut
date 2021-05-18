@@ -6,12 +6,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { CreateEntryComponent } from './create-entry/create-entry.component';
+import { SearchPageComponent } from './search-page/search-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CreateEntryComponent,
-    HomeComponent
+    HomeComponent,
+    SearchPageComponent
   ],
   imports: [
     BrowserModule,
