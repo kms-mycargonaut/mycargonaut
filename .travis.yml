@@ -6,6 +6,7 @@ cache: npm
 branches:
   only:
     - main
+    - dev
 
 install:
   - npm install -g @angular/cli
