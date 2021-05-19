@@ -14,7 +14,7 @@ install:
 
 script:
   - ng test --watch=false --browsers ChromeHeadless
-  - ng build --prod --base-href ./mycargonaut
+  - ng build --prod --base-href ./
 
 deploy:
   provider: pages
