@@ -1,0 +1,60 @@
+<!-- head -->
+<div id="createWrapper">
+  <div id="createInnerWrapper">
+    <div class="d-flex justify-content-start align-items-start">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-short"
+           viewBox="0 0 16 16" id="pfeil">
+        <path fill-rule="evenodd"
+              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+      </svg>
+    </div>
+    <div class="d-flex justify-content-center align-items-center h-75">
+      <div class="d-flex justify-content-center flex-col align-items-center">
+        <h1 class="h4 customFont font-weight-bold">
+          Fahrzeug anlegen
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- form for creating vehicle-->
+<div class="container mt-5 mb-5">
+  <div class="row d-flex justify-content-center flex-col align-items-center">
+    <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
+      <form>
+        <div class="form-group">
+          <label for="transportSelect">Transportart</label>
+          <select formControlName="transport" class="form-control" id="transportSelect">
+            <option>Güter</option>
+            <option>PKW</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="brand">Marke</label>
+          <input formControlName="brand" type="text" class="form-control" id="brand" aria-describedby="brand"
+                 placeholder="Marke">
+        </div>
+        <div class="form-group">
+          <label for="yearOfManufacture">Ziel</label>
+          <input formControlName="yearOfManufacture" type="text" class="form-control" id="yearOfManufacture"
+                 aria-describedby="yearOfManufacture" placeholder="Baujahr">
+        </div>
+        <div class="form-group">
+          <label for="loadingPlatform">Ladefläche</label>
+          <input formControlName="loadingPlatform" type="text" class="form-control" id="loadingPlatform"
+                 aria-describedby="loadingPlatform"
+                 placeholder="Ladefläche">
+        </div>
+        <div class="form-group">
+          <label for="seats">Sitzplätze</label>
+          <input formControlName="seats" type="text" class="form-control" id="seats" aria-describedby="seats"
+                 placeholder="Sitzplätze">
+        </div>
+        <div class="d-flex justify-content-center flex-col align-items-center">
+          <button type="submit" class="btn bgCustomGreen">Erstellen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
