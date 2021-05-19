@@ -8,14 +8,15 @@ branches:
     - main
 
 install:
+  - npm install -g @angular/cli
   - npm install
 
 script:
-  - npm run test --watch=false --browsers ChromeHeadless
+  - ng test --watch=false --browsers ChromeHeadless
 
 before_deploy:
-  - npm run build --base-href /mycargonaut/
-  - cp dist/mycargonaut/index.html dist/mycargonaut/404.html
+  - ng build --prod --base-href /mycargonaut/
+  - cp dist/mycargonaut/index.html cp dist/mycargonaut/404.html
 
 deploy:
   provider: pages
