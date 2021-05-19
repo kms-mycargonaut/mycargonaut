@@ -12,9 +12,12 @@ install:
   - npm install -g @angular/cli
   - npm install
 
+before_script:
+  - ng add angular-cli-ghpages
+
 script:
   - ng test --watch=false --browsers ChromeHeadless
-  - ng build --prod --base-href https://kms-mycargonaut.github.io/mycargonaut/
+  - ng deploy --base-href /mycargonaut/
 
 deploy:
   provider: pages
