@@ -13,7 +13,10 @@ install:
 
 script:
   - ng test --watch=false --browsers ChromeHeadless
-  - ng build --prod --base-href ./
+
+before_deploy:
+  - ng build --prod --base-href /mycargonaut/
+  - cp dist/mycargonaut/index.html dist/mycargonaut/404.html
 
 deploy:
   provider: pages
