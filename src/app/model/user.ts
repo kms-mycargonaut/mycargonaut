@@ -15,4 +15,8 @@ export class User {
     this.birthday = birthday;
     this.image = image;
   }
+
+  getFullName(){
+    this.firstName + '' + this.lastName
+  }
 }
