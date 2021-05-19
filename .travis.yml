@@ -16,7 +16,7 @@ script:
 
 before_deploy:
   - ng build --prod --base-href /mycargonaut/
-  - cp dist/mycargonaut/index.html cp dist/mycargonaut/404.html
+  - cp dist/mycargonaut/index.html dist/mycargonaut/404.html
 
 deploy:
   provider: pages
