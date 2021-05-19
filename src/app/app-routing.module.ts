@@ -5,6 +5,7 @@ import { CreateEntryComponent } from './create-entry/create-entry.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import {VehicleManagementComponent} from './vehicle-management/vehicle-management.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,9 @@ const routes: Routes = [
   },
   {
     path: 'register', component: RegisterComponent
+  },
+  {
+    path: 'create-vehicle', component: VehicleManagementComponent
   }
 ];
 
