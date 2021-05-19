@@ -5,6 +5,7 @@ cache: npm
 
 branches:
   only:
+    - dev
     - main
 
 install:
