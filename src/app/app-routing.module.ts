@@ -11,7 +11,7 @@ const routes: Routes = [
     path: '', component: HomeComponent
   },
   {
-    path: 'app-create-entry', component: CreateEntryComponent
+    path: 'create-entry', component: CreateEntryComponent
   },
   {
     path: 'search-page', component: SearchPageComponent
