@@ -1,5 +1,5 @@
 <nav class="navbar navbar-dark navbar-expand bgCustomGreen flex">
-  <a class="navbar-brand mr-auto" href="#">
+  <a class="navbar-brand mr-auto" [routerLink]="['/']">
     <div class="font-weight-bold customFont">MyCargonaut</div>
   </a>
   <div class="nav-item" ngbDropdown>
@@ -19,9 +19,9 @@
       aria-labelledby="toggleDropdown"
       class="dropdown-menu dropdown-menu-right"
     >
-      <a ngbDropdownItem class="btn dropdownLinkItem">Profil</a>
-      <a ngbDropdownItem class="btn dropdownLinkItem">Deine Anfragen</a>
-      <a ngbDropdownItem class="btn dropdownLinkItem">Logout</a>
+      <a ngbDropdownItem class="btn dropdownLinkItem" [routerLink]="['/']">Profil</a>
+      <a ngbDropdownItem class="btn dropdownLinkItem" [routerLink]="['/']">Deine Anfragen</a>
+      <a ngbDropdownItem class="btn dropdownLinkItem" [routerLink]="['/']">Logout</a>
     </div>
   </div>
 </nav>
