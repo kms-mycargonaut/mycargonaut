@@ -36,7 +36,6 @@ export class AuthService {
           .collection('users')
           .doc(response.user?.uid)
           .set(registeredUser);
-
       });
   }
 }

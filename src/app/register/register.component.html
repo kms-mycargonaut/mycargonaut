@@ -1,27 +1,29 @@
 <div id="registerWrapper">
-  <h1 class="p-4 h4 customFont font-weight-bold justify-content-center align-items-center flex-col">
+  <h1 class="p-4 h4 customFont font-weight-bold" style="text-align: center;">
     Registrieren
   </h1>
   <div class="d-flex justify-content-center align-items-center h-200">
     <div class="d-flex justify-content-center flex-col align-items-center">
       <div class="row  justify-content-center">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
           <div class="form-group">
-            <label for="lastnameInput">Name</label>
+            <label for="lastnameInput" class="form-label">Name*</label>
             <input formControlName="lastName" type="text" class="form-control" id="lastnameInput" aria-describedby="lastnameInput"
-                   placeholder="Name">
+                   placeholder="Name" required>
           </div>
 
+
           <div class="form-group">
-            <label for="firstnameInput">Vorname</label>
+            <label for="firstnameInput">Vorname*</label>
             <input formControlName="firstName" type="text" class="form-control" id="firstnameInput" aria-describedby="firstnameInput"
-                   placeholder="Vorname">
+                   placeholder="Vorname" required>
           </div>
 
           <div class="form-group">
-            <label for="emailInput">E-Mail</label>
+            <label for="emailInput">E-Mail*</label>
             <input formControlName="email" type="email" class="form-control" id="emailInput" aria-describedby="emailInput"
-                   placeholder="E-Mail">
+                   placeholder="E-Mail" required>
           </div>
 
           <div class="form-group">
@@ -37,16 +39,18 @@
           </div>
 
           <div class="form-group needs-validation">
-            <label for="passwordInput">Passwort</label>
-            <input formControlName="password" type="password" class="form-control" id="passwordInput" placeholder="Passwort">
+            <label for="passwordInput">Passwort*</label>
+            <input formControlName="password" type="password" class="form-control" id="passwordInput" placeholder="Passwort" required>
           </div>
 
           <div class="form-group">
-            <label for="passwordControlInput">Passwort bestätigen</label>
-            <input type="password" class="form-control" id="passwordControlInput" placeholder="Passwort">
+            <label for="passwordControlInput">Passwort bestätigen*</label>
+            <input formControlName="passwordControl" type="password" class="form-control" id="passwordControlInput" placeholder="Passwort" required>
           </div>
+          <br>
+          <p style="font-size: small">*Pflichtfleder</p>
 
-          <div class="p-4 row w-100 justify-content-center">
+          <div class="p-5 row w-100 justify-content-center">
             <button type="submit" class="btn mt-3 bgCustomGreen font-weight-bold text-white">
               Registrieren
             </button>
