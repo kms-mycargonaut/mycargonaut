@@ -14,11 +14,19 @@ export class CreateEntryComponent implements OnInit {
     date: new FormControl(),
     time: new FormControl(),
     vehicle: new FormControl(),
-    description: new FormControl(),
-    price: new FormControl(),
     searchtype: new FormControl(),
-    searchsize: new FormControl()
+    length: new FormControl(),
+    width: new FormControl(),
+    height: new FormControl(),
+    seats: new FormControl(),
+    description: new FormControl(),
+    price: new FormControl()
   });
+
+  public year = new Date().getFullYear();
+  public currentMonth = new Date().getMonth() + 1;
+  public currentDay = new Date().getDate();
+  time = {hour: 13, minute: 30};
 
   constructor() { }
 

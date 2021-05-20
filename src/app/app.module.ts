@@ -12,7 +12,7 @@ import { RegisterComponent } from './register/register.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { VehicleManagementComponent } from './vehicle-management/vehicle-management.component';
 
 @NgModule({
@@ -25,14 +25,15 @@ import { VehicleManagementComponent } from './vehicle-management/vehicle-managem
     RegisterComponent,
     VehicleManagementComponent,
   ],
-  imports: [
-    BrowserModule,
-    NgbModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
-    ReactiveFormsModule,
-  ],
+    imports: [
+        BrowserModule,
+        NgbModule,
+        AppRoutingModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule,
+        ReactiveFormsModule,
+        FormsModule,
+    ],
   providers: [],
   bootstrap: [AppComponent],
 })
