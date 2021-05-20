@@ -5,13 +5,14 @@ import { CreateEntryComponent } from './create-entry/create-entry.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import {VehicleManagementComponent} from './vehicle-management/vehicle-management.component';
 
 const routes: Routes = [
   {
     path: '', component: HomeComponent
   },
   {
-    path: 'app-create-entry', component: CreateEntryComponent
+    path: 'create-entry', component: CreateEntryComponent
   },
   {
     path: 'search-page', component: SearchPageComponent
@@ -21,11 +22,14 @@ const routes: Routes = [
   },
   {
     path: 'register', component: RegisterComponent
+  },
+  {
+    path: 'create-vehicle', component: VehicleManagementComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
