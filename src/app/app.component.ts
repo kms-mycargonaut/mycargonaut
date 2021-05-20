@@ -12,7 +12,7 @@ export class AppComponent {
 
   email: string;
 
-  constructor( public auth: AngularFireAuth, private authService: AuthService) {
+  constructor( public auth: AngularFireAuth, public authService: AuthService) {
 
   }
   logout(): void {

@@ -2,7 +2,10 @@
   <a class="navbar-brand mr-auto" [routerLink]="['/']">
     <div class="font-weight-bold customFont">MyCargonaut</div>
   </a>
-  <div class="nav-item" ngbDropdown>
+  <a class="nav-item" *ngIf="!this.authService.isLoggedIn" [routerLink]="['/login']">
+    <i class="bi bi-box-arrow-in-right text-white h2 mb-0"></i>
+  </a>
+  <div class="nav-item" ngbDropdown *ngIf="this.authService.isLoggedIn">
     <a
       type="button"
       class="nav-link"
