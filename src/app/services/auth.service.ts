@@ -5,7 +5,7 @@ import {User} from '../model/user';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 import { Location } from '@angular/common';
-import {Router, RouterModule, Routes} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,6 @@ export class AuthService {
   users: Observable<User[]>;
   user: User | null = null;
   public userList: User[];
-  private isLoggedIn: boolean;
-
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth,  private location: Location, private router: Router) {
   }
