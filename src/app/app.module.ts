@@ -12,7 +12,8 @@ import { RegisterComponent } from './register/register.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import {ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { VehicleManagementComponent } from './vehicle-management/vehicle-management.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     HomeComponent,
     SearchPageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    VehicleManagementComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +34,6 @@ import {ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
