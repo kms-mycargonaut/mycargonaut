@@ -49,10 +49,18 @@ export class AuthService {
     this.auth.signInWithEmailAndPassword(email, password)
       .then(() => {
         this.router.navigate(['/']);
-      })
-      .catch((err) => {
+      }).catch((err) => {
         console.log(err.message);
       });
+  }
+
+  logout(): void {
+    this.auth.signOut()
+      .then(() => {
+        this.router.navigate(['/login']);
+      }).catch((err) => {
+        console.log(err.message);
+    })
   }
 }
 
