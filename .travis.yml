@@ -1,4 +1,3 @@
-### test migration to travis-ci.org
 language: node_js
 node_js:
   - 14
