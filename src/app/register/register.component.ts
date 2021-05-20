@@ -1,7 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {User} from '../model/user';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../services/auth.service';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +18,7 @@ export class RegisterComponent implements OnInit {
     password: new FormControl(),
     passwordControl: new FormControl()
   });
+  date: any;
 
   constructor(public authService: AuthService) {
   }
@@ -27,7 +27,14 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-      if (this.form.value.password != this.form.value.passwordControl) {
+    if (
+      this.form.value.password != this.form.value.passwordControl &&
+      this.form.value.lastName != '' &&
+      this.form.value.firstName != '' &&
+      this.form.value.email != '' &&
+      this.form.value.password != '' &&
+      this.form.value.passwordControl != ''
+    ) {
       alert('Passwörter stimmen nicht überein!');
     } else {
       this.authService.register(this.form.value.lastName, this.form.value.firstName,
