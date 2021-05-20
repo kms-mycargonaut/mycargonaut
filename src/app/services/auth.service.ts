@@ -15,10 +15,19 @@ export class AuthService {
   users: Observable<User[]>;
   user: User | null = null;
   public userList: User[];
+  public isLoggedIn = false;
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth,  private location: Location, private router: Router) {
+    this.auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.isLoggedIn = true;
+      } else {
+        this.isLoggedIn = false;
+      }
+    })
   }
 
+  
   async register(lastName, firstName, email, birthday, image, password) {
     firebase
       .auth()
@@ -57,7 +66,7 @@ export class AuthService {
   logout(): void {
     this.auth.signOut()
       .then(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       }).catch((err) => {
         console.log(err.message);
     })
