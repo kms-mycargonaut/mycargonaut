@@ -21,7 +21,7 @@
     >
       <a ngbDropdownItem class="btn dropdownLinkItem" [routerLink]="['/']">Profil</a>
       <a ngbDropdownItem class="btn dropdownLinkItem" [routerLink]="['/']">Deine Anfragen</a>
-      <a ngbDropdownItem class="btn dropdownLinkItem" [routerLink]="['/']">Logout</a>
+      <a ngbDropdownItem class="btn dropdownLinkItem" (click)="logout()">Logout</a>
     </div>
   </div>
 </nav>
