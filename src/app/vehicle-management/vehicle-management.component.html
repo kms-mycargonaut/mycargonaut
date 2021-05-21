@@ -22,10 +22,10 @@
 <div class="container mt-5 mb-5">
   <div class="row d-flex justify-content-center flex-col align-items-center">
     <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
-      <form>
+      <form [formGroup]="vehicleFrontend" (ngSubmit)="createVehicle()">
         <div class="form-group">
           <label for="transportSelect">Transportart</label>
-          <select formControlName="transport" class="form-control" id="transportSelect">
+          <select formControlName="transportType" class="form-control" id="transportSelect">
             <option>Güter</option>
             <option>PKW</option>
           </select>
@@ -41,14 +41,26 @@
                  aria-describedby="yearOfManufacture" placeholder="Baujahr">
         </div>
         <div class="form-group">
-          <label for="loadingPlatform">Ladefläche</label>
-          <input formControlName="loadingPlatform" type="text" class="form-control" id="loadingPlatform"
-                 aria-describedby="loadingPlatform"
-                 placeholder="Ladefläche">
+          <label for="length">Länge</label>
+          <input formControlName="length" type="text" class="form-control" id="length"
+                 aria-describedby="length"
+                 placeholder="Länge">
+        </div>
+        <div class="form-group">
+          <label for="width">Breite</label>
+          <input formControlName="width" type="text" class="form-control" id="width"
+                 aria-describedby="width"
+                 placeholder="Breite">
+        </div>
+        <div class="form-group">
+          <label for="height">Höhe</label>
+          <input formControlName="height" type="text" class="form-control" id="height"
+                 aria-describedby="height"
+                 placeholder="Höhe">
         </div>
         <div class="form-group">
           <label for="seats">Sitzplätze</label>
-          <input formControlName="seats" type="text" class="form-control" id="seats" aria-describedby="seats"
+          <input formControlName="numberOfSeats" type="text" class="form-control" id="seats" aria-describedby="seats"
                  placeholder="Sitzplätze">
         </div>
         <div class="d-flex justify-content-center flex-col align-items-center">

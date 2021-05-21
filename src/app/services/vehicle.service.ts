@@ -1,8 +1,23 @@
 import firebase from 'firebase';
-import firestore = firebase.firestore;
+import {Vehicle} from '../model/vehicle';
+import {Injectable} from '@angular/core';
 
+@Injectable({
+  providedIn: 'root'
+})
 export class VehicleService {
 
-  public createVehicle(): void {
+  public saveVehicle(vehicle: Vehicle): void {
+    const vehicleToSave = {
+      brand: vehicle.getBrand(),
+      height: vehicle.getHeight(),
+      length: vehicle.getLength(),
+      numberOfSeats: vehicle.getNumberOfSeats(),
+      transportType: vehicle.getTransportType(),
+      width: vehicle.getWidth(),
+      yearOfManufacture: vehicle.getYearOfManufacture()
+    };
+
+    firebase.firestore().collection('vehicles').doc().set(vehicleToSave);
   }
 }
