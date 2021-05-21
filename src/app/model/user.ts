@@ -1,5 +1,5 @@
-import {Offer} from "./offer";
-import {Request} from "./request";
+import {Offer} from './offer';
+import {Request} from './request';
 
 export class User {
   id: string;
@@ -24,7 +24,7 @@ export class User {
     this.requests = requests;
   }
 
-  getFullName(){
-    this.firstName + '' + this.lastName
+  getFullName(): string{
+    return this.firstName + '' + this.lastName;
   }
 }
