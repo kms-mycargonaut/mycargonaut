@@ -28,12 +28,12 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (
-      this.form.value.password != this.form.value.passwordControl &&
-      this.form.value.lastName != '' &&
-      this.form.value.firstName != '' &&
-      this.form.value.email != '' &&
-      this.form.value.password != '' &&
-      this.form.value.passwordControl != ''
+      this.form.value.password !== this.form.value.passwordControl &&
+      this.form.value.lastName !== '' &&
+      this.form.value.firstName !== '' &&
+      this.form.value.email !== '' &&
+      this.form.value.password !== '' &&
+      this.form.value.passwordControl !== ''
     ) {
       alert('Passwörter stimmen nicht überein!');
     } else {

@@ -24,16 +24,15 @@ export class AuthService {
       } else {
         this.isLoggedIn = false;
       }
-    })
+    });
   }
 
-  
   async register(lastName, firstName, email, birthday, image, password) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
-        let registeredUser = {
+        const registeredUser = {
           id: response.user?.uid,
           email: email,
           password: password,
@@ -54,7 +53,7 @@ export class AuthService {
     });
   }
 
-  async login(email, password) {
+  async login(email, password){
     this.auth.signInWithEmailAndPassword(email, password)
       .then(() => {
         this.router.navigate(['/']);
@@ -69,7 +68,7 @@ export class AuthService {
         this.router.navigate(['/']);
       }).catch((err) => {
         console.log(err.message);
-    })
+    });
   }
 }
 
