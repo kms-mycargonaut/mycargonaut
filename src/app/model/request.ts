@@ -16,7 +16,8 @@ export class Request {
   public seats: number;
   public description: string;
 
-  constructor(start: string, end: string, date: NgbDate, time: NgbTime, type: string, length: number, width: number, height: number, seats: number, description: string) {
+  constructor(start: string, end: string, date: NgbDate, time: NgbTime, type: string, length: number, width: number, height: number,
+              seats: number, description: string) {
     this.id = Request.counter++;
     this.start = start;
     this.end = end;

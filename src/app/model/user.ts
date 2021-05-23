@@ -12,7 +12,8 @@ export class User {
   offers?: Offer[];
   requests?: Request[];
 
-  constructor(id: string, email: string, password: string, firstName: string, lastName: string, birthday?: string, image?: string, offers?: Offer[], requests?: Request[]) {
+  constructor(id: string, email: string, password: string, firstName: string, lastName: string, birthday?: string,
+              image?: string, offers?: Offer[], requests?: Request[]) {
     this.id = id;
     this.email = email;
     this.password = password;
