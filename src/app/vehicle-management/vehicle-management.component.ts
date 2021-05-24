@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Vehicle} from '../model/vehicle';
 import {VehicleService} from '../services/vehicle.service';
@@ -8,7 +8,7 @@ import {VehicleService} from '../services/vehicle.service';
   templateUrl: './vehicle-management.component.html',
   styleUrls: ['./vehicle-management.component.css']
 })
-export class VehicleManagementComponent implements OnInit {
+export class VehicleManagementComponent {
   vehicleFrontend = new FormGroup({
     brand: new FormControl(),
     height: new FormControl(),
@@ -22,22 +22,67 @@ export class VehicleManagementComponent implements OnInit {
   constructor(public vehicleService: VehicleService) {
   }
 
-  ngOnInit(): void {
-  }
-
   public createVehicle(): void {
-    console.log(this.vehicleFrontend.value.brand + ' ' + this.vehicleFrontend.value.height + ' ' + this.vehicleFrontend.value.length + ' '
-      + this.vehicleFrontend.value.width + ' ' + this.vehicleFrontend.value.numberOfSeats + ' ' +  +
-      ' ' + this.vehicleFrontend.value.yearOfManufacture);
     const vehicle = new Vehicle();
-    vehicle.setBrand(this.vehicleFrontend.value.brand);
-    vehicle.setHeight(this.vehicleFrontend.value.height);
-    vehicle.setLength(this.vehicleFrontend.value.length);
-    vehicle.setWidth(this.vehicleFrontend.value.width);
-    vehicle.setNumberOfSeats(this.vehicleFrontend.value.numberOfSeats);
-    vehicle.setTransportType(this.vehicleFrontend.value.transportType);
-    vehicle.setYearOfManufacture(this.vehicleFrontend.value.yearOfManufacture);
-    this.vehicleService.saveVehicle(vehicle);
+    vehicle.brand = this.getBrand();
+    vehicle.height = this.getHeight();
+    vehicle.length = this.getLength();
+    vehicle.width = this.getWidth();
+    vehicle.numberOfSeats = this.getNumberOfSeats();
+    vehicle.transportType = this.getTransportType();
+    vehicle.yearOfManufacture = this.getYearOfManufacture();
+    this.vehicleService.addVehicle(vehicle);
   }
 
+  private getBrand(): any {
+    if (this.vehicleFrontend.value.brand === null) {
+      console.error('brand should not be null');
+    } else {
+      return this.vehicleFrontend.value.brand;
+    }
+  }
+
+  private getHeight(): any {
+    if (this.vehicleFrontend.value.height === null) {
+      console.error('height should not be null');
+    } else {
+      return this.vehicleFrontend.value.height;
+    }
+  }
+
+  private getLength(): any {
+    if (this.vehicleFrontend.value.length === null) {
+      console.error('length should not be null');
+    } else {
+      return this.vehicleFrontend.value.length;
+    }
+  }
+
+  private getWidth(): any {
+    if (this.vehicleFrontend.value.width === null) {
+      console.error('width should not be null');
+    } else {
+      return this.vehicleFrontend.value.width;
+    }
+  }
+
+  private getNumberOfSeats(): any {
+    if (this.vehicleFrontend.value.numberOfSeats === null) {
+      console.error('number of seats should not be null');
+    } else {
+      return this.vehicleFrontend.value.numberOfSeats;
+    }
+  }
+
+  private getTransportType(): any {
+    if (this.vehicleFrontend.value.transportType === null) {
+      console.error('number of seats should not be null');
+    } else {
+      return this.vehicleFrontend.value.transportType;
+    }
+  }
+
+  private getYearOfManufacture(): any {
+    return this.vehicleFrontend.value.yearOfManufacture;
+  }
 }
