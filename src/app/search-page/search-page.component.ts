@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Offer} from '../model/offer';
 
 @Component({
   selector: 'app-search-page',
@@ -8,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class SearchPageComponent implements OnInit {
 
   constructor() { }
+
+  @Input() offerList: Offer;
 
   ngOnInit(): void {
   }

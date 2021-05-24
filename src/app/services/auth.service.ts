@@ -11,15 +11,17 @@ import {Router} from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private userCollection: AngularFirestoreCollection<User>;
+  authState: any = null;
   users: Observable<User[]>;
   user: User | null = null;
+  firebaseUser: firebase.User | null = null;
   public userList: User[];
   public isLoggedIn = false;
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth,  private location: Location, private router: Router) {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
+        this.authState = user;
         this.isLoggedIn = true;
       } else {
         this.isLoggedIn = false;
@@ -27,7 +29,7 @@ export class AuthService {
     });
   }
 
-  async register(lastName, firstName, email, birthday, image, password) {
+  async register(lastName, firstName, email, birthday, image, password): Promise<void> {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -53,7 +55,7 @@ export class AuthService {
     });
   }
 
-  async login(email, password){
+  async login(email, password): Promise<void>{
     this.auth.signInWithEmailAndPassword(email, password)
       .then(() => {
         this.router.navigate(['/']);
@@ -69,6 +71,10 @@ export class AuthService {
       }).catch((err) => {
         console.log(err.message);
     });
+  }
+
+  getCurrentUser(): firebase.User {
+    return this.authState;
   }
 }
 

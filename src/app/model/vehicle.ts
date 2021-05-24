@@ -1,23 +1,20 @@
-import firebase from 'firebase';
-import User = firebase.User;
-
 export class Vehicle {
 
-  private user: User;
-  private transportType: string;
-  private brand: string;
-  private yearOfManufacture: string;
-  private numberOfSeats: number;
-  private length: number;
-  private height: number;
-  private width: number;
+  userId: string;
+  transportType: string;
+  brand: string;
+  yearOfManufacture: string;
+  numberOfSeats: number;
+  length: number;
+  height: number;
+  width: number;
 
-  public getUser(): User {
-    return this.user;
+  public getUserId(): string {
+    return this.userId;
   }
 
-  public setUser(user: User): void {
-    this.user = user;
+  public setUser(userId: string): void {
+    this.userId = userId;
   }
 
   public getTransportType(): string {
