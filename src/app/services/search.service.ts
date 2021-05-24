@@ -1,21 +1,17 @@
-import { Offer } from './../model/offer';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import {
   AngularFirestore,
-  AngularFirestoreCollection,
 } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
-import { User } from '../model/user';
-import { Request } from '../model/request';
-
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
   public allUsers = [];
   public searchResults = [];
-  constructor(public afs: AngularFirestore) {
+  constructor(public afs: AngularFirestore, private router: Router) {
     firebase
       .firestore()
       .collection('users')
@@ -37,9 +33,10 @@ export class SearchService {
       .collection('users')
       .get()
       .then((snap) => {
+        this.allUsers = [];
+        this.searchResults = [];
         snap.docs.forEach((doc) => {
           if (doc.data().offers || doc.data().requests) {
-            this.allUsers = [];
             this.allUsers.push(doc.data());
             localStorage.removeItem('allUsers');
             localStorage.setItem('allUsers', JSON.stringify(this.allUsers));
@@ -80,10 +77,12 @@ export class SearchService {
       })
       .then(() => {
         localStorage.removeItem('searchResults');
+        localStorage.removeItem('allUsers');
         localStorage.setItem(
           'searchResults',
           JSON.stringify(this.searchResults)
         );
+        this.router.navigate(['/search-page']);
       });
   }
 }

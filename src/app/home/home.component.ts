@@ -16,13 +16,13 @@ export class HomeComponent implements OnInit {
   public year = new Date().getFullYear();
   public currentMonth = new Date().getMonth() + 1;
   public currentDay = new Date().getDate();
+
+  public start: string;
+  public end: string;
+  public date: NgbDate;
+  public type: string = '';
   ngOnInit(): void {}
   startSearch(): void {
-    this.searchService.search(
-      'Köln',
-      'Berlin',
-      new NgbDate(2021, 5, 26),
-      'Mitfahrgelegenheit'
-    );
+    this.searchService.search(this.start, this.end, this.date, this.type);
   }
 }
