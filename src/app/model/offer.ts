@@ -1,5 +1,5 @@
-import {NgbDate} from "@ng-bootstrap/ng-bootstrap";
-import {NgbTime} from "@ng-bootstrap/ng-bootstrap/timepicker/ngb-time";
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {NgbTime} from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
 export class Offer {
   static counter = 1;
@@ -37,6 +37,6 @@ export class Offer {
   }
 
   getCubicMeter(): number {
-    return this.length * this.width * this.height / 1000000
+    return this.length * this.width * this.height / 1000000;
   }
 }

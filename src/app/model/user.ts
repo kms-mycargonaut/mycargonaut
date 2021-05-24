@@ -1,5 +1,5 @@
-import {Offer} from "./offer";
-import {Request} from "./request";
+import {Offer} from './offer';
+import {Request} from './request';
 
 export class User {
   id: string;
@@ -12,7 +12,8 @@ export class User {
   offers?: Offer[];
   requests?: Request[];
 
-  constructor(id: string, email: string, password: string, firstName: string, lastName: string, birthday?: string, image?: string, offers?: Offer[], requests?: Request[]) {
+  constructor(id: string, email: string, password: string, firstName: string, lastName: string, birthday?: string,
+              image?: string, offers?: Offer[], requests?: Request[]) {
     this.id = id;
     this.email = email;
     this.password = password;
@@ -24,7 +25,7 @@ export class User {
     this.requests = requests;
   }
 
-  getFullName(){
-    this.firstName + '' + this.lastName
+  getFullName(): string{
+    return this.firstName + '' + this.lastName;
   }
 }
