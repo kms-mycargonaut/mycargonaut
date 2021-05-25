@@ -31,8 +31,10 @@
               <h6>{{offer.art}}</h6>
               <p>{{offer.description}}</p>
               <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" *ngIf="offer.type === 'Ladefläche'; else elseBlock">{{offer.cubicmeter}} Kubikmeter</span>
-              <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" #elseBlock>{{offer.seats}} Sitzplätze</span>
-              <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont m-3" style="color: white" *ngIf="offer.art === 'Angebot'; else elseBlock">{{offer.price}} €</span>
+              <ng-template #elseBlock>
+                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white">{{offer.seats}} Sitzplätze</span>
+              </ng-template>
+              <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont m-3" style="color: white" *ngIf="offer.art === 'Angebot';">{{offer.price}} €</span>
             </div>
           </div>
         </div>
