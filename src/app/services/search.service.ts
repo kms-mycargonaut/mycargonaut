@@ -1,7 +1,5 @@
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
-import {
-  AngularFirestore,
-} from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import { Router } from '@angular/router';
@@ -45,34 +43,38 @@ export class SearchService {
       })
       .then(() => {
         for (let index = 0; index < this.allUsers.length; index++) {
-          this.allUsers[index].offers.forEach((offer) => {
-            if (
-              offer.start.toLowerCase() == start.toLowerCase() &&
-              offer.end.toLowerCase() == end.toLowerCase() &&
-              offer.date.day == date.day &&
-              offer.date.month == date.month &&
-              offer.date.year == date.year &&
-              offer.type == type
-            ) {
-              offer.art = 'Angebot';
-              offer.nutzer = this.allUsers[index].id;
-              this.searchResults.push(offer);
-            }
-          });
-          this.allUsers[index].requests.forEach((request) => {
-            if (
-              request.start.toLowerCase() == start.toLowerCase() &&
-              request.end.toLowerCase() == end.toLowerCase() &&
-              request.date.day == date.day &&
-              request.date.month == date.month &&
-              request.date.year == date.year &&
-              request.type == type
-            ) {
-              request.art = 'Gesuch';
-              request.nutzer = this.allUsers[index].id;
-              this.searchResults.push(request);
-            }
-          });
+          if (this.allUsers[index].offers) {
+            this.allUsers[index].offers.forEach((offer) => {
+              if (
+                offer.start.toLowerCase() == start.toLowerCase() &&
+                offer.end.toLowerCase() == end.toLowerCase() &&
+                offer.date.day == date.day &&
+                offer.date.month == date.month &&
+                offer.date.year == date.year &&
+                offer.type == type
+              ) {
+                offer.art = 'Angebot';
+                offer.nutzer = this.allUsers[index].id;
+                this.searchResults.push(offer);
+              }
+            });
+          }
+          if (this.allUsers[index].requests) {
+            this.allUsers[index].requests.forEach((request) => {
+              if (
+                request.start.toLowerCase() == start.toLowerCase() &&
+                request.end.toLowerCase() == end.toLowerCase() &&
+                request.date.day == date.day &&
+                request.date.month == date.month &&
+                request.date.year == date.year &&
+                request.type == type
+              ) {
+                request.art = 'Gesuch';
+                request.nutzer = this.allUsers[index].id;
+                this.searchResults.push(request);
+              }
+            });
+          }
         }
       })
       .then(() => {
