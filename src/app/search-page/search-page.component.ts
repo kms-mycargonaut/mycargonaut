@@ -9,8 +9,11 @@ export class SearchPageComponent implements OnInit {
   constructor() {}
 
   public offerList: any;
+  public searchResults: any;
+  public countResult: any;
 
   ngOnInit(): void {
-    this.offerList = JSON.parse(localStorage.getItem('searchResults'));
+    this.searchResults = this.offerList = JSON.parse(localStorage.getItem('searchResults'));
+    this.countResult = this.searchResults.length;
   }
 }
