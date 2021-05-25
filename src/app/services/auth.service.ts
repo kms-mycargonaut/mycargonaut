@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import firebase from 'firebase';
 import {User} from '../model/user';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 import { Location } from '@angular/common';
 import {Router} from '@angular/router';
