@@ -13,7 +13,7 @@ export class Vehicle {
     return this.userId;
   }
 
-  public setUser(userId: string): void {
+  public setUserId(userId: string): void {
     this.userId = userId;
   }
 

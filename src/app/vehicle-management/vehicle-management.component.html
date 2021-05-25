@@ -22,7 +22,7 @@
 <div class="container mt-5 mb-5">
   <div class="row d-flex justify-content-center flex-col align-items-center">
     <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
-      <form [formGroup]="vehicleFrontend" (ngSubmit)="createVehicle()">
+      <form [formGroup]="vehicleFrontend" (ngSubmit)="vehicleService.getVehicles()">
         <div class="form-group">
           <label for="transportSelect">Transportart</label>
           <select formControlName="transportType" class="form-control" id="transportSelect">
