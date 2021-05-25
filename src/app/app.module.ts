@@ -14,6 +14,7 @@ import { environment } from '../environments/environment';
 import { AngularFirestoreModule} from '@angular/fire/firestore';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { VehicleManagementComponent } from './vehicle-management/vehicle-management.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { VehicleManagementComponent } from './vehicle-management/vehicle-managem
     LoginComponent,
     RegisterComponent,
     VehicleManagementComponent,
+    MyProfileComponent,
   ],
     imports: [
         BrowserModule,

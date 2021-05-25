@@ -6,6 +6,7 @@ import { SearchPageComponent } from './search-page/search-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import {VehicleManagementComponent} from './vehicle-management/vehicle-management.component';
+import {MyProfileComponent} from './my-profile/my-profile.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,9 @@ export const routes: Routes = [
   },
   {
     path: 'create-vehicle', component: VehicleManagementComponent
+  },
+  {
+    path: 'my-profile', component: MyProfileComponent
   }
 ];
 
