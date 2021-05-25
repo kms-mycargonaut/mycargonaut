@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-center align-items-center h-75">
       <div class="d-flex justify-content-center flex-col align-items-center">
         <h1 class="h4 customFont font-weight-bold">
-          20 Fahrer für Deine Route
+          {{countResult}} Ergebnisse für Deine Route
         </h1>
         <h6>Köln - Berlin</h6>
       </div>
@@ -18,22 +18,23 @@
 
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let offer of offerList; let i = index">
   <div class="d-flex justify-content-center flex-col align-items-center">
-    <div class="card m-2">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3 d-flex justify-content-center flex-col">
-            <img class="rounded-circle" src="../../assets/images/leon.jpg" width="75" height="75"/>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <div class="card m-2">
+        <div class="card-body">
+          <div class="row">
+            <!--<div class="col-3 d-flex justify-content-center flex-col">
+              <img class="rounded-circle" src="../../assets/images/leon.jpg" width="75" height="75"/>
+            </div> -->
+            <div class="col-12" style="margin-left: 10px">
+              <h4 class="h4 customFont font-weight-bold">{{offer.date.day}}.{{offer.date.month}}.{{offer.date.year}} - {{offer.time.hour}}:{{offer.time.minute}}</h4>
+              <h6>{{offer.start}} - {{offer.end}}</h6>
+              <h6>{{offer.art}}</h6>
+              <p>{{offer.description}}</p>
+              <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" *ngIf="offer.type === 'Ladefläche'; else elseBlock">{{offer.cubicmeter}} Kubikmeter</span>
+              <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" #elseBlock>{{offer.seats}} Sitzplätze</span>
+              <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont m-3" style="color: white" *ngIf="offer.art === 'Angebot'; else elseBlock">{{offer.price}} €</span>
+            </div>
           </div>
-          <div class="col-9">
-            <h4 class="h4 customFont font-weight-bold">{{offer.date.day}}.{{offer.date.month}}.{{offer.date.year}} - {{offer.time.hour}}:{{offer.time.minute}}</h4>
-            <h6>{{offer.start}} - {{offer.end}}</h6>
-            <h6>{{offer.user}}</h6>
-            <p>{{offer.description}}</p>
-            <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" *ngIf="offer.type === 'Ladefläche'; else elseBlock">{{offer.cubicmeter}} Kubikmeter</span>
-            <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" #elseBlock>{{offer.seats}} Sitzplätze</span>
-            <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont m-3" style="color: white">{{offer.price}} €</span>
-          </div>
-        </div>
       </div>
     </div>
   </div>
