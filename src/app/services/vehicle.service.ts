@@ -18,12 +18,21 @@ export class VehicleService {
 
   async addVehicle(vehicle: Vehicle): Promise<void> {
     const userId: string = this.authService.getCurrentUser().uid;
-    vehicle.setUser(userId);
+    vehicle.setUserId(userId);
     await this.vehicleCollection.doc().set(Object.assign({}, vehicle));
   }
 
-  getVehicles(): any {
+  getVehicles(): Vehicle[] {
+    const vehicles: Vehicle[] = [];
     const userId: string = this.authService.getCurrentUser().uid;
-    return this.afs.collection('vehicles', ref => ref.where('userId', '==', userId)).valueChanges();
+    const values = this.afs.collection('vehicles', ref => ref.where('userId', '==', userId)).valueChanges();
+    values.subscribe(v => {
+      // tslint:disable-next-line:no-shadowed-variable
+      v.forEach((element: Vehicle) => {
+        element.userId = null;
+        vehicles.push(element);
+      });
+    });
+    return vehicles;
   }
 }

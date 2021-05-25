@@ -34,6 +34,8 @@ export class VehicleManagementComponent {
     this.vehicleService.addVehicle(vehicle);
   }
 
+
+
   private getBrand(): any {
     if (this.vehicleFrontend.value.brand === null) {
       console.error('brand should not be null');
