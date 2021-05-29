@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import {VehicleManagementComponent} from './vehicle-management/vehicle-management.component';
 import {MyProfileComponent} from './my-profile/my-profile.component';
+import {TrackingComponent} from './tracking/tracking.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,9 @@ export const routes: Routes = [
   },
   {
     path: 'my-profile', component: MyProfileComponent
+  },
+  {
+    path: 'tracking', component: TrackingComponent
   }
 ];
 
