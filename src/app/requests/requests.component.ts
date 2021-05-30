@@ -12,4 +12,7 @@ export class RequestsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  bookNow() {
+
+  }
 }
