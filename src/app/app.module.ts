@@ -15,6 +15,8 @@ import { AngularFirestoreModule} from '@angular/fire/firestore';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { VehicleManagementComponent } from './vehicle-management/vehicle-management.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
+import { TrackingComponent } from './tracking/tracking.component';
+import { RequestsComponent } from './requests/requests.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
     RegisterComponent,
     VehicleManagementComponent,
     MyProfileComponent,
+    TrackingComponent,
+    RequestsComponent,
   ],
     imports: [
         BrowserModule,
