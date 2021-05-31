@@ -17,6 +17,7 @@ import { VehicleManagementComponent } from './vehicle-management/vehicle-managem
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { TrackingComponent } from './tracking/tracking.component';
 import { RequestsComponent } from './requests/requests.component';
+import { SupplierProfileComponent } from './supplier-profile/supplier-profile.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { RequestsComponent } from './requests/requests.component';
     MyProfileComponent,
     TrackingComponent,
     RequestsComponent,
+    SupplierProfileComponent,
   ],
     imports: [
         BrowserModule,

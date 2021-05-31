@@ -9,6 +9,7 @@ import {VehicleManagementComponent} from './vehicle-management/vehicle-managemen
 import {MyProfileComponent} from './my-profile/my-profile.component';
 import {TrackingComponent} from './tracking/tracking.component';
 import {RequestsComponent} from './requests/requests.component';
+import {SupplierProfileComponent} from './supplier-profile/supplier-profile.component';
 
 export const routes: Routes = [
   {
@@ -37,6 +38,9 @@ export const routes: Routes = [
   },
   {
     path: 'requests', component: RequestsComponent
+  },
+  {
+    path: 'supplier-profile', component: SupplierProfileComponent
   }
 ];
 
