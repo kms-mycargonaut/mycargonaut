@@ -1,5 +1,6 @@
 enum Trackingstatus {
-  Start,
-  Destination,
-  Finished
+  START,
+  ONGOING,
+  DESTINATION,
+  FINISHED
 }

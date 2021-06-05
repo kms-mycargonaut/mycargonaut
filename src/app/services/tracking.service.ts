@@ -12,19 +12,6 @@ export class TrackingService {
     this.tracking = new Tracking();
   }
 
-  public startRide(): Tracking {
-    this.tracking.setStatus(Trackingstatus.Start);
-    return this.tracking;
-  }
 
-  public arrived(): Tracking {
-    this.tracking.setStatus(Trackingstatus.Destination);
-    return this.tracking;
-  }
-
-  public finishRide(): Tracking {
-    this.tracking.setStatus(Trackingstatus.Finished);
-    return this.tracking;
-  }
 
 }
