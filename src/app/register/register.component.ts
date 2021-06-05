@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {FormControl, FormGroup} from '@angular/forms';
+import {User} from '../model/user';
 
 @Component({
   selector: 'app-register',
@@ -9,6 +10,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 })
 
 export class RegisterComponent implements OnInit {
+  user: User[] = [];
   form = new FormGroup({
     lastName: new FormControl(),
     firstName: new FormControl(),
@@ -18,8 +20,6 @@ export class RegisterComponent implements OnInit {
     password: new FormControl(),
     passwordControl: new FormControl()
   });
-  date: any;
-
   constructor(public authService: AuthService) {
   }
 
@@ -28,15 +28,19 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (
-      this.form.value.password != this.form.value.passwordControl &&
-      this.form.value.lastName != '' &&
-      this.form.value.firstName != '' &&
-      this.form.value.email != '' &&
-      this.form.value.password != '' &&
-      this.form.value.passwordControl != ''
+      this.form.value.password !== this.form.value.passwordControl &&
+      this.form.value.lastName !== '' &&
+      this.form.value.firstName !== '' &&
+      this.form.value.email !== '' &&
+      this.form.value.password !== '' &&
+      this.form.value.passwordControl !== ''
     ) {
       alert('Passwörter stimmen nicht überein!');
     } else {
+      console.log(this.form.value.image);
+      const file1: File = this.form.value.image;
+      console.log("LOG");
+      console.log(file1.name);
       this.authService.register(this.form.value.lastName, this.form.value.firstName,
         this.form.value.email, this.form.value.birthday, this.form.value.image, this.form.value.password);
     }
