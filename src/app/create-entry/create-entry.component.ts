@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {EntryService} from '../services/entry.service';
-import {Request} from '../model/request';
-import {Offer} from '../model/offer';
 import {Router} from '@angular/router';
+import {Offer} from '../model/offer';
+import {OfferService} from '../services/offer.service';
+import {RequestService} from '../services/request.service';
+import {Request} from '../model/request';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class CreateEntryComponent implements OnInit {
   time = {hour: 13, minute: 30};
   public message: string;
 
-  constructor(private router: Router, public entryService: EntryService) { }
+  constructor(private router: Router, private offerService: OfferService, private requestService: RequestService) { }
 
   ngOnInit(): void {
   }
@@ -46,17 +47,20 @@ export class CreateEntryComponent implements OnInit {
       && this.form.value.height !== null)))
     {
       if (this.form.value.type === 'Angebot') {
-        const newOffer: Offer = new Offer(this.form.value.start, this.form.value.end, this.form.value.date, this.form.value.time,
-          this.form.value.vehicle, this.form.value.searchtype, this.form.value.length, this.form.value.width, this.form.value.height,
-          this.form.value.seats, this.form.value.description, this.form.value.price);
-        this.entryService.addOffer(newOffer);
+        const newOffer: Offer = new Offer(this.form.value.start, this.form.value.end, this.form.value.date,
+          this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.vehicle);
+        this.offerService.addOffer(newOffer);
         this.message = 'Angebot erstellt';
         this.router.navigate(['']);
       } else if (this.form.value.type === 'Gesuch') {
-        const newRequest: Request = new Request(this.form.value.start, this.form.value.end, this.form.value.date, this.form.value.time,
-          this.form.value.searchtype, this.form.value.length, this.form.value.width, this.form.value.height,
-          this.form.value.seats, this.form.value.description);
-        this.entryService.addRequest(newRequest);
+        const newRequest: Request = new Request(this.form.value.start, this.form.value.end, this.form.value.date,
+          this.form.value.time, this.form.value.description, this.form.value.price);
+        newRequest.setType(this.form.value.searchtype);
+        newRequest.setLength(this.form.value.length);
+        newRequest.setHeight(this.form.value.height);
+        newRequest.setWidth(this.form.value.width);
+        newRequest.setSeats(this.form.value.seats);
+        this.requestService.addRequest(newRequest);
         this.message = 'Gesuch erstellt';
         this.router.navigate(['']);
       } else {
