@@ -1,6 +1,6 @@
 <div id="searchWrapper">
   <div id="searchInnerWrapper">
-    <div class="d-flex justify-content-start align-items-start">
+    <div class="d-flex justify-content-start align-items-start" [routerLink]="['/']">
       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16" id="pfeil">
         <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
       </svg>
@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-center align-items-center h-75">
       <div class="d-flex justify-content-center flex-col align-items-center">
         <h1 class="h4 customFont font-weight-bold">
-          20 Fahrer für Deine Route
+          {{countResult}} Ergebnisse für Deine Route
         </h1>
         <h6>Köln - Berlin</h6>
       </div>
@@ -16,27 +16,29 @@
   </div>
 </div>
 
-<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let offer of offerList; let i = index">
   <div class="d-flex justify-content-center flex-col align-items-center">
-    <div class="card m-2">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3 d-flex justify-content-center flex-col">
-            <img class="rounded-circle" src="../../assets/images/leon.jpg" width="75" height="75"/>
-          </div>
-          <div class="col-9">
-            <h4 class="h4 customFont font-weight-bold"> 02.06.2021 - 13:00 </h4>
-            <h6> Köln - Berlin </h6>
-            <h6> Leon Wiese </h6>
-            <p> Ich biete 25qm Ladefläche in meinem LKW für die Fahrt von Köln nach Berlin. </p>
-            <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white">10qm frei</span>
-            <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont m-3" style="color: white">20€</span>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <div class="card m-2">
+        <div class="card-body">
+          <div class="row">
+            <!--<div class="col-3 d-flex justify-content-center flex-col">
+              <img class="rounded-circle" src="../../assets/images/leon.jpg" width="75" height="75"/>
+            </div> -->
+            <div class="col-12" style="margin-left: 10px">
+              <h4 class="h4 customFont font-weight-bold">{{offer.date.day}}.{{offer.date.month}}.{{offer.date.year}} - {{offer.time.hour}}:{{offer.time.minute}}</h4>
+              <h6>{{offer.start}} - {{offer.end}}</h6>
+              <h6>{{offer.art}}</h6>
+              <p>{{offer.description}}</p>
+              <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" *ngIf="offer.type === 'Ladefläche'; else elseBlock">{{offer.cubicmeter}} Kubikmeter</span>
+              <ng-template #elseBlock>
+                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white">{{offer.seats}} Sitzplätze</span>
+              </ng-template>
+              <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont m-3" style="color: white" *ngIf="offer.art === 'Angebot';">{{offer.price}} €</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-

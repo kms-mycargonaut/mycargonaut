@@ -1,9 +1,11 @@
 <!-- head -->
 <div id="createWrapper">
   <div id="createInnerWrapper">
-    <div class="d-flex justify-content-start align-items-start">
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16" id="pfeil">
-        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+    <div class="d-flex justify-content-start align-items-start" [routerLink]="['/']">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-short"
+           viewBox="0 0 16 16" id="pfeil">
+        <path fill-rule="evenodd"
+              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
       </svg>
     </div>
     <div class="d-flex justify-content-center align-items-center h-75">
@@ -24,80 +26,117 @@
         <div class="form-group">
           <label for="typeSelect">Was möchten Sie anlegen?</label>
           <select formControlName="type" class="form-control" id="typeSelect">
-            <option>Angebot</option>
-            <option>Gesuch</option>
+            <option selected>Angebot</option>
+            <option value="Gesuch">Gesuch</option>
           </select>
         </div>
         <div class="form-group">
           <label for="startInput">Start</label>
-          <input formControlName="start" type="text" class="form-control" id="startInput" aria-describedby="start" placeholder="z.B. Köln">
+          <input formControlName="start" type="text" class="form-control" id="startInput" aria-describedby="start"
+                 placeholder="z.B. Köln">
         </div>
         <div class="form-group">
           <label for="endInput">Ziel</label>
-          <input formControlName="end" type="text" class="form-control" id="endInput" aria-describedby="end" placeholder="z.B. Berlin">
+          <input formControlName="end" type="text" class="form-control" id="endInput" aria-describedby="end"
+                 placeholder="z.B. Berlin">
         </div>
         <div class="form-group">
           <label for="dateInput">Datum</label>
-          <input formControlName="date" type="text" class="form-control" id="dateInput" aria-describedby="date" placeholder="z.B. 02.12.2021">
+          <input
+            formControlName="date"
+            type="text"
+            id="dateInput"
+            aria-describedby="date"
+            ngbDatepicker
+            #d="ngbDatepicker"
+            class="form-control custom-select mt-3"
+            (click)="d.toggle()"
+            placeholder="Datum"
+            [minDate]="{ year: year, month: currentMonth, day: currentDay }"
+          />
         </div>
         <div class="form-group">
           <label for="timeInput">Uhrzeit</label>
-          <input formControlName="time" type="text" class="form-control" id="timeInput" aria-describedby="time" placeholder="z.B. 17:00">
+          <ngb-timepicker
+            formControlName="time"
+            id="timeInput"
+            aria-describedby="time"
+            [(ngModel)]="time"
+          >
+          </ngb-timepicker>
         </div>
 
-        <!-- ngIf for type "Angebot" -->
-        <div *ngIf="this.form.value.type === 'Angebot'; else elseBlock">
+        <!-- ngIf for type "Angebot" - show vehicle select -->
+        <div *ngIf="this.form.value.type === 'Angebot'">
           <div class="form-group">
             <label for="vehicleSelect">Fahrzeug</label>
             <select formControlName="vehicle" class="form-control" id="vehicleSelect">
-              <option>Sprinter</option>
-              <option>LKW</option>
-              <option>SUV</option>
-              <option>Kombi</option>
-              <option>Kleinwagen</option>
+              <option selected >Sprinter</option>
+              <option value="LKW">LKW</option>
+              <option value="SUV">SUV</option>
+              <option value="Kombi">Kombi</option>
+              <option value="Kleinwagen">Kleinwagen</option>
             </select>
-          </div>
-          <div class="form-group">
-            <label for="offerDescription">Beschreibung</label>
-            <textarea formControlName="description" type="text" class="form-control" id="offerDescription" aria-describedby="offerDescription" placeholder="Beschreibe dein Angebot"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="price">Preis in €</label>
-            <input formControlName="price" type="text" class="form-control" id="price" aria-describedby="price" placeholder="z.B. 30">
           </div>
         </div>
 
-        <!-- elseBlock for type "Gesuch" -->
+        <div class="form-group">
+          <label for="searchType">Was möchten Sie anbieten/suchen?</label>
+          <select formControlName="searchtype" class="form-control" id="searchType">
+            <option selected>Ladefläche</option>
+            <option value="Mitfahrgelegenheit">Mitfahrgelegenheit</option>
+          </select>
+        </div>
+
+        <!-- ngIf for searchType "Ladefläche" - show length, width and height -->
+        <div *ngIf="this.form.value.searchtype === 'Ladefläche'; else elseBlock">
+          <div class="form-group">
+            <label for="length">Länge der Fläche in cm</label>
+            <input formControlName="length" type="text" class="form-control" id="length"
+                   aria-describedby="length" placeholder="z.B. 200">
+          </div>
+          <div class="form-group">
+            <label for="width">Breite der Fläche in cm</label>
+            <input formControlName="width" type="text" class="form-control" id="width"
+                   aria-describedby="width" placeholder="z.B. 120">
+          </div>
+          <div class="form-group">
+            <label for="height">Höhe der Fläche in cm</label>
+            <input formControlName="height" type="text" class="form-control" id="height"
+                   aria-describedby="height" placeholder="z.B. 100">
+          </div>
+        </div>
+
+        <!-- elseBlock for searchType "Mitfahrgelegenheit - show seats -->
         <ng-template #elseBlock>
           <div class="form-group">
-            <label for="searchType">Was möchten Sie suchen?</label>
-            <select formControlName="searchtype" class="form-control" id="searchType">
-              <option>Ladefläche</option>
-              <option>Mitfahrgelegenheit</option>
-            </select>
-          </div>
-
-          <!-- ngIf for searchType "Ladefläche" -->
-          <div class="form-group" *ngIf="this.form.value.searchtype === 'Ladefläche'; else elseBlock" >
-            <label for="searchQm">Fläche in qm</label>
-            <input formControlName="searchsize" type="text" class="form-control" id="searchQm" aria-describedby="searchQm" placeholder="z.B. 30">
-          </div>
-          <!-- ngIf for searchType "Mitfahrgelegenheit -->
-          <ng-template #elseBlock>
-            <div class="form-group">
-              <label for="searchSeats">Anzahl der Sitzplätze</label>
-              <input formControlName="searchsize" type="text" class="form-control" id="searchSeats" aria-describedby="searchSeats" placeholder="z.B. 2">
-            </div>
-          </ng-template>
-
-          <div class="form-group">
-            <label for="searchDescription">Beschreibung</label>
-            <textarea formControlName="description" type="text" class="form-control" id="searchDescription" aria-describedby="searchDescription" placeholder="Beschreibe dein Gesuch"></textarea>
+            <label for="seats">Anzahl der Sitzplätze</label>
+            <input formControlName="seats" type="text" class="form-control" id="seats" aria-describedby="seats"
+                   placeholder="z.B. 2">
           </div>
         </ng-template>
 
+        <div class="form-group">
+          <label for="searchDescription">Beschreibung</label>
+          <textarea formControlName="description" type="text" class="form-control" id="searchDescription"
+                    aria-describedby="searchDescription" placeholder="Beschreibe dein Angebot/Gesuch"></textarea>
+        </div>
+
+        <div *ngIf="this.form.value.type === 'Angebot'">
+          <div class="form-group">
+            <label for="price">Preis in €</label>
+            <input formControlName="price" type="text" class="form-control" id="price" aria-describedby="price"
+                   placeholder="z.B. 30">
+          </div>
+        </div>
+
         <div class="d-flex justify-content-center flex-col align-items-center">
-          <button type="submit" class="btn bgCustomGreen">Erstellen</button>
+          <button
+            type="submit"
+            class="btn bgCustomGreen"
+          >
+            Erstellen
+          </button>
         </div>
       </form>
     </div>

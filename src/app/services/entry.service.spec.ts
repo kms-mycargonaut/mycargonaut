@@ -1,25 +1,26 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthService } from './auth.service';
+import { EntryService } from './entry.service';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../environments/environment';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
-import {RegisterComponent} from '../register/register.component';
 import {RouterTestingModule} from '@angular/router/testing';
+import {CreateEntryComponent} from '../create-entry/create-entry.component';
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('EntryService', () => {
+  let service: EntryService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({imports: [
+    TestBed.configureTestingModule({
+      imports: [
         AngularFireModule.initializeApp(environment.firebase),
         AngularFireDatabaseModule,
         RouterTestingModule
       ],
-      declarations: [RegisterComponent],
-      providers: [AuthService]
+      declarations: [CreateEntryComponent],
+      providers: [EntryService]
     }).compileComponents();
-    service = TestBed.inject(AuthService);
+    service = TestBed.inject(EntryService);
   });
 
   it('should be created', () => {

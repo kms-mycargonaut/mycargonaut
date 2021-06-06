@@ -12,6 +12,8 @@
               type="text"
               class="form-control mt-n2"
               placeholder="z.B. Köln"
+              [(ngModel)]="start"
+              name="start"
             />
             <input
               type="text"
@@ -21,6 +23,8 @@
               (click)="d.toggle()"
               placeholder="Datum"
               [minDate]="{ year: year, month: currentMonth, day: currentDay }"
+              [(ngModel)]="date"
+              name="date"
             />
           </div>
           <div class="col-6 px-1">
@@ -29,16 +33,18 @@
               type="text"
               class="form-control mt-n2"
               placeholder="z.B. Berlin"
+              [(ngModel)]="end"
+              name="end"
             />
-            <select class="custom-select mt-3">
-              <option selected value="">Art der Fahrt</option>
-              <option value="güter">Gütertransport</option>
-              <option value="person">Personentransport</option>
+            <select class="custom-select mt-3" [(ngModel)]="type" name="type">
+              <option selected disabled value="">Art der Fahrt</option>
+              <option value="Ladefläche">Gütertransport</option>
+              <option value="Mitfahrgelegenheit">Personentransport</option>
             </select>
           </div>
         </div>
         <div class="row w-100 justify-content-center">
-          <button class="btn mt-3 bgCustomGreen font-weight-bold text-white">
+          <button class="btn mt-3 bgCustomGreen font-weight-bold text-white" (click)="startSearch()">
             Suche starten
           </button>
         </div>
@@ -127,6 +133,7 @@
     <a
       class="btn mt-3 bgCustomGreen font-weight-bold text-white"
       [routerLink]="['/create-entry']"
+      *ngIf="this.authService.isLoggedIn"
     >
       Angebot/Gesuch erstellen
     </a>

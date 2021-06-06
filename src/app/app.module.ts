@@ -11,9 +11,13 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { ReactiveFormsModule } from '@angular/forms';
+import { AngularFirestoreModule} from '@angular/fire/firestore';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { VehicleManagementComponent } from './vehicle-management/vehicle-management.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import { TrackingComponent } from './tracking/tracking.component';
+import { RequestsComponent } from './requests/requests.component';
+import { SupplierProfileComponent } from './supplier-profile/supplier-profile.component';
 
 @NgModule({
   declarations: [
@@ -24,15 +28,20 @@ import { VehicleManagementComponent } from './vehicle-management/vehicle-managem
     LoginComponent,
     RegisterComponent,
     VehicleManagementComponent,
+    MyProfileComponent,
+    TrackingComponent,
+    RequestsComponent,
+    SupplierProfileComponent,
   ],
-  imports: [
-    BrowserModule,
-    NgbModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
-    ReactiveFormsModule,
-  ],
+    imports: [
+        BrowserModule,
+        NgbModule,
+        AppRoutingModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule,
+        ReactiveFormsModule,
+        FormsModule,
+    ],
   providers: [],
   bootstrap: [AppComponent],
 })
