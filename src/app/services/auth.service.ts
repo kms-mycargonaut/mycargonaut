@@ -36,11 +36,11 @@ export class AuthService {
       .then((response) => {
         const registeredUser = {
           id: response.user?.uid,
-          email: email,
-          password: password,
+          email,
+          password,
           firstname: firstName,
           lastname: lastName,
-          birthday: birthday,
+          birthday,
           image: image ? image : null,
         };
         console.log(registeredUser);
