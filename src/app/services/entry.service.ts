@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {Offer} from '../model/offer';
-import {Request} from '../model/request';
+import {Offerold} from '../model/offerold';
+import {Requestold} from '../model/requestold';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class EntryService {
     });
   }
 
-  async addOffer(newOffer: Offer): Promise<void> {
+  async addOffer(newOffer: Offerold): Promise<void> {
     const writeOffer = {
       id: newOffer.id,
       start: newOffer.start,
@@ -48,7 +48,7 @@ export class EntryService {
     }
   }
 
-  async addRequest(newRequest: Request): Promise<void> {
+  async addRequest(newRequest: Requestold): Promise<void> {
     const writeRequest = {
       id: newRequest.id,
       start: newRequest.start,

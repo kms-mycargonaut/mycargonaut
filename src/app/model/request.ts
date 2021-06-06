@@ -1,38 +1,39 @@
+import {Post} from './post';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTime} from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
-export class Request {
-  static counter = 1;
-  public id: number;
-  public start: string;
-  public end: string;
-  public date: NgbDate;
-  public time: NgbTime;
-  public type: string;
-  public length: number;
-  public width: number;
-  public height: number;
-  public cubicmeter: number;
-  public seats: number;
-  public description: string;
+export class Request extends Post {
 
-  constructor(start: string, end: string, date: NgbDate, time: NgbTime, type: string, length: number, width: number, height: number,
-              seats: number, description: string) {
-    this.id = Request.counter++;
-    this.start = start;
-    this.end = end;
-    this.date = date;
-    this.time = time;
-    this.type = type;
-    this.length = length;
-    this.width = width;
-    this.height = height;
-    this.cubicmeter = this.getCubicMeter();
-    this.seats = seats;
-    this.description = description;
+  private length: number;
+  private width: number;
+  private height: number;
+  private seats: number;
+
+  constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number) {
+    super(start, destination, startDate, startTime, description, price);
   }
 
-  getCubicMeter(): number {
-    return this.length * this.width * this.height / 1000000;
+  public setLength(length: number): void {
+    this.length = length;
+  }
+
+  public setWidth(width: number): void {
+    this.width = width;
+  }
+
+  public setHeight(height: number): void {
+    this.height = height;
+  }
+
+  public getCubicmeter(): number {
+    return this.length * this.width * this.height;
+  }
+
+  public getSeats(): number {
+    return this.seats;
+  }
+
+  public setSeats(seats: number): void {
+    this.seats = seats;
   }
 }
