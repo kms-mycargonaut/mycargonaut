@@ -37,12 +37,12 @@ export class RegisterComponent implements OnInit {
     ) {
       alert('Passwörter stimmen nicht überein!');
     } else {
-      console.log(this.form.value.image);
-      const file1: File = this.form.value.image;
-      console.log("LOG");
-      console.log(file1.name);
       this.authService.register(this.form.value.lastName, this.form.value.firstName,
         this.form.value.email, this.form.value.birthday, this.form.value.image, this.form.value.password);
     }
+  }
+
+  setProfileImage(event): void {
+    this.authService.file = event.target.files[0];
   }
 }

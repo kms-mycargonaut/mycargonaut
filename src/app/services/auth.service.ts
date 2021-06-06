@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 
 import {User} from '../model/user';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
 import 'firebase/storage';
@@ -32,13 +32,13 @@ export class AuthService {
     });
   }
 
-  async uploadProfilePicture(file: File): Promise<string> {
+  async uploadProfilePicture(): Promise<string> {
     const storageRef = firebase
       .storage()
       .ref()
-      .child(`profile_images/${file.name}`);
+      .child(`profile_images/${this.file.name}`);
     return new Promise((resolve, reject) => {
-      storageRef.put(file).then((snapshot) => {
+      storageRef.put(this.file).then((snapshot) => {
         snapshot.ref
           .getDownloadURL()
           .then((result) => {
@@ -53,8 +53,8 @@ export class AuthService {
 
   // tslint:disable-next-line:max-line-length
   async register(lastName: string, firstName: string, email: string, birthday: string, image: any, password: string): Promise<any> {
-    if (image) {
-      this.uploadProfilePicture(image).then((result) => {
+    if (this.file) {
+      this.uploadProfilePicture().then((result) => {
         image = result;
         this.createUser(lastName, firstName, email, birthday, image, password).catch((err) => {
           console.error(err);
