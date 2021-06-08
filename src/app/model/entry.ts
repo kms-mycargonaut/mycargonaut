@@ -1,7 +1,7 @@
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTime} from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
-export abstract class Post {
+export abstract class Entry {
 
   protected userId: string;
   protected start: string;

@@ -1,9 +1,9 @@
-import {Post} from './post';
+import {Entry} from './entry';
 import {Vehicle} from './vehicle';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTime} from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
-export class Offer extends Post {
+export class Offer extends Entry {
 
   private vehicle: Vehicle;
 

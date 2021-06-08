@@ -1,30 +1,21 @@
 import { Injectable } from '@angular/core';
-import {Tracking} from '../model/tracking';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {Observable} from 'rxjs';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrackingService {
 
-  private tracking: Tracking;
+  private trackingCollection: AngularFirestoreCollection<TrackingStatus>;
+  private trackings: Observable<TrackingStatus[]>;
 
-  constructor() {
-    this.tracking = new Tracking();
+  constructor(private authService: AuthService, private afs: AngularFirestore) {
+    this.trackingCollection = afs.collection('trackings');
   }
 
-  public startRide(): Tracking {
-    this.tracking.setStatus(Trackingstatus.Start);
-    return this.tracking;
+  public updateTracking(docId: string, trackingStatus: TrackingStatus): void {
+    this.trackingCollection.doc(docId).set(trackingStatus, {merge: true});
   }
-
-  public arrived(): Tracking {
-    this.tracking.setStatus(Trackingstatus.Destination);
-    return this.tracking;
-  }
-
-  public finishRide(): Tracking {
-    this.tracking.setStatus(Trackingstatus.Finished);
-    return this.tracking;
-  }
-
 }

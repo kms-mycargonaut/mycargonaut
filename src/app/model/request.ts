@@ -1,8 +1,8 @@
-import {Post} from './post';
+import {Entry} from './entry';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTime} from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
-export class Request extends Post {
+export class Request extends Entry {
 
   private length: number;
   private width: number;

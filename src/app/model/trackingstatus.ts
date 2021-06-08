@@ -1,5 +1,6 @@
-enum Trackingstatus {
-  Start,
-  Destination,
-  Finished
+enum TrackingStatus {
+  BOOKED,
+  START,
+  DESTINATION,
+  FINISHED
 }
