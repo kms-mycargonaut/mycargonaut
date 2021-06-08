@@ -10,15 +10,19 @@ import {Offer} from '../model/offer';
 export class OfferService {
 
   private offerCollection: AngularFirestoreCollection<Offer>;
-  private offers: Observable<Offer[]>;
+  private trackingCollection: AngularFirestoreCollection;
 
   constructor(private authService: AuthService, private afs: AngularFirestore) {
     this.offerCollection = afs.collection('offers');
+    this.trackingCollection = afs.collection('tracking');
   }
 
   async addOffer(offer: Offer): Promise<void> {
     const userId: string = this.authService.getCurrentUser().uid;
     offer.setUserId(userId);
-    await this.offerCollection.doc().set(Object.assign({}, offer));
+    this.trackingCollection.add({}).then((newTracking) => {
+      offer.setTrackingId(newTracking.id);
+      this.offerCollection.doc().set(Object.assign({}, offer));
+    });
   }
 }
