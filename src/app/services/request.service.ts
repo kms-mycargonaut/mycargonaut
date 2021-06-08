@@ -9,16 +9,20 @@ import {Request} from '../model/request';
 })
 export class RequestService {
 
-  private offerCollection: AngularFirestoreCollection<Request>;
-  private offers: Observable<Request[]>;
+  private requestCollection: AngularFirestoreCollection<Request>;
+  private trackingCollection: AngularFirestoreCollection;
 
   constructor(private authService: AuthService, private afs: AngularFirestore) {
-    this.offerCollection = afs.collection('requests');
+    this.requestCollection = afs.collection('requests');
+    this.trackingCollection = afs.collection('tracking');
   }
 
   async addRequest(request: Request): Promise<void> {
     const userId: string = this.authService.getCurrentUser().uid;
     request.setUserId(userId);
-    await this.offerCollection.doc().set(Object.assign({}, request));
+    this.trackingCollection.add({}).then((newTracking) => {
+      request.setTrackingId(newTracking.id);
+      this.requestCollection.doc().set(Object.assign({}, request));
+    });
   }
 }
