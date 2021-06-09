@@ -9,8 +9,9 @@ export class Request extends Entry {
   private height: number;
   private seats: number;
 
-  constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number) {
-    super(start, destination, startDate, startTime, description, price);
+  // tslint:disable-next-line:max-line-length
+  constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number, trackingId: string) {
+    super(start, destination, startDate, startTime, description, price, trackingId);
   }
 
   public setLength(length: number): void {

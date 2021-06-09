@@ -11,15 +11,17 @@ export abstract class Entry {
   protected description: string;
   protected price: number;
   protected type: string;
+  protected trackingId: string;
 
   // tslint:disable-next-line:max-line-length
-  protected constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number) {
+  protected constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number, trackingId: string) {
     this.start = start;
     this.destination = destination;
     this.startDate = startDate;
     this.startTime = startTime;
     this.description = description;
     this.price = price;
+    this.trackingId = trackingId;
   }
 
   public setUserId(userId: string): void {
@@ -80,5 +82,9 @@ export abstract class Entry {
 
   public setType(type: string): void {
     this.type = type;
+  }
+
+  public setTrackingId(trackingId): void {
+    this.trackingId = trackingId;
   }
 }
