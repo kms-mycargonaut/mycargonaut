@@ -15,6 +15,10 @@ export class TrackingService {
     this.trackingCollection = afs.collection('trackings');
   }
 
+  public createTracking(): void {
+
+  }
+
   public updateTracking(docId: string, trackingStatus: TrackingStatus): void {
     this.trackingCollection.doc(docId).set(trackingStatus, {merge: true});
   }

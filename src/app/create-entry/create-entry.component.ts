@@ -5,6 +5,7 @@ import {Offer} from '../model/offer';
 import {OfferService} from '../services/offer.service';
 import {RequestService} from '../services/request.service';
 import {Request} from '../model/request';
+import {Vehicle} from '../model/vehicle';
 
 
 @Component({
@@ -34,7 +35,9 @@ export class CreateEntryComponent implements OnInit {
   public currentDay = new Date().getDate();
   time = {hour: 13, minute: 30};
   public message: string;
+  vehicles: Vehicle[];
 
+  // tslint:disable-next-line:max-line-length
   constructor(private router: Router, private offerService: OfferService, private requestService: RequestService) { }
 
   ngOnInit(): void {

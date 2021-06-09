@@ -1,14 +1,21 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Vehicle} from '../model/vehicle';
 import {VehicleService} from '../services/vehicle.service';
+import {AuthService} from '../services/auth.service';
+import firebase from 'firebase';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {Observable} from 'rxjs';
+import {User} from '../model/user';
 
 @Component({
   selector: 'app-vehicle-management',
   templateUrl: './vehicle-management.component.html',
   styleUrls: ['./vehicle-management.component.css']
 })
-export class VehicleManagementComponent {
+export class VehicleManagementComponent implements OnInit{
+  user: Observable<firebase.User>;
+  authenticatedUser: firebase.User;
   vehicleFrontend = new FormGroup({
     brand: new FormControl(),
     height: new FormControl(),
@@ -19,72 +26,43 @@ export class VehicleManagementComponent {
     yearOfManufacture: new FormControl()
   });
 
-  constructor(public vehicleService: VehicleService) {
+  constructor(public auth: AngularFireAuth, private vehicleService: VehicleService) {
+    this.user = auth.user;
+  }
+
+  ngOnInit(): void {
+    this.user.subscribe((user) => {
+      this.authenticatedUser = user;
+      this.getVehicles(user);
+    });
   }
 
   public createVehicle(): void {
     const vehicle = new Vehicle();
-    vehicle.brand = this.getBrand();
-    vehicle.height = this.getHeight();
-    vehicle.length = this.getLength();
-    vehicle.width = this.getWidth();
-    vehicle.numberOfSeats = this.getNumberOfSeats();
-    vehicle.transportType = this.getTransportType();
-    vehicle.yearOfManufacture = this.getYearOfManufacture();
-    this.vehicleService.addVehicle(vehicle);
-  }
-
-
-
-  private getBrand(): any {
-    if (this.vehicleFrontend.value.brand === null) {
-      console.error('brand should not be null');
+    if (this.valueIsFilledOut(this.vehicleFrontend.value.brand)
+      && this.valueIsFilledOut(this.vehicleFrontend.value.height)
+      && this.valueIsFilledOut(this.vehicleFrontend.value.length)
+      && this.valueIsFilledOut(this.vehicleFrontend.value.width)
+      && this.valueIsFilledOut(this.vehicleFrontend.value.numberOfSeats)
+      && this.valueIsFilledOut(this.vehicleFrontend.value.transportType)) {
+      vehicle.brand = this.vehicleFrontend.value.brand;
+      vehicle.height = this.vehicleFrontend.value.height;
+      vehicle.length = this.vehicleFrontend.value.length;
+      vehicle.width = this.vehicleFrontend.value.width;
+      vehicle.numberOfSeats = this.vehicleFrontend.value.numberOfSeats;
+      vehicle.transportType = this.vehicleFrontend.value.transportType;
+      vehicle.yearOfManufacture = this.vehicleFrontend.value.yearOfManufacture;
+      this.vehicleService.addVehicle(vehicle);
     } else {
-      return this.vehicleFrontend.value.brand;
+      alert('Bitte alle Felder ausfüllen');
     }
   }
 
-  private getHeight(): any {
-    if (this.vehicleFrontend.value.height === null) {
-      console.error('height should not be null');
-    } else {
-      return this.vehicleFrontend.value.height;
-    }
+  public getVehicles(user: firebase.User): void {
+    console.log(this.vehicleService.getVehicles(user));
   }
 
-  private getLength(): any {
-    if (this.vehicleFrontend.value.length === null) {
-      console.error('length should not be null');
-    } else {
-      return this.vehicleFrontend.value.length;
-    }
-  }
-
-  private getWidth(): any {
-    if (this.vehicleFrontend.value.width === null) {
-      console.error('width should not be null');
-    } else {
-      return this.vehicleFrontend.value.width;
-    }
-  }
-
-  private getNumberOfSeats(): any {
-    if (this.vehicleFrontend.value.numberOfSeats === null) {
-      console.error('number of seats should not be null');
-    } else {
-      return this.vehicleFrontend.value.numberOfSeats;
-    }
-  }
-
-  private getTransportType(): any {
-    if (this.vehicleFrontend.value.transportType === null) {
-      console.error('number of seats should not be null');
-    } else {
-      return this.vehicleFrontend.value.transportType;
-    }
-  }
-
-  private getYearOfManufacture(): any {
-    return this.vehicleFrontend.value.yearOfManufacture;
+  private valueIsFilledOut(value: string): boolean {
+    return value !== null && value !== undefined;
   }
 }
