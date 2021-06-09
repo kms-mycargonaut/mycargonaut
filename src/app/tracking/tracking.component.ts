@@ -22,12 +22,21 @@ export class TrackingComponent implements OnInit {
   ratingDescription: new FormControl()
 });
 
+  public message: string;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
   onSubmit(): void {
-
+    if (this.form.value.rating !== null && this.form.value.title !== null && this.form.value.ratingDescription !== null)
+    {
+      console.log(this.form.value.rating + ', ' + this.form.value.title + ', ' + this.form.value.ratingDescription);
+    } else {
+      this.message = 'Bitte fülle alle Felder aus';
+    }
+    console.log(this.message);
+    alert(this.message);
   }
 }
