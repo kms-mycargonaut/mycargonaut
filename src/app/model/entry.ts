@@ -12,17 +12,28 @@ export abstract class Entry {
   description: string;
   price: number;
   type: string;
+  length: number;
+  width: number;
+  height: number;
+  cubicmeter: number;
+  seats: number;
   trackingId: string;
 
-  // tslint:disable-next-line:max-line-length
-  protected constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number, trackingId: string) {
+  constructor(start: string, destination: string,
+              startDate: NgbDate, startTime: NgbTime, description: string, price: number, type: string, length: number,
+              width: number, height: number, seats: number) {
     this.start = start;
     this.destination = destination;
     this.startDate = startDate;
     this.startTime = startTime;
     this.description = description;
     this.price = price;
-    this.trackingId = trackingId;
+    this.type = type;
+    this.length = length;
+    this.width = width;
+    this.height = height;
+    this.cubicmeter = this.getCubicMeter();
+    this.seats = seats;
   }
 
   public setUserId(userId: string): void {
@@ -99,5 +110,9 @@ export abstract class Entry {
 
   public setEntryId(entryId: string): void {
     this.entryId = entryId;
+  }
+
+  public getCubicMeter(): number {
+    return this.length * this.width * this.height / 1000000;
   }
 }

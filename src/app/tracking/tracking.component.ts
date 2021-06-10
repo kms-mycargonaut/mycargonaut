@@ -33,6 +33,7 @@ export class TrackingComponent implements OnInit {
 
   public message: string;
   request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
+  // request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
 
   constructor(public auth: AngularFireAuth, private trackingService: TrackingService, private requestService: RequestService) {
     this.user = auth.user;
@@ -43,7 +44,7 @@ export class TrackingComponent implements OnInit {
       this.authenticatedUser = user;
     });
     console.log(this.requestService.getRequest('TL756TwBhRDN3driRmUq'));
-    console.log(this.trackingService.getTrackingForRequest(this.request));
+    // console.log(this.trackingService.getTrackingForRequest(this.request));
   }
 
   public getTrackingAsSupplier(): void {
