@@ -8,7 +8,6 @@ import {Entry} from '../model/entry';
   providedIn: 'root'
 })
 export class EntryService {
-  // private userCollection: AngularFirestoreCollection;
   user: firebase.User | null = null;
   private entryCollection: AngularFirestoreCollection<Entry>;
 
@@ -17,7 +16,6 @@ export class EntryService {
     this.auth.user.subscribe(user => {
       if (user) {
         this.user = user;
-        // this.userCollection = afs.collection(`users/`);
       }
     });
   }
@@ -25,11 +23,16 @@ export class EntryService {
 
   async addEntry(entry: Entry): Promise<void> {
     entry.setUserId(this.user.uid);
-    this.entryCollection.doc().set(Object.assign({}, entry));
+
+    await this.entryCollection.doc().set(Object.assign({}, entry));
   }
 
   async getEntry(entryId: string): Promise<Entry> {
     const requestFirestore = await this.afs.collection('entries').doc<Entry>(entryId).get().toPromise();
     return requestFirestore.data();
+  }
+
+  async updateTrackingStatus(entryId: string, entryStatus: string): Promise<void> {
+    await this.entryCollection.doc(entryId).update({trackingStatus: entryStatus});
   }
 }
