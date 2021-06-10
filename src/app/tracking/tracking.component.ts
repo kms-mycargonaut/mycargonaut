@@ -19,7 +19,8 @@ export class TrackingComponent implements OnInit {
   bookingId: string;
   start;
   end;
-  date = '02.06.2021';
+  date;
+  time;
   status;
   status1date = '15.05.2021, 17:09';
   status2date = '02.06.2021, 13:00';
@@ -33,7 +34,6 @@ export class TrackingComponent implements OnInit {
 });
 
   public message: string;
-  // request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
 
   constructor(public auth: AngularFireAuth, private ratingService: RatingService, private entryService: EntryService,
               private route: ActivatedRoute) {
@@ -47,9 +47,11 @@ export class TrackingComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.bookingId = paramMap.get('bookingId');
     });
-    this.entryService.getEntry('BZ632IoHWt8GCmJJtHL6').then(value => {
+    this.entryService.getEntry(this.bookingId).then(value => {
       this.start = value.start;
       this.end = value.destination;
+      this.date = value.startDate.day + '.' + value.startDate.month + '.' + value.startDate.year;
+      this.time = value.startTime.hour + ':' + value.startTime.minute;
       this.status = value.trackingStatus;
     });
   }
