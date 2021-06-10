@@ -1,13 +1,13 @@
 export class Vehicle {
 
-  userId: string;
-  transportType: string;
-  brand: string;
-  yearOfManufacture: string;
-  numberOfSeats: number;
-  length: number;
-  height: number;
-  width: number;
+  userId?: string;
+  transportType?: string;
+  brand?: string;
+  yearOfManufacture?: string;
+  numberOfSeats?: number;
+  length?: number;
+  height?: number;
+  width?: number;
 
   public getUserId(): string {
     return this.userId;
