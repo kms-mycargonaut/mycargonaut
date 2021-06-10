@@ -3,10 +3,8 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
-import {TrackingService} from '../services/tracking.service';
-import {Offer} from '../model/offer';
-import {Request} from '../model/request';
-import {RequestService} from '../services/request.service';
+import {Rating} from '../model/rating';
+import {RatingService} from '../services/rating.service';
 
 @Component({
   selector: 'app-tracking',
@@ -32,10 +30,10 @@ export class TrackingComponent implements OnInit {
 });
 
   public message: string;
-  request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
   // request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
 
-  constructor(public auth: AngularFireAuth, private trackingService: TrackingService, private requestService: RequestService) {
+  constructor(public auth: AngularFireAuth,
+              private ratingService: RatingService, ) {
     this.user = auth.user;
   }
 
@@ -43,8 +41,6 @@ export class TrackingComponent implements OnInit {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
     });
-    console.log(this.requestService.getRequest('TL756TwBhRDN3driRmUq'));
-    // console.log(this.trackingService.getTrackingForRequest(this.request));
   }
 
   public getTrackingAsSupplier(): void {
@@ -55,7 +51,9 @@ export class TrackingComponent implements OnInit {
   onSubmit(): void {
     if (this.form.value.rating !== null && this.form.value.title !== null && this.form.value.ratingDescription !== null)
     {
-      console.log(this.form.value.rating + ', ' + this.form.value.title + ', ' + this.form.value.ratingDescription);
+      const newRating: Rating = new Rating(this.form.value.rating, this.form.value.title, this.form.value.ratingDescription);
+      this.ratingService.addRating(newRating);
+      this.message = 'Deine Bewertung wurde abgeschickt';
     } else {
       this.message = 'Bitte fülle alle Felder aus';
     }
