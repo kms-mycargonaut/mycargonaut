@@ -7,10 +7,11 @@ export class Offer extends Entry {
 
   private vehicle: Vehicle;
 
-  // tslint:disable-next-line:max-line-length
-  constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number, vehicle: Vehicle, trackingId: string) {
-    super(start, destination, startDate, startTime, description, price, trackingId);
-    this.vehicle = vehicle;
+
+  constructor(entryId: string, userId: string, start: string, destination: string, startDate: NgbDate,
+              startTime: NgbTime, description: string, price: number, type: string, length: number,
+              width: number, height: number, seats: number, trackingId: string) {
+    super(entryId, userId, start, destination, startDate, startTime, description, price, type, length, width, height, seats, trackingId);
   }
 
   public getVehicle(): Vehicle {
