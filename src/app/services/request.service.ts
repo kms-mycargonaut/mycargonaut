@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, DocumentSnapshot} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Request} from '../model/request';
 import {EntryService} from './entry.service';
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -16,12 +16,14 @@ export class RequestService extends EntryService{
   constructor(protected afs: AngularFirestore, protected auth: AngularFireAuth, public trackingService: TrackingService) {
     super(afs, auth);
     this.requestCollection = afs.collection('requests');
+    this.trackingCollection = afs.collection('tracking');
   }
 
   async addRequest(request: Request): Promise<void> {
     request.setUserId(this.user.uid);
     this.trackingCollection.add({}).then((newTracking) => {
       request.setTrackingId(newTracking.id);
+      console.log(request);
       this.requestCollection.doc().set(Object.assign({}, request));
     });
   }
