@@ -7,6 +7,7 @@ import {Rating} from '../model/rating';
 import {RatingService} from '../services/rating.service';
 import {EntryService} from '../services/entry.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
+import {BookingService} from '../services/booking.service';
 
 @Component({
   selector: 'app-tracking',
@@ -17,6 +18,7 @@ export class TrackingComponent implements OnInit {
   user: Observable<firebase.User>;
   authenticatedUser: firebase.User;
   bookingId: string;
+  entryId: string;
   start;
   end;
   date;
@@ -36,30 +38,30 @@ export class TrackingComponent implements OnInit {
   public message: string;
 
   constructor(public auth: AngularFireAuth, private ratingService: RatingService, private entryService: EntryService,
+              private bookingService: BookingService,
               private route: ActivatedRoute) {
     this.user = auth.user;
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.bookingId = paramMap.get('bookingId');
+    });
   }
 
   ngOnInit(): void {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
     });
-    this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.bookingId = paramMap.get('bookingId');
-    });
-    this.entryService.getEntry(this.bookingId).then(value => {
-      this.start = value.start;
-      this.end = value.destination;
-      this.date = value.startDate.day + '.' + value.startDate.month + '.' + value.startDate.year;
-      this.time = value.startTime.hour + ':' + value.startTime.minute;
-      this.status = value.trackingStatus;
+    this.bookingService.getBooking(this.bookingId).then(booking => {
+      this.entryId = booking.entry;
+    }).finally(() => {
+      this.entryService.getEntry(this.entryId).then(value => {
+        this.start = value.start;
+        this.end = value.destination;
+        this.date = value.startDate.day + '.' + value.startDate.month + '.' + value.startDate.year;
+        this.time = value.startTime.hour + ':' + value.startTime.minute;
+        this.status = value.trackingStatus;
+      });
     });
   }
-
-  public getTrackingAsSupplier(): void {
-
-  }
-
 
   onSubmit(): void {
     if (this.form.value.rating !== null && this.form.value.title !== null && this.form.value.ratingDescription !== null)
