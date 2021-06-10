@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
-import {TrackingService} from '../services/tracking.service';
-import {Offer} from '../model/offer';
-import {Request} from '../model/request';
-import {RequestService} from '../services/request.service';
+import {Rating} from '../model/rating';
+import {RatingService} from '../services/rating.service';
 
 @Component({
   selector: 'app-tracking',
@@ -14,7 +13,6 @@ import {RequestService} from '../services/request.service';
 })
 export class TrackingComponent implements OnInit {
   user: Observable<firebase.User>;
-  request: Request;
   authenticatedUser: firebase.User;
   start = 'Köln';
   end = 'Berlin';
@@ -25,9 +23,17 @@ export class TrackingComponent implements OnInit {
   status3date = '02.06.2021, 18:00';
   status4date = '02.06.2021, 18:20';
   statusdate = this.status1date;
+  form = new FormGroup({
+  rating: new FormControl(),
+  title: new FormControl(),
+  ratingDescription: new FormControl()
+});
+
+  public message: string;
   // request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
 
-  constructor(public auth: AngularFireAuth, private trackingService: TrackingService, private requestService: RequestService) {
+  constructor(public auth: AngularFireAuth,
+              private ratingService: RatingService, ) {
     this.user = auth.user;
   }
 
@@ -35,14 +41,6 @@ export class TrackingComponent implements OnInit {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
     });
-    this.requestService.getRequest('TL756TwBhRDN3driRmUq').then((value => {
-      this.request = new Request(value.start, value.destination, value.startDate, value.startTime,
-        value.description, value.price, value.type, value.length, value.width, value.height, value.seats);
-      this.request.setTrackingId(value.trackingId);
-      this.request.setUserId(value.userId);
-      console.log(this.request);
-    }));
-   // console.log(this.request);
   }
 
   public getTrackingAsSupplier(): void {
@@ -50,4 +48,16 @@ export class TrackingComponent implements OnInit {
   }
 
 
+  onSubmit(): void {
+    if (this.form.value.rating !== null && this.form.value.title !== null && this.form.value.ratingDescription !== null)
+    {
+      const newRating: Rating = new Rating(this.form.value.rating, this.form.value.title, this.form.value.ratingDescription);
+      this.ratingService.addRating(newRating);
+      this.message = 'Deine Bewertung wurde abgeschickt';
+    } else {
+      this.message = 'Bitte fülle alle Felder aus';
+    }
+    console.log(this.message);
+    alert(this.message);
+  }
 }
