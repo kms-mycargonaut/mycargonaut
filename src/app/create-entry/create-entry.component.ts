@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
-import {Offer} from '../model/offer';
-import {OfferService} from '../services/offer.service';
-import {RequestService} from '../services/request.service';
-import {Request} from '../model/request';
+import {Vehicle} from '../model/vehicle';
+import {Entry} from '../model/entry';
+import {EntryService} from '../services/entry.service';
 
 
 @Component({
@@ -34,8 +33,10 @@ export class CreateEntryComponent implements OnInit {
   public currentDay = new Date().getDate();
   time = {hour: 13, minute: 30};
   public message: string;
+  vehicles: Vehicle[];
 
-  constructor(private router: Router, private offerService: OfferService, private requestService: RequestService) { }
+  // tslint:disable-next-line:max-line-length
+  constructor(private router: Router, private entryService: EntryService) { }
 
   ngOnInit(): void {
   }
@@ -46,26 +47,12 @@ export class CreateEntryComponent implements OnInit {
       && (this.form.value.seats !== null || (this.form.value.length !== null && this.form.value.width !== null
       && this.form.value.height !== null)))
     {
-      if (this.form.value.type === 'Angebot') {
-        const newOffer: Offer = new Offer(this.form.value.start, this.form.value.end, this.form.value.date,
-          this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.vehicle);
-        this.offerService.addOffer(newOffer);
-        this.message = 'Angebot erstellt';
+        const newEntry: Entry = new Entry (this.form.value.type, this.form.value.start, this.form.value.end, this.form.value.date,
+          this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.searchtype,
+          this.form.value.length, this.form.value.width, this.form.value.height, this.form.value.seats, '');
+        this.entryService.addEntry(newEntry);
+        this.message = 'Eintrag erstellt';
         this.router.navigate(['']);
-      } else if (this.form.value.type === 'Gesuch') {
-        const newRequest: Request = new Request(this.form.value.start, this.form.value.end, this.form.value.date,
-          this.form.value.time, this.form.value.description, this.form.value.price);
-        newRequest.setType(this.form.value.searchtype);
-        newRequest.setLength(this.form.value.length);
-        newRequest.setHeight(this.form.value.height);
-        newRequest.setWidth(this.form.value.width);
-        newRequest.setSeats(this.form.value.seats);
-        this.requestService.addRequest(newRequest);
-        this.message = 'Gesuch erstellt';
-        this.router.navigate(['']);
-      } else {
-        this.message = 'Das Angebot/Gesuch konnte nicht erstellt werden';
-      }
     } else {
       this.message = 'Bitte fülle alle Felder aus';
     }

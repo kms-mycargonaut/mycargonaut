@@ -42,8 +42,7 @@ export const routes: Routes = [
     component: MyProfileComponent,
   },
   {
-    path: 'tracking',
-    component: TrackingComponent,
+    path: 'tracking/:bookingId', component: TrackingComponent
   },
   {
     path: 'requests',
