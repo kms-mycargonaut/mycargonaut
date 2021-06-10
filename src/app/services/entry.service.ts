@@ -9,18 +9,19 @@ import {Requestold} from '../model/requestold';
   providedIn: 'root'
 })
 export class EntryService {
-  private userCollection: AngularFirestoreCollection;
+  // private userCollection: AngularFirestoreCollection;
   user: firebase.User | null = null;
 
-  constructor(private afs: AngularFirestore, private auth: AngularFireAuth) {
+  constructor(protected afs: AngularFirestore, protected auth: AngularFireAuth) {
     this.auth.user.subscribe(user => {
       if (user) {
         this.user = user;
-        this.userCollection = afs.collection(`users/`);
+        // this.userCollection = afs.collection(`users/`);
       }
     });
   }
 
+  /*
   async addOffer(newOffer: Offerold): Promise<void> {
     const writeOffer = {
       id: newOffer.id,
@@ -71,5 +72,5 @@ export class EntryService {
     catch (e) {
       console.log(e);
     }
-  }
+  }*/
 }
