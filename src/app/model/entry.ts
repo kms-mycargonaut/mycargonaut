@@ -19,9 +19,6 @@ export abstract class Entry {
   seats: number;
   trackingId: string;
 
-  // tslint:disable-next-line:max-line-length
-
-
   constructor(entryId: string, userId: string, start: string, destination: string,
               startDate: NgbDate, startTime: NgbTime, description: string, price: number, type: string, length: number,
               width: number, height: number, seats: number, trackingId: string) {
