@@ -8,10 +8,10 @@ export class Offer extends Entry {
   private vehicle: Vehicle;
 
 
-  constructor(entryId: string, userId: string, start: string, destination: string, startDate: NgbDate,
+  constructor(start: string, destination: string, startDate: NgbDate,
               startTime: NgbTime, description: string, price: number, type: string, length: number,
-              width: number, height: number, seats: number, trackingId: string) {
-    super(entryId, userId, start, destination, startDate, startTime, description, price, type, length, width, height, seats, trackingId);
+              width: number, height: number, seats: number) {
+    super(start, destination, startDate, startTime, description, price, type, length, width, height, seats);
   }
 
   public getVehicle(): Vehicle {

@@ -51,18 +51,15 @@ export class CreateEntryComponent implements OnInit {
     {
       if (this.form.value.type === 'Angebot') {
         const newOffer: Offer = new Offer(this.form.value.start, this.form.value.end, this.form.value.date,
-          this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.vehicle, '');
+          this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.searchtype,
+          this.form.value.length, this.form.value.width, this.form.value.height, this.form.value.seats);
         this.offerService.addOffer(newOffer);
         this.message = 'Angebot erstellt';
         this.router.navigate(['']);
       } else if (this.form.value.type === 'Gesuch') {
         const newRequest: Request = new Request(this.form.value.start, this.form.value.end, this.form.value.date,
-          this.form.value.time, this.form.value.description, this.form.value.price, '');
-        newRequest.setType(this.form.value.searchtype);
-        newRequest.setLength(this.form.value.length);
-        newRequest.setHeight(this.form.value.height);
-        newRequest.setWidth(this.form.value.width);
-        newRequest.setSeats(this.form.value.seats);
+          this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.searchtype,
+          this.form.value.length, this.form.value.width, this.form.value.height, this.form.value.seats);
         this.requestService.addRequest(newRequest);
         this.message = 'Gesuch erstellt';
         this.router.navigate(['']);
