@@ -24,7 +24,7 @@ export class TrackingComponent implements OnInit {
   status3date = '02.06.2021, 18:00';
   status4date = '02.06.2021, 18:20';
   statusdate = this.status1date;
-  request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
+  // request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
 
   constructor(public auth: AngularFireAuth, private trackingService: TrackingService, private requestService: RequestService) {
     this.user = auth.user;

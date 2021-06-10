@@ -19,11 +19,9 @@ export abstract class Entry {
   seats: number;
   trackingId: string;
 
-  constructor(entryId: string, userId: string, start: string, destination: string,
+  constructor(start: string, destination: string,
               startDate: NgbDate, startTime: NgbTime, description: string, price: number, type: string, length: number,
-              width: number, height: number, seats: number, trackingId: string) {
-    this.entryId = entryId;
-    this.userId = userId;
+              width: number, height: number, seats: number) {
     this.start = start;
     this.destination = destination;
     this.startDate = startDate;
@@ -36,7 +34,6 @@ export abstract class Entry {
     this.height = height;
     this.cubicmeter = this.getCubicMeter();
     this.seats = seats;
-    this.trackingId = trackingId;
   }
 
   public setUserId(userId: string): void {
