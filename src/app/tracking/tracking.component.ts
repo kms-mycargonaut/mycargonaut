@@ -29,6 +29,7 @@ export class TrackingComponent implements OnInit {
   status3date = '02.06.2021, 18:00';
   status4date = '02.06.2021, 18:20';
   statusdate = this.status1date;
+  ratingbool = true;
   form = new FormGroup({
   rating: new FormControl(),
   title: new FormControl(),
@@ -67,8 +68,12 @@ export class TrackingComponent implements OnInit {
     if (this.form.value.rating !== null && this.form.value.title !== null && this.form.value.ratingDescription !== null)
     {
       const newRating: Rating = new Rating(this.form.value.rating, this.form.value.title, this.form.value.ratingDescription);
-      this.ratingService.addRating(newRating);
-      this.message = 'Deine Bewertung wurde abgeschickt';
+      this.ratingService.addRating(newRating, this.bookingId).then(() => {
+        this.ratingbool = false;
+        this.message = 'Deine Bewertung wurde abgeschickt';
+      }).catch((err) => {
+        this.message = 'Es tut uns Leid, aber es gab einen Fehler beim abschicken deiner Bewertung';
+      });
     } else {
       this.message = 'Bitte fülle alle Felder aus';
     }
