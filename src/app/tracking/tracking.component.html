@@ -43,8 +43,10 @@
           <p class="infotext mb-0">Deine Fahrt ist gebucht</p>
           <p class="infotext">{{start}} - {{end}}</p>
           <button
+            *ngIf="trackingEntryId"
             type="button"
             class="btn bgCustomGreen"
+            (click)="starting()"
           >Starten
           </button>
         </div>
@@ -53,8 +55,10 @@
           <p class="infotext mb-0">Der Fahrer ist unterwegs</p>
           <p class="infotext">{{start}}</p>
           <button
+            *ngIf="trackingEntryId"
             type="button"
             class="btn bgCustomGreen"
+            (click)="updating()"
           >Aktualisieren
           </button>
         </div>
@@ -63,8 +67,10 @@
           <p class="infotext mb-0">Der Fahrer ist am Zielort angekommen</p>
           <p class="infotext">{{end}}</p>
           <button
+            *ngIf="trackingEntryId"
           type="button"
           class="btn bgCustomGreen"
+            (click)="finished()"
         >Abschließen
         </button>
         </div>
@@ -77,7 +83,7 @@
 </div>
 
   <!-- Bewertung -->
-<div class="container" *ngIf="ratingbool">
+<div class="container" *ngIf="bookingId && ratingbool">
   <div class="row d-flex text-center justify-content-center align-items-center mb-5">
     <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
       <h2 class="h5 customFont font-weight-bold">Bewertung</h2>
