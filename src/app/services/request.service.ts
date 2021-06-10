@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Request} from '../model/request';
 import {EntryService} from './entry.service';
@@ -30,8 +30,6 @@ export class RequestService extends EntryService{
 
   async getRequest(requestId: string): Promise<Request> {
     const requestFirestore = await this.afs.collection('requests').doc<Request>(requestId).get().toPromise();
-    const values = requestFirestore.data();
-    console.log(values);
-    return null;
+    return requestFirestore.data();
   }
 }
