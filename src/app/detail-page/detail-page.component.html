@@ -16,11 +16,11 @@
   </svg>
 </div>
 <div class="container mt-2 text-center">
-  <h2 class="custom-heading mb-4">{{ this.art }}</h2>
+  <h2 class="custom-heading mb-4">{{ this.element.entryType }}</h2>
   <ul class="list-group mx-2">
-    <li class="list-group-item active" aria-current="true">
+    <li class="list-group-item active py-1 d-flex align-items-center" aria-current="true">
       <span>Fahrer:</span>
-      <span>{{ this.user.firstname }} {{ this.user.lastname }}</span>
+      <span><img src="{{this.profileimage}}" width="40" height="40" class="rounded-circle mr-2">{{ this.name }}</span>
     </li>
     <li class="list-group-item">
       <span>Start:</span>
@@ -40,29 +40,35 @@
     </li>
     <li class="list-group-item">
       <span>Uhrzeit:</span>
-      <span>{{ this.element.startTime.hour }}:{{ this.element.startTime.minute }}</span>
+      <span
+        >{{ this.element.startTime.hour }}:{{
+          this.element.startTime.minute
+        }}</span
+      >
     </li>
-    <li class="list-group-item">
+    <li class="list-group-item" *ngIf="this.element.vehicle">
       <span>Fahrzeug:</span>
       <span>{{ this.element.vehicle }}</span>
     </li>
     <li
       class="list-group-item"
-      *ngIf="this.element.type != 'Mitfahrgelegenheit'"
+      *ngIf="this.element.transportType != 'Mitfahrgelegenheit'"
     >
       <span>Ladefläche:</span>
       <span>{{ this.element.cubicmeter }}m&sup3;</span>
     </li>
     <li
       class="list-group-item"
-      *ngIf="this.element.type == 'Mitfahrgelegenheit'"
+      *ngIf="this.element.transportType == 'Mitfahrgelegenheit'"
     >
       <span>Plätze:</span>
       <span>{{ this.element.seats }}</span>
     </li>
     <li class="list-group-item">
       <span>Beschreibung:</span>
-      <span id="description" class="text-left">{{ this.element.description }}</span>
+      <span id="description" class="text-left">{{
+        this.element.description
+      }}</span>
     </li>
     <li class="list-group-item">
       <span>Preis:</span>
@@ -74,32 +80,45 @@
     <select
       class="form-control"
       id="needSelection"
-      *ngIf="this.element.type != 'Mitfahrgelegenheit'"
+      *ngIf="this.element.transportType != 'Mitfahrgelegenheit'"
+      name="cubicmeter-needed"
+      [(ngModel)]="cubicMetersNeeded"
     >
       <option value="" selected>Anzahl an Kubikmetern wählen</option>
-      <option value="{{i+1}}" *ngFor="let cubicmeter of cubicmeters; let i = index">{{i+1}}m&sup3;</option>
+      <option
+        value="{{ i + 1 }}"
+        *ngFor="let cubicmeter of cubicmeters; let i = index"
+      >
+        {{ i + 1 }}m&sup3;
+      </option>
     </select>
     <select
       class="form-control"
       id="needSelection"
-      *ngIf="this.element.type == 'Mitfahrgelegenheit'"
+      *ngIf="this.element.transportType == 'Mitfahrgelegenheit'"
+      name="seats-needed"
+      [(ngModel)]="seatsNeeded"
     >
       <option value="" selected>Anzahl an Mitfahrern wählen</option>
-      <option value="{{i+1}}" *ngFor="let seat of seats; let i = index">Platz für {{i+1}} Mitfahrer</option>
+      <option value="{{ i + 1 }}" *ngFor="let seat of seats; let i = index">
+        Platz für {{ i + 1 }} Mitfahrer
+      </option>
     </select>
   </div>
   <div class="row w-100 justify-content-center" *ngIf="this.auth.isLoggedIn">
     <button
       class="btn my-5 bgCustomGreen font-weight-bold text-white"
-      *ngIf="this.art == 'Angebot'"
+      *ngIf="this.element.entryType == 'Angebot'"
+      (click)="createRequest()"
     >
-     Anfragen
+      Anfragen
     </button>
     <button
       class="btn my-5 bgCustomGreen font-weight-bold text-white"
-      *ngIf="this.art != 'Angebot'"
+      *ngIf="this.element.entryType != 'Angebot'"
+      (click)="createRequest()"
     >
-     Anbieten
+      Anbieten
     </button>
   </div>
 </div>

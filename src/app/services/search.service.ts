@@ -27,58 +27,40 @@ export class SearchService {
   public search(query: any) {
     firebase
       .firestore()
-      .collection('offers')
+      .collection('entries')
       .get()
       .then((snap) => {
         this.searchResults = [];
-        snap.docs.forEach((doc) => {
+        for (const doc of snap.docs) {
           if (
             doc.data().start == query.start &&
             doc.data().destination == query.end &&
             doc.data().startDate.day == query.date.day &&
             doc.data().startDate.month == query.date.month &&
             doc.data().startDate.year == query.date.year &&
-            doc.data().type == query.type
+            doc.data().transportType == query.type
           ) {
             let pushObject = doc.data();
-            pushObject.art = 'Angebot';
             pushObject.id = doc.id;
-            this.searchResults.push(pushObject);
-          }
-        });
-      })
-      .then(() => {
-        firebase
-          .firestore()
-          .collection('requests')
-          .get()
-          .then((snap) => {
-            snap.docs.forEach((doc) => {
-              if (
-                doc.data().start == query.start &&
-                doc.data().destination == query.end &&
-                doc.data().startDate.day == query.date.day &&
-                doc.data().startDate.month == query.date.month &&
-                doc.data().startDate.year == query.date.year &&
-                doc.data().type == query.type
-              ) {
-                let pushObject = doc.data();
-                pushObject.art = 'Gesuch';
-                pushObject.userName = firebase.firestore().collection('users').doc(pushObject.userId).get().then((doc)=>{return})
-                pushObject.id = doc.id;
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(pushObject.userId)
+              .get()
+              .then((doc) => {
+                pushObject.name = `${doc.data().firstname} ${
+                  doc.data().lastname
+                }`;
+                pushObject.profileimage = doc.data().image;
                 this.searchResults.push(pushObject);
-              }
-            });
-          });
-      })
-      .then(() => {
-        localStorage.removeItem('searchResults');
-        localStorage.setItem(
-          'searchResults',
-          JSON.stringify(this.searchResults)
-        );
-      })
-      .then(() => {
+                localStorage.removeItem('searchResults');
+                localStorage.setItem(
+                  'searchResults',
+                  JSON.stringify(this.searchResults)
+                );
+              });
+          }
+        }
         this.router.navigate(['/search-page']);
       });
   }
@@ -92,27 +74,14 @@ export class SearchService {
         return doc.data();
       });
   }
-  public async getEntry(id: any, type: string) {
-    if (type == 'Angebot') {
+  public async getEntry(id: any) {
       return firebase
         .firestore()
-        .collection('offers')
+        .collection('entries')
         .doc(id)
         .get()
         .then((doc) => {
           return doc.data();
         });
-    } else if (type == 'Gesuch') {
-      return firebase
-        .firestore()
-        .collection('offers')
-        .doc(id)
-        .get()
-        .then((doc) => {
-          return doc.data();
-        });
-    } else {
-      return;
     }
-  }
 }
