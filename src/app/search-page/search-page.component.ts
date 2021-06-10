@@ -7,13 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-page.component.css'],
 })
 export class SearchPageComponent implements OnInit {
-  constructor(public search: SearchService) {}
+  constructor(public search: SearchService) {
+    this.search.search(JSON.parse(localStorage.getItem('searchQuery')));
+  }
 
   public offerList: any = [];
   public countResult: any = [];
 
   ngOnInit(): void {
-    this.search.search(JSON.parse(localStorage.getItem('searchQuery')));
     this.offerList = JSON.parse(localStorage.getItem('searchResults'));
     this.countResult = this.offerList.length;
     console.log(this.offerList);

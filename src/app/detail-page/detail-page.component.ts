@@ -17,9 +17,12 @@ export class DetailPageComponent implements OnInit {
   public id: string;
   public art: string;
   public element: any = [];
-  public user: any = [];
+  public name: string;
+  public profileimage: string;
   public seats = [];
   public cubicmeters = [];
+  public seatsNeeded = "";
+  public cubicMetersNeeded = "";
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -31,13 +34,10 @@ export class DetailPageComponent implements OnInit {
     );
     let helper = searchArray[0];
     this.element = helper;
-    this.search.getEntry(helper.id, helper.art).then((res) => {
+    this.name = helper.name;
+    this.profileimage = helper.profileimage;
+    this.search.getEntry(this.id).then((res) => {      
       this.element = res;
-      console.log(this.element);
-      
-      this.search.getUser(this.element.userId).then((res) => {
-        this.user = res;
-      });
     });
     
     if (this.element.seats) {
@@ -46,6 +46,13 @@ export class DetailPageComponent implements OnInit {
     } else {
       this.cubicmeters = new Array(this.element.cubicmeter);
       this.seats = [];
+    }
+  }
+  public createRequest() {
+    if (this.element.transportType == 'Mitfahrgelegenheit') {
+      console.log('Anfrage/Angebot Mitfahrgelegenheit. Anzahl benötigter Sitze:', this.seatsNeeded);
+    } else {
+      console.log('Anfrage/Angebot Gütertransport. Anzahl benötigter Kubikmeter:', this.cubicMetersNeeded);
     }
   }
 }
