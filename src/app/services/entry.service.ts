@@ -20,19 +20,17 @@ export class EntryService {
     });
   }
 
-
-  async addEntry(entry: Entry): Promise<void> {
+  async addEntry(entry: Entry): Promise<string> {
+    let entryId: string;
     entry.setUserId(this.user.uid);
-
-    await this.entryCollection.doc().set(Object.assign({}, entry));
+    await this.entryCollection.add(Object.assign({}, entry)).then(e => {
+      entryId = e.id;
+    });
+    return entryId;
   }
 
   async getEntry(entryId: string): Promise<Entry> {
     const requestFirestore = await this.afs.collection('entries').doc<Entry>(entryId).get().toPromise();
     return requestFirestore.data();
-  }
-
-  async updateTrackingStatus(entryId: string, entryStatus: string): Promise<void> {
-    await this.entryCollection.doc(entryId).update({trackingStatus: entryStatus});
   }
 }
