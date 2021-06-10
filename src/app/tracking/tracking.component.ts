@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import {Rating} from '../model/rating';
 import {RatingService} from '../services/rating.service';
 import {EntryService} from '../services/entry.service';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 
 @Component({
   selector: 'app-tracking',
@@ -15,6 +16,7 @@ import {EntryService} from '../services/entry.service';
 export class TrackingComponent implements OnInit {
   user: Observable<firebase.User>;
   authenticatedUser: firebase.User;
+  bookingId: string;
   start;
   end;
   date = '02.06.2021';
@@ -33,14 +35,17 @@ export class TrackingComponent implements OnInit {
   public message: string;
   // request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
 
-  constructor(public auth: AngularFireAuth,
-              private ratingService: RatingService, private entryService: EntryService) {
+  constructor(public auth: AngularFireAuth, private ratingService: RatingService, private entryService: EntryService,
+              private route: ActivatedRoute) {
     this.user = auth.user;
   }
 
   ngOnInit(): void {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
+    });
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.bookingId = paramMap.get('bookingId');
     });
     this.entryService.getEntry('BZ632IoHWt8GCmJJtHL6').then(value => {
       this.start = value.start;
