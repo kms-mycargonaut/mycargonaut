@@ -18,6 +18,7 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
 import { TrackingComponent } from './tracking/tracking.component';
 import { RequestsComponent } from './requests/requests.component';
 import { SupplierProfileComponent } from './supplier-profile/supplier-profile.component';
+import { DetailPageComponent } from './detail-page/detail-page.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SupplierProfileComponent } from './supplier-profile/supplier-profile.co
     TrackingComponent,
     RequestsComponent,
     SupplierProfileComponent,
+    DetailPageComponent,
   ],
     imports: [
         BrowserModule,

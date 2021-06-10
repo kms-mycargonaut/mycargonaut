@@ -23,6 +23,6 @@ export class HomeComponent implements OnInit {
   public type: string = '';
   ngOnInit(): void {}
   startSearch(): void {
-    this.searchService.search(this.start, this.end, this.date, this.type);
+    this.searchService.setQuery(this.start, this.end, this.date, this.type);
   }
 }
