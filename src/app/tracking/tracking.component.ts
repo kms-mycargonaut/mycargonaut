@@ -8,6 +8,7 @@ import {RatingService} from '../services/rating.service';
 import {EntryService} from '../services/entry.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {BookingService} from '../services/booking.service';
+import * as url from 'url';
 
 @Component({
   selector: 'app-tracking',
@@ -18,6 +19,7 @@ export class TrackingComponent implements OnInit {
   user: Observable<firebase.User>;
   authenticatedUser: firebase.User;
   bookingId: string;
+  trackingEntryId: string;
   entryId: string;
   start;
   end;
@@ -44,6 +46,7 @@ export class TrackingComponent implements OnInit {
     this.user = auth.user;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.bookingId = paramMap.get('bookingId');
+      this.trackingEntryId = paramMap.get('entryId');
     });
   }
 
@@ -79,5 +82,17 @@ export class TrackingComponent implements OnInit {
     }
     console.log(this.message);
     alert(this.message);
+  }
+
+  starting(): void {
+
+  }
+
+  updating(): void {
+
+  }
+
+  finished(): void {
+
   }
 }

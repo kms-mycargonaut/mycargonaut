@@ -42,7 +42,10 @@ export const routes: Routes = [
     component: MyProfileComponent,
   },
   {
-    path: 'tracking/:bookingId', component: TrackingComponent
+    path: 'tracking/booking/:bookingId', component: TrackingComponent
+  },
+  {
+    path: 'tracking/entry/:entryId', component: TrackingComponent
   },
   {
     path: 'requests',
