@@ -4,6 +4,9 @@ import {Router} from '@angular/router';
 import {Vehicle} from '../model/vehicle';
 import {Entry} from '../model/entry';
 import {EntryService} from '../services/entry.service';
+import {Tracking} from '../model/tracking';
+import {TrackingService} from '../services/tracking.service';
+import {Trackingstatus} from '../model/trackingstatus';
 
 
 @Component({
@@ -36,7 +39,7 @@ export class CreateEntryComponent implements OnInit {
   vehicles: Vehicle[];
 
   // tslint:disable-next-line:max-line-length
-  constructor(private router: Router, private entryService: EntryService) { }
+  constructor(private router: Router, private entryService: EntryService, private trackingService: TrackingService) { }
 
   ngOnInit(): void {
   }
@@ -50,7 +53,9 @@ export class CreateEntryComponent implements OnInit {
         const newEntry: Entry = new Entry (this.form.value.type, this.form.value.start, this.form.value.end, this.form.value.date,
           this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.searchtype,
           this.form.value.length, this.form.value.width, this.form.value.height, this.form.value.seats, '');
-        this.entryService.addEntry(newEntry);
+        this.entryService.addEntry(newEntry).then((entryId) => {
+          this.initializeTracking(entryId);
+        });
         this.message = 'Eintrag erstellt';
         this.router.navigate(['']);
     } else {
@@ -58,5 +63,17 @@ export class CreateEntryComponent implements OnInit {
     }
     console.log(this.message);
     alert(this.message);
+  }
+
+  private initializeTracking(entryId: string): void {
+    const tracking: Tracking = new Tracking(entryId, Trackingstatus.booked, null,  true);
+    const tracking2: Tracking = new Tracking(entryId, Trackingstatus.started, null,  false);
+    const tracking3: Tracking = new Tracking(entryId, Trackingstatus.arrived, null,  false);
+    const tracking4: Tracking = new Tracking(entryId, Trackingstatus.finished, null,  false);
+    this.trackingService.
+    addTracking(tracking).then(() => this.trackingService.
+    addTracking(tracking2).then(() => this.trackingService.
+    addTracking(tracking3).then(() => this.trackingService.
+    addTracking(tracking4))));
   }
 }

@@ -20,7 +20,7 @@ export class RatingService {
 
   async addRating(rating: Rating, bookingId: string): Promise<void> {
     rating.setBookingId(bookingId);
-    this.ratingCollection.doc().set(Object.assign({}, rating));
+    await this.ratingCollection.doc().set(Object.assign({}, rating));
   }
 
   getRatings(): Observable<Rating[]> {
