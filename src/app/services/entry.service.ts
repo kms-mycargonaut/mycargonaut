@@ -31,4 +31,8 @@ export class EntryService {
     const requestFirestore = await this.afs.collection('entries').doc<Entry>(entryId).get().toPromise();
     return requestFirestore.data();
   }
+
+  async updateTrackingStatus(entryId: string, entryStatus: string): Promise<void> {
+    await this.entryCollection.doc(entryId).update({trackingStatus: entryStatus});
+  }
 }
