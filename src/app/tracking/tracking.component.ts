@@ -14,6 +14,7 @@ import {RequestService} from '../services/request.service';
 })
 export class TrackingComponent implements OnInit {
   user: Observable<firebase.User>;
+  request: Request;
   authenticatedUser: firebase.User;
   start = 'Köln';
   end = 'Berlin';
@@ -34,8 +35,14 @@ export class TrackingComponent implements OnInit {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
     });
-    console.log(this.requestService.getRequest('TL756TwBhRDN3driRmUq'));
-    // console.log(this.trackingService.getTrackingForRequest(this.request));
+    this.requestService.getRequest('TL756TwBhRDN3driRmUq').then((value => {
+      this.request = new Request(value.start, value.destination, value.startDate, value.startTime,
+        value.description, value.price, value.type, value.length, value.width, value.height, value.seats);
+      this.request.setTrackingId(value.trackingId);
+      this.request.setUserId(value.userId);
+      console.log(this.request);
+    }));
+   // console.log(this.request);
   }
 
   public getTrackingAsSupplier(): void {
