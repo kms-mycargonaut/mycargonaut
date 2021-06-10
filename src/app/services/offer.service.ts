@@ -24,6 +24,7 @@ export class OfferService extends EntryService{
 
   async addOffer(offer: Offer): Promise<void> {
     offer.setUserId(this.user.uid);
+    console.log(offer);
     this.trackingCollection.add({}).then((newTracking) => {
       offer.setTrackingId(newTracking.id);
       this.offerCollection.doc().set(Object.assign({}, offer));
