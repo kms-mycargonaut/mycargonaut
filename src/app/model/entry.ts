@@ -3,15 +3,16 @@ import {NgbTime} from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
 export abstract class Entry {
 
-  protected userId: string;
-  protected start: string;
-  protected destination: string;
-  protected startDate: NgbDate;
-  protected startTime: NgbTime;
-  protected description: string;
-  protected price: number;
-  protected type: string;
-  protected trackingId: string;
+  entryId: string;
+  userId: string;
+  start: string;
+  destination: string;
+  startDate: NgbDate;
+  startTime: NgbTime;
+  description: string;
+  price: number;
+  type: string;
+  trackingId: string;
 
   // tslint:disable-next-line:max-line-length
   protected constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number, trackingId: string) {
@@ -84,7 +85,19 @@ export abstract class Entry {
     this.type = type;
   }
 
-  public setTrackingId(trackingId): void {
+  public setTrackingId(trackingId: string): void {
     this.trackingId = trackingId;
+  }
+
+  public getTrackingId(): string {
+    return this.trackingId;
+  }
+
+  public getEntryId(): string {
+    return this.entryId;
+  }
+
+  public setEntryId(entryId: string): void {
+    this.entryId = entryId;
   }
 }

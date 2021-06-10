@@ -4,10 +4,10 @@ import {NgbTime} from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
 export class Request extends Entry {
 
-  private length: number;
-  private width: number;
-  private height: number;
-  private seats: number;
+  length: number;
+  width: number;
+  height: number;
+  seats: number;
 
   // tslint:disable-next-line:max-line-length
   constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number, trackingId: string) {

@@ -2,11 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Vehicle} from '../model/vehicle';
 import {VehicleService} from '../services/vehicle.service';
-import {AuthService} from '../services/auth.service';
 import firebase from 'firebase';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
-import {User} from '../model/user';
 
 @Component({
   selector: 'app-vehicle-management',
@@ -14,6 +12,7 @@ import {User} from '../model/user';
   styleUrls: ['./vehicle-management.component.css']
 })
 export class VehicleManagementComponent implements OnInit{
+
   user: Observable<firebase.User>;
   authenticatedUser: firebase.User;
   vehicleFrontend = new FormGroup({
@@ -33,8 +32,11 @@ export class VehicleManagementComponent implements OnInit{
   ngOnInit(): void {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
-      this.getVehicles(user);
     });
+  }
+
+  valueIsFilledOut(value: string): boolean {
+    return value !== null && value !== undefined;
   }
 
   public createVehicle(): void {
@@ -56,13 +58,5 @@ export class VehicleManagementComponent implements OnInit{
     } else {
       alert('Bitte alle Felder ausfüllen');
     }
-  }
-
-  public getVehicles(user: firebase.User): void {
-    console.log(this.vehicleService.getVehicles(user));
-  }
-
-  private valueIsFilledOut(value: string): boolean {
-    return value !== null && value !== undefined;
   }
 }

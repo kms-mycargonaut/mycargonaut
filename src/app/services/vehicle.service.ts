@@ -14,16 +14,10 @@ export class VehicleService {
 
   private vehicleCollection: AngularFirestoreCollection<Vehicle>;
   private vehicles: Observable<Vehicle[]>;
-  private user: firebase.User | null = null;
 
   constructor(private auth: AngularFireAuth, private afs: AngularFirestore, private authService: AuthService) {
       this.vehicleCollection = afs.collection<Vehicle>('vehicles');
       this.vehicles = this.vehicleCollection.valueChanges();
-      this.auth.user.subscribe(user => {
-      if (user) {
-        this.user = user;
-      }
-    });
   }
 
   addVehicle(vehicle: Vehicle): void {
@@ -40,9 +34,5 @@ export class VehicleService {
       });
     });
     return vehicles;
-  }
-
-  public getUser(): firebase.User {
-    return this.user;
   }
 }
