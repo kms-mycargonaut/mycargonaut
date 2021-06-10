@@ -7,6 +7,7 @@ import firebase from 'firebase';
 import {EntryService} from './entry.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Entry} from '../model/entry';
+import {Request} from '../model/request';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,10 @@ export class OfferService extends EntryService{
       offer.setTrackingId(newTracking.id);
       this.offerCollection.doc().set(Object.assign({}, offer));
     });
+  }
+
+  async getOffer(offerId: string): Promise<Offer> {
+    const requestFirestore = await this.afs.collection('offers').doc<Offer>(offerId).get().toPromise();
+    return requestFirestore.data();
   }
 }
