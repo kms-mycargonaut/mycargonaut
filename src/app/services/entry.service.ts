@@ -27,4 +27,9 @@ export class EntryService {
     entry.setUserId(this.user.uid);
     this.entryCollection.doc().set(Object.assign({}, entry));
   }
+
+  async getEntry(entryId: string): Promise<Entry> {
+    const requestFirestore = await this.afs.collection('entries').doc<Entry>(entryId).get().toPromise();
+    return requestFirestore.data();
+  }
 }

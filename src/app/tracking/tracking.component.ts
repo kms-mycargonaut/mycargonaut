@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import firebase from 'firebase';
 import {Rating} from '../model/rating';
 import {RatingService} from '../services/rating.service';
+import {EntryService} from '../services/entry.service';
 
 @Component({
   selector: 'app-tracking',
@@ -14,10 +15,10 @@ import {RatingService} from '../services/rating.service';
 export class TrackingComponent implements OnInit {
   user: Observable<firebase.User>;
   authenticatedUser: firebase.User;
-  start = 'Köln';
-  end = 'Berlin';
+  start;
+  end;
   date = '02.06.2021';
-  status = 'Deine Fahrt ist gebucht';
+  status;
   status1date = '15.05.2021, 17:09';
   status2date = '02.06.2021, 13:00';
   status3date = '02.06.2021, 18:00';
@@ -33,13 +34,18 @@ export class TrackingComponent implements OnInit {
   // request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
 
   constructor(public auth: AngularFireAuth,
-              private ratingService: RatingService, ) {
+              private ratingService: RatingService, private entryService: EntryService) {
     this.user = auth.user;
   }
 
   ngOnInit(): void {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
+    });
+    this.entryService.getEntry('BZ632IoHWt8GCmJJtHL6').then(value => {
+      this.start = value.start;
+      this.end = value.destination;
+      this.status = value.trackingStatus;
     });
   }
 
