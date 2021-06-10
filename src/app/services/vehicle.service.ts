@@ -3,6 +3,9 @@ import {AuthService} from './auth.service';
 import {Vehicle} from '../model/vehicle';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
+import firebase from 'firebase';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {User} from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,24 +15,21 @@ export class VehicleService {
   private vehicleCollection: AngularFirestoreCollection<Vehicle>;
   private vehicles: Observable<Vehicle[]>;
 
-  constructor(private authService: AuthService, private afs: AngularFirestore) {
-    this.vehicleCollection = afs.collection('vehicles');
+  constructor(private auth: AngularFireAuth, private afs: AngularFirestore, private authService: AuthService) {
+      this.vehicleCollection = afs.collection<Vehicle>('vehicles');
+      this.vehicles = this.vehicleCollection.valueChanges();
   }
 
-  async addVehicle(vehicle: Vehicle): Promise<void> {
-    const userId: string = this.authService.getCurrentUser().uid;
-    vehicle.setUserId(userId);
-    await this.vehicleCollection.doc().set(Object.assign({}, vehicle));
+  addVehicle(vehicle: Vehicle): void {
+    vehicle.setUserId(firebase.auth().currentUser.uid);
+    this.vehicleCollection.add(Object.assign({}, vehicle));
   }
 
-  getVehicles(): Vehicle[] {
+  getVehicles(user: firebase.User): Vehicle[] {
     const vehicles: Vehicle[] = [];
-    const userId: string = this.authService.getCurrentUser().uid;
-    const values = this.afs.collection('vehicles', ref => ref.where('userId', '==', userId)).valueChanges();
+    const values = this.afs.collection('vehicles', ref => ref.where('userId', '==', user.uid)).valueChanges();
     values.subscribe(v => {
-      // tslint:disable-next-line:no-shadowed-variable
       v.forEach((element: Vehicle) => {
-        element.userId = null;
         vehicles.push(element);
       });
     });

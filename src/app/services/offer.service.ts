@@ -3,23 +3,27 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 import {Observable} from 'rxjs';
 import {AuthService} from './auth.service';
 import {Offer} from '../model/offer';
+import firebase from 'firebase';
+import {EntryService} from './entry.service';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {Entry} from '../model/entry';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OfferService {
+export class OfferService extends EntryService{
 
   private offerCollection: AngularFirestoreCollection<Offer>;
   private trackingCollection: AngularFirestoreCollection;
 
-  constructor(private authService: AuthService, private afs: AngularFirestore) {
+  constructor(protected afs: AngularFirestore, protected auth: AngularFireAuth) {
+    super(afs, auth);
     this.offerCollection = afs.collection('offers');
     this.trackingCollection = afs.collection('tracking');
   }
 
   async addOffer(offer: Offer): Promise<void> {
-    const userId: string = this.authService.getCurrentUser().uid;
-    offer.setUserId(userId);
+    offer.setUserId(this.user.uid);
     this.trackingCollection.add({}).then((newTracking) => {
       offer.setTrackingId(newTracking.id);
       this.offerCollection.doc().set(Object.assign({}, offer));

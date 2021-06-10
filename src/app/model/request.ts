@@ -1,40 +1,12 @@
-import {Post} from './post';
+import {Entry} from './entry';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTime} from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
-export class Request extends Post {
+export class Request extends Entry {
 
-  private length: number;
-  private width: number;
-  private height: number;
-  private seats: number;
-
-  // tslint:disable-next-line:max-line-length
-  constructor(start: string, destination: string, startDate: NgbDate, startTime: NgbTime, description: string, price: number, trackingId: string) {
-    super(start, destination, startDate, startTime, description, price, trackingId);
-  }
-
-  public setLength(length: number): void {
-    this.length = length;
-  }
-
-  public setWidth(width: number): void {
-    this.width = width;
-  }
-
-  public setHeight(height: number): void {
-    this.height = height;
-  }
-
-  public getCubicmeter(): number {
-    return this.length * this.width * this.height;
-  }
-
-  public getSeats(): number {
-    return this.seats;
-  }
-
-  public setSeats(seats: number): void {
-    this.seats = seats;
+  constructor(entryId: string, userId: string, start: string, destination: string,
+              startDate: NgbDate, startTime: NgbTime, description: string, price: number, type: string,
+              length: number, width: number, height: number, seats: number, trackingId: string) {
+    super(entryId, userId, start, destination, startDate, startTime, description, price, type, length, width, height, seats, trackingId);
   }
 }

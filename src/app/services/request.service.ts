@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {Observable} from 'rxjs';
-import {AuthService} from './auth.service';
+import {AngularFirestore, AngularFirestoreCollection, DocumentSnapshot} from '@angular/fire/firestore';
 import {Request} from '../model/request';
+import {EntryService} from './entry.service';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {TrackingService} from './tracking.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RequestService {
+export class RequestService extends EntryService{
 
   private requestCollection: AngularFirestoreCollection<Request>;
   private trackingCollection: AngularFirestoreCollection;
 
-  constructor(private authService: AuthService, private afs: AngularFirestore) {
+  constructor(protected afs: AngularFirestore, protected auth: AngularFireAuth, public trackingService: TrackingService) {
+    super(afs, auth);
     this.requestCollection = afs.collection('requests');
-    this.trackingCollection = afs.collection('tracking');
   }
 
   async addRequest(request: Request): Promise<void> {
-    const userId: string = this.authService.getCurrentUser().uid;
-    request.setUserId(userId);
+    request.setUserId(this.user.uid);
     this.trackingCollection.add({}).then((newTracking) => {
       request.setTrackingId(newTracking.id);
       this.requestCollection.doc().set(Object.assign({}, request));
     });
+  }
+
+  async getRequest(requestId: string): Promise<Request> {
+    const requestFirestore = await this.afs.collection('requests').doc<Request>(requestId).get().toPromise();
+    const values = requestFirestore.data();
+    console.log(values);
+    return null;
   }
 }
