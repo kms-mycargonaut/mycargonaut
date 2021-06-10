@@ -10,13 +10,13 @@
         <h1 class="h4 customFont font-weight-bold">
           {{countResult}} Ergebnisse für Deine Route
         </h1>
-        <h6>Köln - Berlin</h6>
+        <h6>{{this.offerList[0].start}} - {{this.offerList[0].destination}}</h6>
       </div>
     </div>
   </div>
 </div>
 
-<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let offer of offerList; let i = index">
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let offer of offerList; let i = index" [routerLink]="['/detail-page']" [queryParams]="{ id: offer.id, art: offer.art}">
   <div class="d-flex justify-content-center flex-col align-items-center">
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
       <div class="card m-2">
@@ -26,8 +26,8 @@
               <img class="rounded-circle" src="../../assets/images/leon.jpg" width="75" height="75"/>
             </div> -->
             <div class="col-12" style="margin-left: 10px">
-              <h4 class="h4 customFont font-weight-bold">{{offer.date.day}}.{{offer.date.month}}.{{offer.date.year}} - {{offer.time.hour}}:{{offer.time.minute}}</h4>
-              <h6>{{offer.start}} - {{offer.end}}</h6>
+              <h4 class="h4 customFont font-weight-bold">{{offer.startDate.day}}.{{offer.startDate.month}}.{{offer.startDate.year}} - {{offer.startTime.hour}}:{{offer.startTime.minute}}</h4>
+              <h6>{{offer.start}} - {{offer.destination}}</h6>
               <h6>{{offer.art}}</h6>
               <p>{{offer.description}}</p>
               <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" *ngIf="offer.type === 'Ladefläche'; else elseBlock">{{offer.cubicmeter}} Kubikmeter</span>

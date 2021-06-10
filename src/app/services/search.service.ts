@@ -3,88 +3,117 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import { Router } from '@angular/router';
+import { Offer } from '../model/offer';
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
   public allUsers = [];
   public searchResults = [];
-  constructor(public afs: AngularFirestore, private router: Router) {
-    firebase
-      .firestore()
-      .collection('users')
-      .get()
-      .then((snap) => {
-        snap.forEach((doc) => {
-          if (doc.data().offers || doc.data().requests) {
-            this.allUsers.push(doc.data());
-          }
-        });
-      });
-  }
+  constructor(public afs: AngularFirestore, private router: Router) {}
   public getUsers() {
     return this.allUsers;
   }
-  public search(start: string, end: string, date: NgbDate, type: string) {
+  public setQuery(start: string, end: string, date: NgbDate, type: string) {
+    let query = {
+      start,
+      end,
+      date,
+      type,
+    };
+    localStorage.removeItem('searchQuery');
+    localStorage.setItem('searchQuery', JSON.stringify(query));
+    this.search(query);
+  }
+  public search(query: any) {
     firebase
       .firestore()
-      .collection('users')
+      .collection('offers')
       .get()
       .then((snap) => {
-        this.allUsers = [];
         this.searchResults = [];
         snap.docs.forEach((doc) => {
-          if (doc.data().offers || doc.data().requests) {
-            this.allUsers.push(doc.data());
-            localStorage.removeItem('allUsers');
-            localStorage.setItem('allUsers', JSON.stringify(this.allUsers));
+          if (
+            doc.data().start == query.start &&
+            doc.data().destination == query.end &&
+            doc.data().startDate.day == query.date.day &&
+            doc.data().startDate.month == query.date.month &&
+            doc.data().startDate.year == query.date.year &&
+            doc.data().type == query.type
+          ) {
+            let pushObject = doc.data();
+            pushObject.art = 'Angebot';
+            pushObject.id = doc.id;
+            this.searchResults.push(pushObject);
           }
         });
       })
       .then(() => {
-        for (let index = 0; index < this.allUsers.length; index++) {
-          if (this.allUsers[index].offers) {
-            this.allUsers[index].offers.forEach((offer) => {
+        firebase
+          .firestore()
+          .collection('requests')
+          .get()
+          .then((snap) => {
+            snap.docs.forEach((doc) => {
               if (
-                offer.start.toLowerCase() == start.toLowerCase() &&
-                offer.end.toLowerCase() == end.toLowerCase() &&
-                offer.date.day == date.day &&
-                offer.date.month == date.month &&
-                offer.date.year == date.year &&
-                offer.type == type
+                doc.data().start == query.start &&
+                doc.data().destination == query.end &&
+                doc.data().startDate.day == query.date.day &&
+                doc.data().startDate.month == query.date.month &&
+                doc.data().startDate.year == query.date.year &&
+                doc.data().type == query.type
               ) {
-                offer.art = 'Angebot';
-                offer.nutzer = this.allUsers[index].id;
-                this.searchResults.push(offer);
+                let pushObject = doc.data();
+                pushObject.art = 'Gesuch';
+                pushObject.userName = firebase.firestore().collection('users').doc(pushObject.userId).get().then((doc)=>{return})
+                pushObject.id = doc.id;
+                this.searchResults.push(pushObject);
               }
             });
-          }
-          if (this.allUsers[index].requests) {
-            this.allUsers[index].requests.forEach((request) => {
-              if (
-                request.start.toLowerCase() == start.toLowerCase() &&
-                request.end.toLowerCase() == end.toLowerCase() &&
-                request.date.day == date.day &&
-                request.date.month == date.month &&
-                request.date.year == date.year &&
-                request.type == type
-              ) {
-                request.art = 'Gesuch';
-                request.nutzer = this.allUsers[index].id;
-                this.searchResults.push(request);
-              }
-            });
-          }
-        }
+          });
       })
       .then(() => {
         localStorage.removeItem('searchResults');
-        localStorage.removeItem('allUsers');
         localStorage.setItem(
           'searchResults',
           JSON.stringify(this.searchResults)
         );
+      })
+      .then(() => {
         this.router.navigate(['/search-page']);
       });
+  }
+  public async getUser(id: any) {
+    return firebase
+      .firestore()
+      .collection('users')
+      .doc(id)
+      .get()
+      .then((doc) => {
+        return doc.data();
+      });
+  }
+  public async getEntry(id: any, type: string) {
+    if (type == 'Angebot') {
+      return firebase
+        .firestore()
+        .collection('offers')
+        .doc(id)
+        .get()
+        .then((doc) => {
+          return doc.data();
+        });
+    } else if (type == 'Gesuch') {
+      return firebase
+        .firestore()
+        .collection('offers')
+        .doc(id)
+        .get()
+        .then((doc) => {
+          return doc.data();
+        });
+    } else {
+      return;
+    }
   }
 }

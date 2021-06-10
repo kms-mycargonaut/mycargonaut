@@ -1,3 +1,4 @@
+import { SearchService } from './../services/search.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,14 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-page.component.css'],
 })
 export class SearchPageComponent implements OnInit {
-  constructor() {}
+  constructor(public search: SearchService) {}
 
-  public offerList: any;
-  public searchResults: any;
-  public countResult: any;
+  public offerList: any = [];
+  public countResult: any = [];
 
   ngOnInit(): void {
-    this.searchResults = this.offerList = JSON.parse(localStorage.getItem('searchResults'));
-    this.countResult = this.searchResults.length;
+    this.search.search(JSON.parse(localStorage.getItem('searchQuery')));
+    this.offerList = JSON.parse(localStorage.getItem('searchResults'));
+    this.countResult = this.offerList.length;
+    console.log(this.offerList);
   }
 }
