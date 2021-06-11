@@ -118,5 +118,25 @@ export class AuthService {
   getCurrentUser(): firebase.User {
     return this.authState;
   }
+
+  public getcurrentUser(): Promise<User> {
+    let currentUser: User;
+    return new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user){
+          firebase.firestore().collection('users').doc(user.uid).get().then(snap => {
+            const user = snap.data();
+            if (user) {
+              currentUser = new User(user.id, user.email, user.password, user.firstname, user.lastname, user.birthday, user.image);
+            }
+            resolve(currentUser);
+            console.log(currentUser);
+          }).catch((err) => {
+            reject(err);
+          });
+        }
+      });
+    });
+  }
 }
 
