@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {User} from '../model/user';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import firebase from 'firebase';
 import 'firebase/storage';
 import { Location } from '@angular/common';
 import {Router} from '@angular/router';
+import {Entry} from '../model/entry';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class AuthService {
   public userList: User[];
   public file?: File;
   public isLoggedIn = false;
+  public offers: any;
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth,  private location: Location, private router: Router) {
     this.auth.onAuthStateChanged((user) => {
@@ -138,5 +140,29 @@ export class AuthService {
       });
     });
   }
+
+ public async getOffersFromCurrentUser() {
+    return await firebase.firestore().collection('entries').get().then((snap) => {
+      const offerArray = [];
+      let angebot: Entry;
+      for (const doc of snap.docs) {
+        if (doc.data().entryType === 'Angebot') {
+          const offer = doc.data();
+          offer.id = doc.id;
+          firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+              angebot = new Entry(offer.entryType, offer.start, offer.destination, offer.startDate, offer.startTime, offer.description, offer.price, offer.transportType, offer.length, offer.width, offer.height, offer.seats, offer.trackingStatus);
+              firebase.firestore().collection('users').doc(user.uid).get().then((doc) => {
+                offer.id = `${doc.data().id}`;
+                offerArray.push(offer);
+                this.offers = offerArray;
+              });
+            }
+          });
+        }
+      }
+      return this.offers;
+    });
+ }
 }
 

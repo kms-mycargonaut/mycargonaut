@@ -22,15 +22,6 @@ export class MyProfileComponent implements OnInit {
   lastName;
   birthday;
   image;
-  entryId;
-  start;
-  end;
-  date;
-  time;
-  status;
-
-  public entryList: any = [];
-
 
   constructor(
     public afs: AngularFirestore,
@@ -39,6 +30,7 @@ export class MyProfileComponent implements OnInit {
     private entryService: EntryService,
     private route: ActivatedRoute) {
     this.user = auth.user;
+    this.userService.getOffersFromCurrentUser();
   }
 
   ngOnInit(): void {
@@ -56,13 +48,6 @@ export class MyProfileComponent implements OnInit {
       this.image = user.image;
     });
 
-    /*this.entryService.getEntry(this.entryId).then(entry => {
-      this.entryId = entry.entryId;
-      this.start = entry.start;
-      this.end = entry.destination;
-      this.date = entry.startDate;
-      this.time = entry.startTime;
-    });*/
   }
 }
 
