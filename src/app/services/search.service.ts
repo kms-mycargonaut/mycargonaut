@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SearchService {
   public allUsers = [];
-  public searchResults = [];
+  public searchResults: any;
   constructor(public afs: AngularFirestore, private router: Router) {}
   public getUsers() {
     return this.allUsers;
@@ -22,15 +22,18 @@ export class SearchService {
     };
     localStorage.removeItem('searchQuery');
     localStorage.setItem('searchQuery', JSON.stringify(query));
-    this.search(query);
+    this.search(query).then((res) => {
+      console.log('Response ', res[0]);
+      this.router.navigate(['/search-page']);
+    });
   }
-  public search(query: any) {
-    firebase
+  public async search(query: any) {
+    return await firebase
       .firestore()
       .collection('entries')
       .get()
       .then((snap) => {
-        this.searchResults = [];
+        let helperArray = [];
         for (const doc of snap.docs) {
           if (
             doc.data().start == query.start &&
@@ -52,7 +55,8 @@ export class SearchService {
                   doc.data().lastname
                 }`;
                 pushObject.profileimage = doc.data().image;
-                this.searchResults.push(pushObject);
+                helperArray.push(pushObject);
+                this.searchResults = helperArray;
                 localStorage.removeItem('searchResults');
                 localStorage.setItem(
                   'searchResults',
@@ -61,7 +65,7 @@ export class SearchService {
               });
           }
         }
-        this.router.navigate(['/search-page']);
+        return this.searchResults;
       });
   }
   public async getUser(id: any) {
@@ -75,13 +79,13 @@ export class SearchService {
       });
   }
   public async getEntry(id: any) {
-      return firebase
-        .firestore()
-        .collection('entries')
-        .doc(id)
-        .get()
-        .then((doc) => {
-          return doc.data();
-        });
-    }
+    return firebase
+      .firestore()
+      .collection('entries')
+      .doc(id)
+      .get()
+      .then((doc) => {
+        return doc.data();
+      });
+  }
 }

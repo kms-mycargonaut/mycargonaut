@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { SearchService } from './../services/search.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -7,16 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-page.component.css'],
 })
 export class SearchPageComponent implements OnInit {
-  constructor(public search: SearchService) {
+  public count;
+  constructor(public search: SearchService, public router: Router) {
     this.search.search(JSON.parse(localStorage.getItem('searchQuery')));
   }
 
-  public offerList: any = [];
-  public countResult: any = [];
-
   ngOnInit(): void {
-    this.offerList = JSON.parse(localStorage.getItem('searchResults'));
-    this.countResult = this.offerList.length;
-    console.log(this.offerList);
+    this.count = this.search.searchResults.length;
+    if (!this.search.searchResults) {
+      this.router.navigate(['/']);
+    }
   }
 }

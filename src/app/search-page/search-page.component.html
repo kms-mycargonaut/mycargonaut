@@ -22,20 +22,20 @@
     <div class="d-flex justify-content-center align-items-center h-75">
       <div class="d-flex justify-content-center flex-col align-items-center">
         <h1 class="h4 customFont font-weight-bold">
-          {{ countResult }} Ergebnisse für Deine Route
+          {{ this.search.searchResults.length }} Ergebnisse für Deine Route
         </h1>
         <h6>
-          {{ this.offerList[0].start }} - {{ this.offerList[0].destination }}
+          {{ this.search.searchResults[0].start }} - {{ this.search.searchResults[0].destination }}
         </h6>
       </div>
     </div>
   </div>
 </div>
-
+ 
 <div
-  *ngFor="let offer of offerList; let i = index"
+  *ngFor="let offer of this.search.searchResults; let i = index"
   [routerLink]="['/detail-page']"
-  [queryParams]="{ id: offer.id, art: offer.art }"
+  [queryParams]="{ id: offer.id, art: offer.entryType }"
 >
   <div class="d-flex justify-content-center flex-row align-items-center container-fluid">
       <div class="card mt-2 w-100 p-0">
@@ -50,7 +50,7 @@
               />
             </div>
             <div class="col-9 pl-5">
-              <h4 class="h4 customFont font-weight-bold">
+              <h4 class="h4 customFont font-weight-bold" *ngIf="offer.startDate">
                 {{ offer.startDate.day }}.{{ offer.startDate.month }}.{{
                   offer.startDate.year
                 }}
