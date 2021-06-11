@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-start align-items-start mt-4">
+<div class="d-flex justify-content-start align-items-start mt-4" *ngIf="this.element">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="40"
@@ -16,7 +16,7 @@
   </svg>
 </div>
 <div class="container mt-2 text-center">
-  <h2 class="custom-heading mb-4">{{ this.element.entryType }}</h2>
+  <h2 class="custom-heading mb-4">{{ this.art }}</h2>
   <ul class="list-group mx-2">
     <li class="list-group-item active py-1 d-flex align-items-center" aria-current="true">
       <span>Fahrer:</span>

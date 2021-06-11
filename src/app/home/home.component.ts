@@ -24,9 +24,6 @@ export class HomeComponent implements OnInit {
   public date: NgbDate;
   public type: string = '';
   ngOnInit(): void {}
-  async startSearch() {
-    this.searchService.setQuery(this.start, this.end, this.date, this.type);
-  }
   public search() {
     if (
       this.start != undefined &&
@@ -34,9 +31,7 @@ export class HomeComponent implements OnInit {
       this.date != undefined &&
       this.type != ''
     ) {
-      this.startSearch().then(() => {
-        this.router.navigate(['/search-page']);
-      });
+      this.searchService.setQuery(this.start, this.end, this.date, this.type);
     } else {
       alert('Nicht alle Felder ausgefüllt!')
     }
