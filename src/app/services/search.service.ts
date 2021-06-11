@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class SearchService {
   public allUsers = [];
   public searchResults: any;
+  public foundresult: boolean = false;
   constructor(public afs: AngularFirestore, private router: Router) {}
   public getUsers() {
     return this.allUsers;
@@ -23,11 +24,15 @@ export class SearchService {
     localStorage.removeItem('searchQuery');
     localStorage.setItem('searchQuery', JSON.stringify(query));
     this.search(query).then((res) => {
-      console.log('Response ', res[0]);
-      this.router.navigate(['/search-page']);
+      if (this.foundresult) {
+        this.router.navigate(['/search-page']);
+      } else {
+        alert('Kein Suchergebnis!');
+      }
     });
   }
   public async search(query: any) {
+    this.foundresult = false;
     return await firebase
       .firestore()
       .collection('entries')
@@ -43,6 +48,7 @@ export class SearchService {
             doc.data().startDate.year == query.date.year &&
             doc.data().transportType == query.type
           ) {
+            this.foundresult = true;
             let pushObject = doc.data();
             pushObject.id = doc.id;
             firebase
