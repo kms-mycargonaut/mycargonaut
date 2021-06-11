@@ -71,11 +71,14 @@
           <div class="form-group">
             <label for="vehicleSelect">Fahrzeug</label>
             <select formControlName="vehicle" class="form-control" id="vehicleSelect">
-              <option selected >Sprinter</option>
+              <option *ngFor="let vehicle of vehicles" [value]="vehicle.brand">
+                {{vehicle.brand}}
+              </option>
+              <!--<option selected >Sprinter</option>
               <option value="LKW">LKW</option>
               <option value="SUV">SUV</option>
               <option value="Kombi">Kombi</option>
-              <option value="Kleinwagen">Kleinwagen</option>
+              <option value="Kleinwagen">Kleinwagen</option>-->
             </select>
           </div>
         </div>
