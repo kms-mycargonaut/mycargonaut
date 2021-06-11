@@ -7,6 +7,10 @@ import {EntryService} from '../services/entry.service';
 import {Tracking} from '../model/tracking';
 import {TrackingService} from '../services/tracking.service';
 import {Trackingstatus} from '../model/trackingstatus';
+import {VehicleService} from '../services/vehicle.service';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {Observable} from 'rxjs';
+import firebase from 'firebase';
 
 
 @Component({
@@ -15,6 +19,8 @@ import {Trackingstatus} from '../model/trackingstatus';
   styleUrls: ['./create-entry.component.css']
 })
 export class CreateEntryComponent implements OnInit {
+  user: Observable<firebase.User>;
+  authenticatedUser: firebase.User;
   form = new FormGroup({
     type: new FormControl(),
     start: new FormControl(),
@@ -39,9 +45,16 @@ export class CreateEntryComponent implements OnInit {
   vehicles: Vehicle[];
 
   // tslint:disable-next-line:max-line-length
-  constructor(private router: Router, private entryService: EntryService, private trackingService: TrackingService) { }
+  constructor(public auth: AngularFireAuth, private router: Router, private entryService: EntryService,
+              private trackingService: TrackingService, private vehicleService: VehicleService) {
+    this.user = auth.user;
+  }
 
   ngOnInit(): void {
+    this.user.subscribe((user) => {
+      this.authenticatedUser = user;
+      this.vehicles = this.vehicleService.getVehicles(this.authenticatedUser);
+    });
   }
 
   onSubmit(): void {

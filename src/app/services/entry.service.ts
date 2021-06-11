@@ -11,7 +11,7 @@ export class EntryService {
   user: firebase.User | null = null;
   private entryCollection: AngularFirestoreCollection<Entry>;
 
-  constructor(protected afs: AngularFirestore, protected auth: AngularFireAuth) {
+  constructor(private afs: AngularFirestore, private auth: AngularFireAuth) {
     this.entryCollection = afs.collection('entries');
     this.auth.user.subscribe(user => {
       if (user) {
