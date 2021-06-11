@@ -66,6 +66,8 @@ export class DetailPageComponent implements OnInit {
       );
     }
   }
+
+  
   public async fetchData() {
     let searchArray = JSON.parse(localStorage.getItem('searchResults')).filter(
       (result: any) => result.id == this.id
