@@ -50,7 +50,7 @@
               />
             </div>
             <div class="col-9 pl-5">
-              <h4 class="h4 customFont font-weight-bold">
+              <h4 class="h4 customFont font-weight-bold" *ngIf="offer.startDate">
                 {{ offer.startDate.day }}.{{ offer.startDate.month }}.{{
                   offer.startDate.year
                 }}

@@ -20,6 +20,8 @@ export class SearchService {
       date,
       type,
     };
+    console.log(query);
+
     localStorage.removeItem('searchQuery');
     localStorage.setItem('searchQuery', JSON.stringify(query));
     this.search(query);
@@ -61,7 +63,6 @@ export class SearchService {
               });
           }
         }
-        this.router.navigate(['/search-page']);
       });
   }
   public async getUser(id: any) {
@@ -75,13 +76,13 @@ export class SearchService {
       });
   }
   public async getEntry(id: any) {
-      return firebase
-        .firestore()
-        .collection('entries')
-        .doc(id)
-        .get()
-        .then((doc) => {
-          return doc.data();
-        });
-    }
+    return firebase
+      .firestore()
+      .collection('entries')
+      .doc(id)
+      .get()
+      .then((doc) => {
+        return doc.data();
+      });
+  }
 }
