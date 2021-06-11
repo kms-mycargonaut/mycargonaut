@@ -79,5 +79,6 @@ export class DetailPageComponent implements OnInit {
       this.element = res;
       console.log('Element ', this.element);
     });
+    
   }
 }
