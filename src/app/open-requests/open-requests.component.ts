@@ -17,12 +17,14 @@ import firebase from 'firebase';
 export class OpenRequestsComponent implements OnInit {
   user: Observable<firebase.User>;
   currentUser: firebase.User;
+  public openRequestList: OpenRequests[] = [];
+  public entryList: Entry[] = [];
+  public openRequestEntry: any;
   public entryId: string;
   public start: string;
   public end: string;
   public date: string;
   public time: string;
-  openRequestList: Promise<void>;
 
   constructor(public openRequestService: OpenRequestsService, public authService: AuthService, public entryService: EntryService,
               public auth: AngularFireAuth, private route: ActivatedRoute) {
@@ -39,15 +41,16 @@ export class OpenRequestsComponent implements OnInit {
   }
 
   async bookNow(): Promise<any> {
-    let openRequestList: OpenRequests[] = [];
-    const entryList: Entry[] = [];
-    openRequestList = await this.openRequestService.getOpenRequests();
-    console.log(openRequestList);
-    for (const openRequestEntry of openRequestList) {
+    this.openRequestList = await this.openRequestService.getOpenRequests();
+    console.log(this.openRequestList);
+    for (const openRequestEntry of this.openRequestList) {
       const entryId = openRequestEntry.entryId;
       const entry1 = this.entryService.getEntry(entryId);
-      entryList.push(await entry1);
+      this.entryList.push(await entry1);
     }
-    console.log(entryList);
+    console.log(this.entryList);
+  }
+
+  book(entry: Entry): void {
   }
 }
