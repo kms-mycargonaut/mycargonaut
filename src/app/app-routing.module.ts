@@ -8,8 +8,9 @@ import {RegisterComponent} from './register/register.component';
 import {VehicleManagementComponent} from './vehicle-management/vehicle-management.component';
 import {MyProfileComponent} from './my-profile/my-profile.component';
 import {TrackingComponent} from './tracking/tracking.component';
-import {RequestsComponent} from './requests/requests.component';
+import {OpenRequestsComponent} from './open-requests/open-requests.component';
 import {SupplierProfileComponent} from './supplier-profile/supplier-profile.component';
+import {DetailPageComponent} from './detail-page/detail-page.component';
 
 export const routes: Routes = [
   {
@@ -47,16 +48,16 @@ export const routes: Routes = [
     path: 'tracking/entry/:entryId', component: TrackingComponent
   },
   {
-    path: 'requests',
-    component: RequestsComponent,
-  },
-  {
     path: 'supplier-profile',
     component: SupplierProfileComponent,
   },
   {
     path: 'detail-page',
     component: DetailPageComponent,
+  },
+  {
+    path: 'open-requests',
+    component: OpenRequestsComponent,
   },
 ];
 
