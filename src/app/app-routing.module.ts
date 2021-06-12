@@ -8,45 +8,60 @@ import {RegisterComponent} from './register/register.component';
 import {VehicleManagementComponent} from './vehicle-management/vehicle-management.component';
 import {MyProfileComponent} from './my-profile/my-profile.component';
 import {TrackingComponent} from './tracking/tracking.component';
-import {OpenRequestsComponent} from './open-requests/open-requests.component';
+import {RequestsComponent} from './requests/requests.component';
 import {SupplierProfileComponent} from './supplier-profile/supplier-profile.component';
 
 export const routes: Routes = [
   {
-    path: '', component: HomeComponent
+    path: '',
+    component: HomeComponent,
   },
   {
-    path: 'create-entry', component: CreateEntryComponent
+    path: 'create-entry',
+    component: CreateEntryComponent,
   },
   {
-    path: 'search-page', component: SearchPageComponent
+    path: 'search-page',
+    component: SearchPageComponent,
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'login',
+    component: LoginComponent,
   },
   {
-    path: 'register', component: RegisterComponent
+    path: 'register',
+    component: RegisterComponent,
   },
   {
-    path: 'create-vehicle', component: VehicleManagementComponent
+    path: 'create-vehicle',
+    component: VehicleManagementComponent,
   },
   {
-    path: 'my-profile', component: MyProfileComponent
+    path: 'my-profile',
+    component: MyProfileComponent,
   },
   {
-    path: 'tracking', component: TrackingComponent
+    path: 'tracking/booking/:bookingId', component: TrackingComponent
   },
   {
-    path: 'open-requests', component: OpenRequestsComponent
+    path: 'tracking/entry/:entryId', component: TrackingComponent
   },
   {
-    path: 'supplier-profile', component: SupplierProfileComponent
-  }
+    path: 'requests',
+    component: RequestsComponent,
+  },
+  {
+    path: 'supplier-profile',
+    component: SupplierProfileComponent,
+  },
+  {
+    path: 'detail-page',
+    component: DetailPageComponent,
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

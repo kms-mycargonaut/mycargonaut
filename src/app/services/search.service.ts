@@ -8,83 +8,84 @@ import { Router } from '@angular/router';
 })
 export class SearchService {
   public allUsers = [];
-  public searchResults = [];
-  constructor(public afs: AngularFirestore, private router: Router) {
-    firebase
-      .firestore()
-      .collection('users')
-      .get()
-      .then((snap) => {
-        snap.forEach((doc) => {
-          if (doc.data().offers || doc.data().requests) {
-            this.allUsers.push(doc.data());
-          }
-        });
-      });
-  }
+  public searchResults: any;
+  constructor(public afs: AngularFirestore, private router: Router) {}
   public getUsers() {
     return this.allUsers;
   }
-  public search(start: string, end: string, date: NgbDate, type: string) {
-    firebase
+  public setQuery(start: string, end: string, date: NgbDate, type: string) {
+    let query = {
+      start,
+      end,
+      date,
+      type,
+    };
+    localStorage.removeItem('searchQuery');
+    localStorage.setItem('searchQuery', JSON.stringify(query));
+    this.search(query).then((res) => {
+      console.log('Response ', res[0]);
+      this.router.navigate(['/search-page']);
+    });
+  }
+  public async search(query: any) {
+    return await firebase
       .firestore()
-      .collection('users')
+      .collection('entries')
       .get()
       .then((snap) => {
-        this.allUsers = [];
-        this.searchResults = [];
-        snap.docs.forEach((doc) => {
-          if (doc.data().offers || doc.data().requests) {
-            this.allUsers.push(doc.data());
-            localStorage.removeItem('allUsers');
-            localStorage.setItem('allUsers', JSON.stringify(this.allUsers));
-          }
-        });
-      })
-      .then(() => {
-        for (let index = 0; index < this.allUsers.length; index++) {
-          if (this.allUsers[index].offers) {
-            this.allUsers[index].offers.forEach((offer) => {
-              if (
-                offer.start.toLowerCase() == start.toLowerCase() &&
-                offer.end.toLowerCase() == end.toLowerCase() &&
-                offer.date.day == date.day &&
-                offer.date.month == date.month &&
-                offer.date.year == date.year &&
-                offer.type == type
-              ) {
-                offer.art = 'Angebot';
-                offer.nutzer = this.allUsers[index].id;
-                this.searchResults.push(offer);
-              }
-            });
-          }
-          if (this.allUsers[index].requests) {
-            this.allUsers[index].requests.forEach((request) => {
-              if (
-                request.start.toLowerCase() == start.toLowerCase() &&
-                request.end.toLowerCase() == end.toLowerCase() &&
-                request.date.day == date.day &&
-                request.date.month == date.month &&
-                request.date.year == date.year &&
-                request.type == type
-              ) {
-                request.art = 'Gesuch';
-                request.nutzer = this.allUsers[index].id;
-                this.searchResults.push(request);
-              }
-            });
+        let helperArray = [];
+        for (const doc of snap.docs) {
+          if (
+            doc.data().start == query.start &&
+            doc.data().destination == query.end &&
+            doc.data().startDate.day == query.date.day &&
+            doc.data().startDate.month == query.date.month &&
+            doc.data().startDate.year == query.date.year &&
+            doc.data().transportType == query.type
+          ) {
+            let pushObject = doc.data();
+            pushObject.id = doc.id;
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(pushObject.userId)
+              .get()
+              .then((doc) => {
+                pushObject.name = `${doc.data().firstname} ${
+                  doc.data().lastname
+                }`;
+                pushObject.profileimage = doc.data().image;
+                helperArray.push(pushObject);
+                this.searchResults = helperArray;
+                localStorage.removeItem('searchResults');
+                localStorage.setItem(
+                  'searchResults',
+                  JSON.stringify(this.searchResults)
+                );
+              });
           }
         }
-      })
-      .then(() => {
-        localStorage.removeItem('searchResults');
-        localStorage.removeItem('allUsers');
-        localStorage.setItem(
-          'searchResults',
-          JSON.stringify(this.searchResults)
-        );
-        this.router.navigate(['/search-page']);
+        return this.searchResults;
+      });
+  }
+  public async getUser(id: any) {
+    return firebase
+      .firestore()
+      .collection('users')
+      .doc(id)
+      .get()
+      .then((doc) => {
+        return doc.data();
+      });
+  }
+  public async getEntry(id: any) {
+    return firebase
+      .firestore()
+      .collection('entries')
+      .doc(id)
+      .get()
+      .then((doc) => {
+        return doc.data();
       });
   }
 }

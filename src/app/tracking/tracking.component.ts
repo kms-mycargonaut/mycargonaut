@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
+import {Rating} from '../model/rating';
+import {RatingService} from '../services/rating.service';
+import {EntryService} from '../services/entry.service';
+import {ActivatedRoute, ParamMap} from '@angular/router';
+import {BookingService} from '../services/booking.service';
+import {Tracking} from '../model/tracking';
 import {TrackingService} from '../services/tracking.service';
-import {Offer} from '../model/offer';
-import {Request} from '../model/request';
-import {RequestService} from '../services/request.service';
+import {Trackingstatus} from '../model/trackingstatus';
 
 @Component({
   selector: 'app-tracking',
@@ -13,41 +18,115 @@ import {RequestService} from '../services/request.service';
   styleUrls: ['./tracking.component.css']
 })
 export class TrackingComponent implements OnInit {
+  trackingList: Tracking[] = [];
+  started: Tracking;
   user: Observable<firebase.User>;
-  request: Request;
   authenticatedUser: firebase.User;
-  start = 'Köln';
-  end = 'Berlin';
-  date = '02.06.2021';
-  status = 'Deine Fahrt ist gebucht';
+  bookingId: string;
+  trackingEntryId: string;
+  entryId: string;
+  start;
+  end;
+  date;
+  time;
+  status;
   status1date = '15.05.2021, 17:09';
-  status2date = '02.06.2021, 13:00';
+  status2date;
   status3date = '02.06.2021, 18:00';
   status4date = '02.06.2021, 18:20';
   statusdate = this.status1date;
-  // request = new Request('today', 'yesterday', null, null, null, null , 'SvScYVKxY2GEWxwv3Gfp');
+  ratingbool = true;
+  form = new FormGroup({
+    rating: new FormControl(),
+    title: new FormControl(),
+    ratingDescription: new FormControl()
+  });
 
-  constructor(public auth: AngularFireAuth, private trackingService: TrackingService, private requestService: RequestService) {
+  public message: string;
+
+  constructor(public auth: AngularFireAuth, private ratingService: RatingService, private entryService: EntryService,
+              private bookingService: BookingService, private trackingService: TrackingService,
+              private route: ActivatedRoute) {
     this.user = auth.user;
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.bookingId = paramMap.get('bookingId');
+      this.trackingEntryId = paramMap.get('entryId');
+    });
   }
 
   ngOnInit(): void {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
     });
-    this.requestService.getRequest('TL756TwBhRDN3driRmUq').then((value => {
-      this.request = new Request(value.start, value.destination, value.startDate, value.startTime,
-        value.description, value.price, value.type, value.length, value.width, value.height, value.seats);
-      this.request.setTrackingId(value.trackingId);
-      this.request.setUserId(value.userId);
-      console.log(this.request);
-    }));
-   // console.log(this.request);
+    if (this.bookingId !== null) {
+      this.loadEntryViaBooking();
+    } else {
+      this.entryId = this.trackingEntryId;
+      this.loadEntry();
+    }
+    console.log(this.trackingList);
   }
 
-  public getTrackingAsSupplier(): void {
+  public loadTrackingList(): void{
+    this.trackingService.getTrackingByEntryId(this.entryId).then(trackings => {
+      trackings.forEach(t => {
+        this.trackingList.push(new Tracking(t.entryId, t.status, t.date, t.done));
+      });
+    });
+  }
 
+  public loadEntryViaBooking(): void {
+    this.bookingService.getBooking(this.bookingId).then(booking => {
+      this.entryId = booking.entry;
+    }).then(() => {
+      this.loadEntry();
+    });
+  }
+
+  public loadEntry(): void {
+    this.entryService.getEntry(this.entryId).then(value => {
+      this.start = value.start;
+      this.end = value.destination;
+      this.date = value.startDate.day + '.' + value.startDate.month + '.' + value.startDate.year;
+      this.time = value.startTime.hour + ':' + value.startTime.minute;
+      this.status = value.trackingStatus;
+    }).then(() => {
+      this.loadTrackingList();
+    });
   }
 
 
+  onSubmit(): void {
+    if (this.form.value.rating !== null && this.form.value.title !== null && this.form.value.ratingDescription !== null) {
+      const newRating: Rating = new Rating(this.form.value.rating, this.form.value.title, this.form.value.ratingDescription);
+      this.ratingService.addRating(newRating, this.bookingId).then(() => {
+        this.ratingbool = false;
+        this.message = 'Deine Bewertung wurde abgeschickt';
+      }).catch((err) => {
+        this.message = 'Es tut uns Leid, aber es gab einen Fehler beim abschicken deiner Bewertung';
+      });
+    } else {
+      this.message = 'Bitte fülle alle Felder aus';
+    }
+    console.log(this.message);
+    alert(this.message);
+  }
+
+  starting(): void {
+    this.updateTracking(Trackingstatus.started);
+  }
+
+  updating(): void {
+    this.updateTracking(Trackingstatus.arrived);
+  }
+
+  finished(): void {
+    this.updateTracking(Trackingstatus.finished);
+  }
+
+  updateTracking(statusToSearch: string): void {
+    this.trackingService.getTrackingIDByEntryIdAndStatus(this.entryId, statusToSearch).then((id) => {
+      this.trackingService.updateTracking(id, true);
+    });
+  }
 }

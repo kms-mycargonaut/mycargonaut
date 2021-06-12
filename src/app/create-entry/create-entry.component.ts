@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
-import {Offer} from '../model/offer';
-import {OfferService} from '../services/offer.service';
-import {RequestService} from '../services/request.service';
-import {Request} from '../model/request';
 import {Vehicle} from '../model/vehicle';
+import {Entry} from '../model/entry';
+import {EntryService} from '../services/entry.service';
+import {Tracking} from '../model/tracking';
+import {TrackingService} from '../services/tracking.service';
+import {Trackingstatus} from '../model/trackingstatus';
+import {VehicleService} from '../services/vehicle.service';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {Observable} from 'rxjs';
+import firebase from 'firebase';
 
 
 @Component({
@@ -14,6 +19,8 @@ import {Vehicle} from '../model/vehicle';
   styleUrls: ['./create-entry.component.css']
 })
 export class CreateEntryComponent implements OnInit {
+  user: Observable<firebase.User>;
+  authenticatedUser: firebase.User;
   form = new FormGroup({
     type: new FormControl(),
     start: new FormControl(),
@@ -38,9 +45,16 @@ export class CreateEntryComponent implements OnInit {
   vehicles: Vehicle[];
 
   // tslint:disable-next-line:max-line-length
-  constructor(private router: Router, private offerService: OfferService, private requestService: RequestService) { }
+  constructor(public auth: AngularFireAuth, private router: Router, private entryService: EntryService,
+              private trackingService: TrackingService, private vehicleService: VehicleService) {
+    this.user = auth.user;
+  }
 
   ngOnInit(): void {
+    this.user.subscribe((user) => {
+      this.authenticatedUser = user;
+      this.vehicles = this.vehicleService.getVehicles(this.authenticatedUser);
+    });
   }
 
   onSubmit(): void {
@@ -49,27 +63,30 @@ export class CreateEntryComponent implements OnInit {
       && (this.form.value.seats !== null || (this.form.value.length !== null && this.form.value.width !== null
       && this.form.value.height !== null)))
     {
-      if (this.form.value.type === 'Angebot') {
-        const newOffer: Offer = new Offer(this.form.value.start, this.form.value.end, this.form.value.date,
+        const newEntry: Entry = new Entry (this.form.value.type, this.form.value.start, this.form.value.end, this.form.value.date,
           this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.searchtype,
-          this.form.value.length, this.form.value.width, this.form.value.height, this.form.value.seats);
-        this.offerService.addOffer(newOffer);
-        this.message = 'Angebot erstellt';
+          this.form.value.length, this.form.value.width, this.form.value.height, this.form.value.seats, '');
+        this.entryService.addEntry(newEntry).then((entryId) => {
+          this.initializeTracking(entryId);
+        });
+        this.message = 'Eintrag erstellt';
         this.router.navigate(['']);
-      } else if (this.form.value.type === 'Gesuch') {
-        const newRequest: Request = new Request(this.form.value.start, this.form.value.end, this.form.value.date,
-          this.form.value.time, this.form.value.description, this.form.value.price, this.form.value.searchtype,
-          this.form.value.length, this.form.value.width, this.form.value.height, this.form.value.seats);
-        this.requestService.addRequest(newRequest);
-        this.message = 'Gesuch erstellt';
-        this.router.navigate(['']);
-      } else {
-        this.message = 'Das Angebot/Gesuch konnte nicht erstellt werden';
-      }
     } else {
       this.message = 'Bitte fülle alle Felder aus';
     }
     console.log(this.message);
     alert(this.message);
+  }
+
+  private initializeTracking(entryId: string): void {
+    const tracking: Tracking = new Tracking(entryId, Trackingstatus.booked, null,  true);
+    const tracking2: Tracking = new Tracking(entryId, Trackingstatus.started, null,  false);
+    const tracking3: Tracking = new Tracking(entryId, Trackingstatus.arrived, null,  false);
+    const tracking4: Tracking = new Tracking(entryId, Trackingstatus.finished, null,  false);
+    this.trackingService.
+    addTracking(tracking).then(() => this.trackingService.
+    addTracking(tracking2).then(() => this.trackingService.
+    addTracking(tracking3).then(() => this.trackingService.
+    addTracking(tracking4))));
   }
 }

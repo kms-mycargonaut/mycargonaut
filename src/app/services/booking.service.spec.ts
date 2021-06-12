@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TrackingService } from './tracking.service';
+import { BookingService } from './booking.service';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../environments/environment';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {RouterTestingModule} from '@angular/router/testing';
 
-describe('TrackingService', () => {
-  let service: TrackingService;
+describe('BookingService', () => {
+  let service: BookingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -17,7 +17,7 @@ describe('TrackingService', () => {
         RouterTestingModule
       ],
     });
-    service = TestBed.inject(TrackingService);
+    service = TestBed.inject(BookingService);
   });
 
   it('should be created', () => {

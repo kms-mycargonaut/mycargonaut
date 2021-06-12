@@ -1,22 +1,16 @@
-
 export class Tracking {
 
   id: string;
+  entryId: string;
   status: string;
+  date: Date;
+  done: boolean;
 
-  public getId(): string {
-    return this.id;
-  }
 
-  public setId(id: string): void {
-    this.id = id;
-  }
-
-  public getStatus(): string {
-    return this.status;
-  }
-
-  public setStatus(status: string): void {
+  constructor(entryId: string, status: string, date: Date, done: boolean) {
+    this.entryId = entryId;
     this.status = status;
+    this.date = date;
+    this.done = done;
   }
 }

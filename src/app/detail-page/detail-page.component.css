@@ -1,0 +1,15 @@
+#pfeil{
+    cursor: pointer;
+}
+.list-group-item.active{
+    background-color: rgba(71, 159, 118, 0.2);
+    color: black;
+    border: none;
+}
+.list-group-item{
+    display: flex;
+    justify-content: space-between;
+}
+#description{
+    max-width: 55%;
+}

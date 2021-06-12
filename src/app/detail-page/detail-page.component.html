@@ -1,0 +1,124 @@
+<div class="d-flex justify-content-start align-items-start mt-4" *ngIf="this.element">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="40"
+    height="40"
+    fill="currentColor"
+    class="bi bi-arrow-left-short"
+    viewBox="0 0 16 16"
+    id="pfeil"
+    [routerLink]="['/search-page']"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
+    />
+  </svg>
+</div>
+<div class="container mt-2 text-center">
+  <h2 class="custom-heading mb-4">{{ this.art }}</h2>
+  <ul class="list-group mx-2">
+    <li class="list-group-item active py-1 d-flex align-items-center" aria-current="true">
+      <span>Fahrer:</span>
+      <span><img src="{{this.profileimage}}" width="40" height="40" class="rounded-circle mr-2">{{ this.name }}</span>
+    </li>
+    <li class="list-group-item">
+      <span>Start:</span>
+      <span>{{ this.element.start }}</span>
+    </li>
+    <li class="list-group-item">
+      <span>Ziel:</span>
+      <span>{{ this.element.destination }}</span>
+    </li>
+    <li class="list-group-item">
+      <span>Datum:</span>
+      <span
+        >{{ this.element.startDate.day }}.{{ this.element.startDate.month }}.{{
+          this.element.startDate.year
+        }}</span
+      >
+    </li>
+    <li class="list-group-item">
+      <span>Uhrzeit:</span>
+      <span
+        >{{ this.element.startTime.hour }}:{{
+          this.element.startTime.minute
+        }}</span
+      >
+    </li>
+    <li class="list-group-item" *ngIf="this.element.vehicle">
+      <span>Fahrzeug:</span>
+      <span>{{ this.element.vehicle }}</span>
+    </li>
+    <li
+      class="list-group-item"
+      *ngIf="this.element.transportType != 'Mitfahrgelegenheit'"
+    >
+      <span>Ladefläche:</span>
+      <span>{{ this.element.cubicmeter }}m&sup3;</span>
+    </li>
+    <li
+      class="list-group-item"
+      *ngIf="this.element.transportType == 'Mitfahrgelegenheit'"
+    >
+      <span>Plätze:</span>
+      <span>{{ this.element.seats }}</span>
+    </li>
+    <li class="list-group-item">
+      <span>Beschreibung:</span>
+      <span id="description" class="text-left">{{
+        this.element.description
+      }}</span>
+    </li>
+    <li class="list-group-item">
+      <span>Preis:</span>
+      <span>{{ this.element.price }} €</span>
+    </li>
+  </ul>
+  <div class="form-group mt-5" *ngIf="this.auth.isLoggedIn">
+    <label for="needSelection">Ich benötige:</label>
+    <select
+      class="form-control"
+      id="needSelection"
+      *ngIf="this.element.transportType != 'Mitfahrgelegenheit'"
+      name="cubicmeter-needed"
+      [(ngModel)]="cubicMetersNeeded"
+    >
+      <option value="" selected>Anzahl an Kubikmetern wählen</option>
+      <option
+        value="{{ i + 1 }}"
+        *ngFor="let cubicmeter of cubicmeters; let i = index"
+      >
+        {{ i + 1 }}m&sup3;
+      </option>
+    </select>
+    <select
+      class="form-control"
+      id="needSelection"
+      *ngIf="this.element.transportType == 'Mitfahrgelegenheit'"
+      name="seats-needed"
+      [(ngModel)]="seatsNeeded"
+    >
+      <option value="" selected>Anzahl an Mitfahrern wählen</option>
+      <option value="{{ i + 1 }}" *ngFor="let seat of seats; let i = index">
+        Platz für {{ i + 1 }} Mitfahrer
+      </option>
+    </select>
+  </div>
+  <div class="row w-100 justify-content-center" *ngIf="this.auth.isLoggedIn">
+    <button
+      class="btn my-5 bgCustomGreen font-weight-bold text-white"
+      *ngIf="this.element.entryType == 'Angebot'"
+      (click)="createRequest()"
+    >
+      Anfragen
+    </button>
+    <button
+      class="btn my-5 bgCustomGreen font-weight-bold text-white"
+      *ngIf="this.element.entryType != 'Angebot'"
+      (click)="createRequest()"
+    >
+      Anbieten
+    </button>
+  </div>
+</div>
