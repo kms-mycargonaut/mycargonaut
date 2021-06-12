@@ -18,7 +18,9 @@ export class OpenRequestsComponent implements OnInit {
   user: Observable<firebase.User>;
   currentUser: firebase.User;
   public openRequestList: OpenRequests[] = [];
-  public entryList: Entry[] = [];
+  public confirmedEntryList: Entry[] = [];
+  public pendingEntryList: Entry[] = [];
+  public rejectedEntryList: Entry[] = [];
   public openRequestEntry: any;
   public entryId: string;
   public start: string;
@@ -45,10 +47,16 @@ export class OpenRequestsComponent implements OnInit {
     console.log(this.openRequestList);
     for (const openRequestEntry of this.openRequestList) {
       const entryId = openRequestEntry.entryId;
-      const entry1 = this.entryService.getEntry(entryId);
-      this.entryList.push(await entry1);
+      const orentry = this.entryService.getEntry(entryId);
+      if (openRequestEntry.confirmed === true) {
+        this.confirmedEntryList.push(await orentry);
+      } else if (openRequestEntry.pending === true) {
+        this.pendingEntryList.push(await orentry);
+      } else if (openRequestEntry.rejected === true) {
+        this.rejectedEntryList.push(await orentry);
+      }
     }
-    console.log(this.entryList);
+    console.log(this.confirmedEntryList);
   }
 
   book(entry: Entry): void {
