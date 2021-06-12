@@ -28,7 +28,8 @@ export class TrackingService {
   }
 
   async updateTracking(trackingId: string, isDone: boolean): Promise<void> {
-      await this.trackingCollection.doc(trackingId).update({done: isDone, date: new Date()});
+      await this.trackingCollection.doc(trackingId).update({done: isDone, date: new Date().toLocaleDateString() + ', ' +
+          new Date().toLocaleTimeString()});
   }
 
   async getTrackingIDByEntryIdAndStatus(entryId: string, status: string): Promise<string> {
