@@ -88,7 +88,7 @@ export class CreateEntryComponent implements OnInit {
   }
 
   private initializeTracking(entryId: string): void {
-    const tracking: Tracking = new Tracking(entryId, Trackingstatus.booked, null,  true);
+    const tracking: Tracking = new Tracking(entryId, Trackingstatus.booked, new Date().toLocaleDateString(),  true);
     const tracking2: Tracking = new Tracking(entryId, Trackingstatus.started, null,  false);
     const tracking3: Tracking = new Tracking(entryId, Trackingstatus.arrived, null,  false);
     const tracking4: Tracking = new Tracking(entryId, Trackingstatus.finished, null,  false);
