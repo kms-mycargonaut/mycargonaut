@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {OpenRequestsService} from '../services/open-requests.service';
 import {OpenRequests} from '../model/open-requests';
 import {AuthService} from '../services/auth.service';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {EntryService} from '../services/entry.service';
 import {Entry} from '../model/entry';
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -32,8 +32,12 @@ export class OpenRequestsComponent implements OnInit {
   public date: string;
   public time: string;
 
-  constructor(public openRequestService: OpenRequestsService, public authService: AuthService, public entryService: EntryService,
-              private route: ActivatedRoute) {
+  constructor(
+    public openRequestService: OpenRequestsService,
+    public authService: AuthService,
+    public entryService: EntryService,
+    private router: Router,
+    private route: ActivatedRoute) {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.userId = paramMap.get('userId');
       this.entryId = paramMap.get('entryId');
@@ -72,5 +76,7 @@ export class OpenRequestsComponent implements OnInit {
   }
 
   book(entry: Entry): void {
+    console.log(entry);
+    this.router.navigate(['/booking']);
   }
 }
