@@ -74,4 +74,10 @@ export class VehicleManagementComponent implements OnInit{
       setTimeout(() => this.alertService.close(alert), 5000);
     }
   }
+
+  deleteVehicleByIdAndUser(): void {
+    const vehicleId: string = null;
+    const userId: string = null;
+    this.vehicleService.deleteVehicle(vehicleId, userId);
+  }
 }
