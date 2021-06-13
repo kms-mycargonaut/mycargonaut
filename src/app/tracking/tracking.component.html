@@ -1,4 +1,5 @@
 <!-- head -->
+<div *ngIf="isAuthorized; else notAuthorized">
 <div id="createWrapper">
   <div id="createInnerWrapper">
     <div class="d-flex justify-content-start align-items-start" [routerLink]="['/']">
@@ -48,7 +49,7 @@
               <p class="infotext mb-0">{{status1Message}}</p>
               <p class="infotext">{{start}} - {{end}}</p>
               <button
-                *ngIf="trackingEntryId && !status2.done"
+                *ngIf="trackingEntryId && !status2.done && isSupplier()"
                 type="button"
                 class="btn bgCustomGreen"
                 (click)="starting()"
@@ -67,7 +68,7 @@
               <p class="infotext mb-0">{{status2Message}}</p>
               <p class="infotext">{{start}}</p>
               <button
-                *ngIf="trackingEntryId && !status3.done"
+                *ngIf="trackingEntryId && !status3.done && isSupplier()"
                 type="button"
                 class="btn bgCustomGreen"
                 (click)="updating()"
@@ -86,7 +87,7 @@
               <p class="infotext mb-0">{{status3Message}}</p>
               <p class="infotext">{{end}}</p>
               <button
-                *ngIf="trackingEntryId && !status4.done"
+                *ngIf="trackingEntryId && !status4.done && isSupplier()"
                 type="button"
                 class="btn bgCustomGreen"
                 (click)="finished()"
@@ -166,3 +167,10 @@
     </div>
   </div>
 </div>
+</div>
+
+<ng-template #notAuthorized>
+  <div>
+    Entweder Sie haben keine Berechtigung oder es liegt keine Buchung vor.
+  </div>
+</ng-template>
