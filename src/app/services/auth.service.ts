@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import {Router} from '@angular/router';
 import {Entry} from '../model/entry';
 import {Vehicle} from '../model/vehicle';
+import {Booking} from '../model/booking';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,10 @@ export class AuthService {
   public file?: File;
   public isLoggedIn = false;
   public offers: any;
+  public offersFromSelectedUser: any;
   public vehicles: any;
   public currentUser: firebase.User | null = null;
+  public selectedUser;
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth,  private location: Location, private router: Router) {
     this.auth.onAuthStateChanged((user) => {
@@ -138,7 +141,14 @@ export class AuthService {
           firebase.firestore().collection('users').doc(user.uid).get().then(snap => {
             const user = snap.data();
             if (user) {
-              currentUser = new User(user.id, user.email, user.password, user.firstname, user.lastname, user.birthday, user.image);
+              currentUser = new User(
+                user.id,
+                user.email,
+                user.password,
+                user.firstname,
+                user.lastname,
+                user.birthday,
+                user.image);
             }
             resolve(currentUser);
             console.log(currentUser);
@@ -181,7 +191,7 @@ export class AuthService {
   public async getVehiclesFromCurrentUser() {
     const vehicleArray = [];
     const vehiclesList =  this.afs.collection('vehicles', ref => ref.where('userId',  '==', this.currentUser.uid)).valueChanges();
-      vehiclesList.subscribe( v => {
+    await vehiclesList.subscribe( v => {
         v.forEach((element: Vehicle) => {
           vehicleArray.push(element);
         });
@@ -190,5 +200,67 @@ export class AuthService {
     return this.vehicles;
   }
 
+  public getUserByUserId(userId: string) {
+    let user: User;
+    const userRef = firebase.firestore().collection('users');
+    userRef.where('id', '==', userId).get().then(e => {
+      e.forEach(doc => {
+        user = new User(
+          doc.data().id,
+          doc.data().email,
+          doc.data().password,
+          doc.data().firstname,
+          doc.data().lastname,
+          doc.data().birthday,
+          doc.data().image
+        );
+      });
+      this.selectedUser = user;
+      return this.selectedUser;
+    });
+  }
+
+  public async getOffersFromSelectedUser(userId: string) {
+    const offerArray = [];
+    const offersList = firebase.firestore().collection('entries');
+    await offersList.where('userId', '==', userId).get().then(offer => {
+      offer.forEach(doc => {
+        if (doc.data().entryType === 'Angebot') {
+          offerArray.push(new Entry(
+            doc.data().entryType,
+            doc.data().start,
+            doc.data().destination,
+            doc.data().startDate,
+            doc.data().startTime,
+            doc.data().description,
+            doc.data().price,
+            doc.data().transportType,
+            doc.data().length,
+            doc.data().width,
+            doc.data().height,
+            doc.data().seats,
+            doc.data().trackingStatus
+          ));
+        }
+      });
+    });
+    this.offersFromSelectedUser = offerArray;
+    return this.offersFromSelectedUser;
+  }
+
+  /*public async getRatingsFromSelectedUser(userId: string) {
+    const ratingsArray = [];
+    const bookingsArray = [];
+    const bookingsList = firebase.firestore().collection('bookings');
+    const ratingsList = firebase.firestore().collection('ratings');
+    await bookingsList.where('supplier', '==', userId).get().then(booking => {
+      booking.forEach(doc => {
+        bookingsArray.push(new Booking(
+          doc.data().
+        ))
+      })
+    })
+
+  }*/
 }
 

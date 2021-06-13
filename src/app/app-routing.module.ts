@@ -1,16 +1,16 @@
-import {HomeComponent} from './home/home.component';
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {CreateEntryComponent} from './create-entry/create-entry.component';
-import {SearchPageComponent} from './search-page/search-page.component';
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
-import {VehicleManagementComponent} from './vehicle-management/vehicle-management.component';
-import {MyProfileComponent} from './my-profile/my-profile.component';
-import {TrackingComponent} from './tracking/tracking.component';
+import { DetailPageComponent } from './detail-page/detail-page.component';
+import { HomeComponent } from './home/home.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CreateEntryComponent } from './create-entry/create-entry.component';
+import { SearchPageComponent } from './search-page/search-page.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { VehicleManagementComponent } from './vehicle-management/vehicle-management.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import { TrackingComponent } from './tracking/tracking.component';
 import {OpenRequestsComponent} from './open-requests/open-requests.component';
-import {SupplierProfileComponent} from './supplier-profile/supplier-profile.component';
-import {DetailPageComponent} from './detail-page/detail-page.component';
+import { SupplierProfileComponent } from './supplier-profile/supplier-profile.component';
 
 export const routes: Routes = [
   {
@@ -48,7 +48,7 @@ export const routes: Routes = [
     path: 'tracking/entry/:entryId', component: TrackingComponent
   },
   {
-    path: 'supplier-profile',
+    path: 'supplier-profile/:userId',
     component: SupplierProfileComponent,
   },
   {
