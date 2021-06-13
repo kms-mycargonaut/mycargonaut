@@ -20,7 +20,7 @@
   <ul class="list-group mx-2">
     <li class="list-group-item active py-1 d-flex align-items-center" aria-current="true">
       <span>Fahrer:</span>
-      <span><img src="{{this.profileimage}}" width="40" height="40" class="rounded-circle mr-2">{{ this.name }}</span>
+      <span [routerLink]="['/supplier-profile/' + this.element.userId]"><img src="{{this.profileimage}}" width="40" height="40" class="rounded-circle mr-2">{{ this.name }}</span>
     </li>
     <li class="list-group-item">
       <span>Start:</span>
