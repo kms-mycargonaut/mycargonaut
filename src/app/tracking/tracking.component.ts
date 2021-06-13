@@ -19,7 +19,6 @@ import {Trackingstatus} from '../model/trackingstatus';
 })
 export class TrackingComponent implements OnInit {
   trackingList: Tracking[] = [];
-  isAuthorized: boolean;
   suppliers: string[] = [];
   searchers: string[] = [];
   started: Tracking;
