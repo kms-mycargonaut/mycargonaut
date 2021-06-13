@@ -5,11 +5,13 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Observable, of} from 'rxjs';
 import firebase from 'firebase';
 import 'firebase/storage';
-import { Location } from '@angular/common';
+import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {Entry} from '../model/entry';
 import {Vehicle} from '../model/vehicle';
 import {Booking} from '../model/booking';
+import {Rating} from '../model/rating';
+import {BookingService} from './booking.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +26,14 @@ export class AuthService {
   public isLoggedIn = false;
   public offers: any;
   public offersFromSelectedUser: any;
+  public bookingsFromSelectedUser: any;
+  public ratingsFromSelectedUser: any;
   public vehicles: any;
   public currentUser: firebase.User | null = null;
   public selectedUser;
+  public bookingId: any;
 
-  constructor(private afs: AngularFirestore, private auth: AngularFireAuth,  private location: Location, private router: Router) {
+  constructor(private afs: AngularFirestore, private auth: AngularFireAuth, private location: Location, private router: Router, public bookingService: BookingService) {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.authState = user;
@@ -111,13 +116,13 @@ export class AuthService {
     });
   }
 
-  async login(email, password): Promise<void>{
+  async login(email, password): Promise<void> {
     this.auth.signInWithEmailAndPassword(email, password)
       .then(() => {
         this.router.navigate(['/']);
       }).catch((err) => {
-        console.log(err.message);
-      });
+      console.log(err.message);
+    });
   }
 
   logout(): void {
@@ -125,7 +130,7 @@ export class AuthService {
       .then(() => {
         this.router.navigate(['/']);
       }).catch((err) => {
-        console.log(err.message);
+      console.log(err.message);
     });
   }
 
@@ -137,7 +142,7 @@ export class AuthService {
     let currentUser: User;
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => {
-        if (user){
+        if (user) {
           firebase.firestore().collection('users').doc(user.uid).get().then(snap => {
             const user = snap.data();
             if (user) {
@@ -162,7 +167,7 @@ export class AuthService {
 
   public async getOffersFromCurrentUser() {
     const offerArray = [];
-    const offersList =  firebase.firestore().collection('entries');
+    const offersList = firebase.firestore().collection('entries');
     await offersList.where('userId', '==', this.currentUser.uid).get().then(offer => {
       offer.forEach(doc => {
         if (doc.data().entryType === 'Angebot') {
@@ -190,12 +195,12 @@ export class AuthService {
 
   public async getVehiclesFromCurrentUser() {
     const vehicleArray = [];
-    const vehiclesList =  this.afs.collection('vehicles', ref => ref.where('userId',  '==', this.currentUser.uid)).valueChanges();
-    await vehiclesList.subscribe( v => {
-        v.forEach((element: Vehicle) => {
-          vehicleArray.push(element);
-        });
+    const vehiclesList = this.afs.collection('vehicles', ref => ref.where('userId', '==', this.currentUser.uid)).valueChanges();
+    await vehiclesList.subscribe(v => {
+      v.forEach((element: Vehicle) => {
+        vehicleArray.push(element);
       });
+    });
     this.vehicles = vehicleArray;
     return this.vehicles;
   }
@@ -248,19 +253,32 @@ export class AuthService {
     return this.offersFromSelectedUser;
   }
 
-  /*public async getRatingsFromSelectedUser(userId: string) {
-    const ratingsArray = [];
-    const bookingsArray = [];
-    const bookingsList = firebase.firestore().collection('bookings');
-    const ratingsList = firebase.firestore().collection('ratings');
+  public async getRatingsFromSelectedUser(userId: string) {
+    const bookingsList = firebase.firestore().collection('booking');
     await bookingsList.where('supplier', '==', userId).get().then(booking => {
       booking.forEach(doc => {
-        bookingsArray.push(new Booking(
-          doc.data().
-        ))
-      })
-    })
-
-  }*/
+        const bookingId = doc.id;
+        console.log(bookingId);
+        const ratingsArray = [];
+        const ratingsList = firebase.firestore().collection('rating');
+        ratingsList.where('bookingId', '==', bookingId).get().then(ratings => {
+          ratings.forEach(doc => {
+            ratingsArray.push(new Rating(
+              doc.data().rating,
+              doc.data().title,
+              doc.data().description
+            ));
+          });
+        });
+        this.ratingsFromSelectedUser = ratingsArray;
+        console.log(this.ratingsFromSelectedUser);
+        return this.ratingsFromSelectedUser;
+      });
+    });
+  }
 }
+
+
+
+
 
