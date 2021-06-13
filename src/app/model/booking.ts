@@ -2,12 +2,12 @@ export class Booking {
   entry: string;
   searcher: string;
   supplier: string;
-  bookingDate: Date;
+  bookingDate: string;
 
-  constructor(entry: string, searcher: string, supplier: string, bookingDate: Date) {
-    entry = this.entry;
-    searcher = this.searcher;
-    supplier = this.supplier;
-    bookingDate = this.bookingDate;
+  constructor(entry: string, searcher: string, supplier: string, bookingDate: string) {
+    this.entry = entry;
+    this.searcher = searcher;
+    this.supplier = supplier;
+    this.bookingDate = bookingDate;
   }
 }

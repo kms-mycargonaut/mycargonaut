@@ -13,14 +13,12 @@ import { User } from '../model/user';
   providedIn: 'root',
 })
 export class BookingService {
+  private db;
   user: firebase.User | null = null;
   private bookingCollection: AngularFirestoreCollection<Booking>;
   public entry: Entry;
-
-  constructor(
-    protected afs: AngularFirestore,
-    protected auth: AngularFireAuth
-  ) {
+  constructor(protected afs: AngularFirestore, protected auth: AngularFireAuth) {
+    this.db = firebase.firestore();
     this.bookingCollection = afs.collection('booking');
     this.auth.user.subscribe((user) => {
       if (user) {
@@ -70,7 +68,7 @@ export class BookingService {
           this.entry.entryId,
           this.user.uid,
           this.entry.userId,
-          new Date(Date.now())
+          new Date().toLocaleDateString()
         )
       );
     } else {
@@ -79,9 +77,19 @@ export class BookingService {
           this.entry.entryId,
           this.entry.userId,
           this.user.uid,
-          new Date(Date.now())
+          new Date().toLocaleDateString()
         )
       );
     }
+  }
+  async getBookingByEntryId(entryId: string): Promise<Booking[]> {
+    const bookingList: Booking[] = [];
+    const bookingRef = this.db.collection('booking');
+    await bookingRef.where('entry', '==', entryId).get().then(e => {
+      e.forEach(doc => {
+        bookingList.push(new Booking(doc.data().entry, doc.data().searcher, doc.data().supplier, doc.data().bookingDate));
+      });
+    });
+    return bookingList;
   }
 }
