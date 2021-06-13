@@ -66,7 +66,6 @@
                 <h4 class="h4 customFont font-weight-bold">{{request.start}} - {{request.destination}}</h4>
                 <h6>{{request.startDate.day}}.{{request.startDate.month}}.{{request.startDate.year}} - {{request.startTime.hour}}:{{request.startTime.minute}}</h6>
                 <p>{{request.description}}</p>
-                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white"> {{request.price}}€</span>
               </div>
             </div>
           </div>
@@ -82,12 +81,14 @@
         <div class="card m-2">
           <div class="card-body">
             <div class="row">
-              <div class="col-12" style="margin-left: 10px">
+              <div class="col-6" style="margin-left: 10px">
                 <h4 class="h4 customFont font-weight-bold">{{vehicle.brand}}</h4>
                 <p style="margin-top: -10px">{{vehicle.numberOfSeats}}</p>
                 <p style="margin-top: -10px"> {{vehicle.yearOfManufacture}}</p>
               </div>
-              <button type="button" class="btn bgCustomGreen"> Löschen </button>
+              <div class="col-5 d-flex justify-content-center flex-col align-items-center">
+                <button type="button" class="btn bgCustomGreen"> Löschen </button>
+              </div>
             </div>
           </div>
         </div>

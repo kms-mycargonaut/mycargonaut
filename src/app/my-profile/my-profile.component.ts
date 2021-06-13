@@ -4,6 +4,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import {AuthService} from '../services/auth.service';
+import {VehicleService} from '../services/vehicle.service';
 
 
 @Component({
@@ -25,17 +26,20 @@ export class MyProfileComponent implements OnInit {
   constructor(
     public afs: AngularFirestore,
     public auth: AngularFireAuth,
-    public userService: AuthService) {
+    public userService: AuthService,
+    public vehicleService: VehicleService) {
     this.user = auth.user;
-    this.userService.getOffersFromCurrentUser();
-    this.userService.getVehiclesFromCurrentUser();
-    this.userService.getBookingsFromCurrentUser();
-  }
-
-  ngOnInit(): void {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
     });
+  }
+
+  ngOnInit(): void {
+
+    this.userService.getOffersFromCurrentUser();
+    this.userService.getVehiclesFromCurrentUser();
+    this.userService.getBookingsFromCurrentUser();
+    // this.vehicleService.deleteVehicle();
 
     this.userService.getcurrentUser().then(user => {
       this.id = user.id;
@@ -46,8 +50,13 @@ export class MyProfileComponent implements OnInit {
       this.birthday = user.birthday;
       this.image = user.image;
     });
-
   }
+
+  /*deleteVehicleByIdAndUser(): void {
+    const vehicleId: string = null;
+    const userId: string = null;
+    this.vehicleService.deleteVehicle(vehicleId, userId);
+  }*/
 }
 
 

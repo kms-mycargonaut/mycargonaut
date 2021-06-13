@@ -137,10 +137,6 @@ export class AuthService {
     });
   }
 
-  getCurrentUser(): firebase.User {
-    return this.authState;
-  }
-
   public getcurrentUser(): Promise<User> {
     let currentUser: User;
     return new Promise((resolve, reject) => {
@@ -319,8 +315,6 @@ export class AuthService {
     });
   }
 }
-
-
 
 
 
