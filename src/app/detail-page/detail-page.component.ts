@@ -4,6 +4,9 @@ import {AuthService} from '../services/auth.service';
 import {SearchService} from '../services/search.service';
 import {OpenRequestsService} from '../services/open-requests.service';
 import {OpenRequests} from '../model/open-requests';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {Observable} from 'rxjs';
+import firebase from 'firebase';
 
 @Component({
   selector: 'app-detail-page',
@@ -11,24 +14,8 @@ import {OpenRequests} from '../model/open-requests';
   styleUrls: ['./detail-page.component.css'],
 })
 export class DetailPageComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    public auth: AuthService,
-    public search: SearchService,
-    public openRequestService: OpenRequestsService
-  ) {
-    this.route.queryParams.subscribe((params) => {
-      this.id = params.id;
-      this.art = params.art;
-    });
-    if (JSON.parse(localStorage.getItem('searchResults'))) {
-      this.helper = JSON.parse(localStorage.getItem('searchResults')).filter(
-        (result: any) => result.id == this.id
-      );
-      this.element = this.helper[0];
-    }
-  }
+  user: Observable<firebase.User>;
+  authenticatedUser: string;
 
   public id: string;
   public art: string;
@@ -50,12 +37,38 @@ export class DetailPageComponent implements OnInit {
   public rejected = false;
   public requestedUserId: string;
 
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    public authFire: AngularFireAuth,
+    public auth: AuthService,
+    public search: SearchService,
+    public openRequestService: OpenRequestsService
+  ) {
+    this.user = authFire.user;
+    this.route.queryParams.subscribe((params) => {
+      this.id = params.id;
+      this.art = params.art;
+    });
+    if (JSON.parse(localStorage.getItem('searchResults'))) {
+      this.helper = JSON.parse(localStorage.getItem('searchResults')).filter(
+        (result: any) => result.id === this.id
+      );
+      this.element = this.helper[0];
+    }
+  }
 
   ngOnInit(): void {
+    this.user.subscribe((user) => {
+      this.authenticatedUser = user.uid;
+      console.log('current user');
+      console.log(this.authenticatedUser);
+    });
     this.fetchData().then(() => {
-      if (this.element.seats != undefined) {
+      if (this.element.seats !== undefined) {
         console.log(this.element.seats);
 
+        // tslint:disable-next-line:radix
         this.seats = new Array(parseInt(this.element.seats));
         this.cubicmeters = [];
       } else {
@@ -68,8 +81,8 @@ export class DetailPageComponent implements OnInit {
     }
   }
 
-  public createRequest() {
-    if (this.element.transportType == 'Mitfahrgelegenheit') {
+  createRequest(): void {
+    if (this.element.transportType === 'Mitfahrgelegenheit') {
       console.log(
         'Anfrage/Angebot Mitfahrgelegenheit. Anzahl benötigter Sitze:',
         this.seatsNeeded
@@ -80,15 +93,12 @@ export class DetailPageComponent implements OnInit {
         this.cubicMetersNeeded
       );
     }
-    this.auth.getcurrentUser().then((user) => {
-      this.requestedUserId = user.id;
-    });
-    console.log(' this.element.id: ' +  this.element.userId);
+    // let userId = this.authService.getcurrentUser;
+    console.log(' this.element.id: ' +  this.element);
     const newOpenRequest: OpenRequests = new OpenRequests(
-      this.openRequestId,
-      this.element.id,
+      this.id,
       this.element.userId,
-      this.requestedUserId,
+      this.authenticatedUser,
       this.confirmed,
       this.pending,
       this.rejected,
@@ -98,9 +108,9 @@ export class DetailPageComponent implements OnInit {
   }
 
 
-  public async fetchData() {
+  async fetchData(): Promise<void> {
     const searchArray = JSON.parse(localStorage.getItem('searchResults')).filter(
-      (result: any) => result.id == this.id
+      (result: any) => result.id === this.id
     );
     this.search.search(JSON.parse(localStorage.getItem('searchQuery')));
     const searchObject = searchArray[0];

@@ -31,7 +31,6 @@ export class OpenRequestsService {
     await openRequestRef.where('requestedUserId', '==', this.user.id).get().then(request => {
       request.forEach(doc => {
         openRequestList.push(new OpenRequests(
-          doc.data().openRequestId,
           doc.data().entryId,
           doc.data().userId,
           doc.data().requestedUserId,
