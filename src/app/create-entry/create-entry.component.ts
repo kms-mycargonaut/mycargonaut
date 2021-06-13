@@ -11,6 +11,7 @@ import {VehicleService} from '../services/vehicle.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
+import {AlertService} from '../alert.service';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class CreateEntryComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   constructor(public auth: AngularFireAuth, private router: Router, private entryService: EntryService,
-              private trackingService: TrackingService, private vehicleService: VehicleService) {
+              private trackingService: TrackingService, private vehicleService: VehicleService, private alertService: AlertService) {
     this.user = auth.user;
   }
 
@@ -69,17 +70,25 @@ export class CreateEntryComponent implements OnInit {
         this.entryService.addEntry(newEntry).then((entryId) => {
           this.initializeTracking(entryId);
         });
-        this.message = 'Eintrag erstellt';
+        const alert = {
+          type: 'success',
+          message: 'Dein Eintrag wurde erstellt'
+        };
         this.router.navigate(['']);
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
     } else {
-      this.message = 'Bitte fülle alle Felder aus';
+      const alert = {
+        type: 'danger',
+        message: 'Bitte fülle alle Felder aus'
+      };
+      this.alertService.ALERTS.push(alert);
+      setTimeout(() => this.alertService.close(alert), 5000);
     }
-    console.log(this.message);
-    alert(this.message);
   }
 
   private initializeTracking(entryId: string): void {
-    const tracking: Tracking = new Tracking(entryId, Trackingstatus.booked, null,  true);
+    const tracking: Tracking = new Tracking(entryId, Trackingstatus.booked, new Date().toLocaleDateString(),  true);
     const tracking2: Tracking = new Tracking(entryId, Trackingstatus.started, null,  false);
     const tracking3: Tracking = new Tracking(entryId, Trackingstatus.arrived, null,  false);
     const tracking4: Tracking = new Tracking(entryId, Trackingstatus.finished, null,  false);

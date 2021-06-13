@@ -19,6 +19,7 @@ import { TrackingComponent } from './tracking/tracking.component';
 import { OpenRequestsComponent } from './open-requests/open-requests.component';
 import { SupplierProfileComponent } from './supplier-profile/supplier-profile.component';
 import { DetailPageComponent } from './detail-page/detail-page.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { DetailPageComponent } from './detail-page/detail-page.component';
     OpenRequestsComponent,
     SupplierProfileComponent,
     DetailPageComponent,
+    AlertComponent,
   ],
     imports: [
         BrowserModule,

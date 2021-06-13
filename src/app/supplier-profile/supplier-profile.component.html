@@ -71,42 +71,24 @@
   <!-- Carousel  -->
   <h3 class="d-flex justify-content-center flex-col align-items-center m-2">Bewertungen</h3>
   <ngb-carousel>
-    <ng-template ngbSlide>
-      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <div class="d-flex justify-content-center flex-col align-items-center">
-          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <div class="card m-2">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-12" style="margin-left: 10px">
-                    <h4 class="h4 customFont font-weight-bold">Super Fahrer! </h4>
-                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+      <ng-template ngbSlide *ngFor="let rating of this.userService.ratingsFromSelectedUser; let i = index">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+          <div class="d-flex justify-content-center flex-col align-items-center">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <div class="card m-2">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12" style="margin-left: 10px">
+                      <h4 class="h4 customFont font-weight-bold">{{rating.title}}</h4>
+                      <p> {{rating.description}}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </ng-template>
-    <ng-template ngbSlide>
-      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <div class="d-flex justify-content-center flex-col align-items-center">
-          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <div class="card m-2">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-12" style="margin-left: 10px">
-                    <h4 class="h4 customFont font-weight-bold">Super Fahrer! </h4>
-                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ng-template>
+      </ng-template>
   </ngb-carousel>
 </div>
 
