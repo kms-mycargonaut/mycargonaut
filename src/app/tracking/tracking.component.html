@@ -28,7 +28,7 @@
       <i class="bi bi-check-circle-fill colorCustomGreen h2"></i>
     </div>
     <div class="col-10 col-sm-10 col-md-8 col-lg-7 col-xl-6">
-      <p class="mb-1"> Deine Fahrt von {{start}} nach {{end}} am {{date}} um {{time}}</p>
+      <p class="mb-1"> Deine Fahrt von {{start}} nach {{end}} am {{date}} um {{time}}:</p>
       <p>{{status}}</p>
     </div>
   </div>
@@ -39,51 +39,79 @@
 
   <div class="timeline">
         <div class="contentcontainer right">
-          <p class="mb-0">{{status1date}}</p>
-          <p class="infotext mb-0">Deine Fahrt ist gebucht</p>
-          <p class="infotext">{{start}} - {{end}}</p>
-          <button
-            *ngIf="trackingEntryId"
-            type="button"
-            class="btn bgCustomGreen"
-            (click)="starting()"
-          >Starten
-          </button>
+          <div class="row">
+            <div *ngIf="status1.done" class="icon col-2">
+              <i class="bi bi-check-circle-fill colorCustomGreen h3"></i>
+            </div>
+            <div class="col-10">
+              <p class="mb-0">{{status1.date}}</p>
+              <p class="infotext mb-0">{{status1Message}}</p>
+              <p class="infotext">{{start}} - {{end}}</p>
+              <button
+                *ngIf="trackingEntryId && !status2.done"
+                type="button"
+                class="btn bgCustomGreen"
+                (click)="starting()"
+              >Starten
+              </button>
+            </div>
+          </div>
         </div>
         <div class="contentcontainer right">
-          <p class="mb-0">{{status2date}}</p>
-          <p class="infotext mb-0">Der Fahrer ist unterwegs</p>
-          <p class="infotext">{{start}}</p>
-          <button
-            *ngIf="trackingEntryId"
-            type="button"
-            class="btn bgCustomGreen"
-            (click)="updating()"
-          >Aktualisieren
-          </button>
+          <div class="row">
+            <div *ngIf="status2.done" class="icon col-2">
+              <i class="bi bi-check-circle-fill colorCustomGreen h3"></i>
+            </div>
+            <div class="col-10">
+              <p class="mb-0">{{status2.date}}</p>
+              <p class="infotext mb-0">{{status2Message}}</p>
+              <p class="infotext">{{start}}</p>
+              <button
+                *ngIf="trackingEntryId && !status3.done"
+                type="button"
+                class="btn bgCustomGreen"
+                (click)="updating()"
+              >Aktualisieren
+              </button>
+            </div>
+          </div>
         </div>
         <div class="contentcontainer right">
-          <p class="mb-0">{{status3date}}</p>
-          <p class="infotext mb-0">Der Fahrer ist am Zielort angekommen</p>
-          <p class="infotext">{{end}}</p>
-          <button
-            *ngIf="trackingEntryId"
-          type="button"
-          class="btn bgCustomGreen"
-            (click)="finished()"
-        >Abschließen
-        </button>
+          <div class="row">
+            <div *ngIf="status3.done" class="icon col-2">
+              <i class="bi bi-check-circle-fill colorCustomGreen h3"></i>
+            </div>
+            <div class="col-10">
+              <p class="mb-0">{{status3.date}}</p>
+              <p class="infotext mb-0">{{status3Message}}</p>
+              <p class="infotext">{{end}}</p>
+              <button
+                *ngIf="trackingEntryId && !status4.done"
+                type="button"
+                class="btn bgCustomGreen"
+                (click)="finished()"
+              >Abschließen
+              </button>
+            </div>
+          </div>
         </div>
         <div class="contentcontainer right mb-5">
-          <p class="mb-0">{{status4date}}</p>
-          <p class="infotext mb-0">Deine Fahrt ist abgeschlossen</p>
-          <p class="infotext">{{end}}</p>
+          <div class="row">
+            <div *ngIf="status4.done" class="icon col-2">
+              <i class="bi bi-check-circle-fill colorCustomGreen h3"></i>
+            </div>
+            <div class="col-10">
+              <p class="mb-0">{{status4.date}}</p>
+              <p class="infotext mb-0">{{status4Message}}</p>
+              <p class="infotext">{{end}}</p>
+            </div>
+          </div>
         </div>
       </div>
 </div>
 
   <!-- Bewertung -->
-<div class="container" *ngIf="bookingId && ratingbool">
+<div class="container" *ngIf="bookingId && status4.done">
   <div class="row d-flex text-center justify-content-center align-items-center mb-5">
     <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
       <h2 class="h5 customFont font-weight-bold">Bewertung</h2>

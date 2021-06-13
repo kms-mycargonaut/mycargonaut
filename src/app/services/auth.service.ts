@@ -8,6 +8,7 @@ import 'firebase/storage';
 import { Location } from '@angular/common';
 import {Router} from '@angular/router';
 import {Entry} from '../model/entry';
+import {Vehicle} from '../model/vehicle';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,8 @@ export class AuthService {
   public file?: File;
   public isLoggedIn = false;
   public offers: any;
+  public vehicles: any;
+  public currentUser: firebase.User | null = null;
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth,  private location: Location, private router: Router) {
     this.auth.onAuthStateChanged((user) => {
@@ -29,6 +32,12 @@ export class AuthService {
         this.isLoggedIn = true;
       } else {
         this.isLoggedIn = false;
+      }
+    });
+
+    this.auth.user.subscribe(user => {
+      if (user) {
+        this.currentUser = user;
       }
     });
   }
@@ -141,28 +150,45 @@ export class AuthService {
     });
   }
 
- public async getOffersFromCurrentUser() {
-    return await firebase.firestore().collection('entries').get().then((snap) => {
-      const offerArray = [];
-      let angebot: Entry;
-      for (const doc of snap.docs) {
+  public async getOffersFromCurrentUser() {
+    const offerArray = [];
+    const offersList =  firebase.firestore().collection('entries');
+    await offersList.where('userId', '==', this.currentUser.uid).get().then(offer => {
+      offer.forEach(doc => {
         if (doc.data().entryType === 'Angebot') {
-          const offer = doc.data();
-          offer.id = doc.id;
-          firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-              angebot = new Entry(offer.entryType, offer.start, offer.destination, offer.startDate, offer.startTime, offer.description, offer.price, offer.transportType, offer.length, offer.width, offer.height, offer.seats, offer.trackingStatus);
-              firebase.firestore().collection('users').doc(user.uid).get().then((doc) => {
-                offer.id = `${doc.data().id}`;
-                offerArray.push(offer);
-                this.offers = offerArray;
-              });
-            }
-          });
+          offerArray.push(new Entry(
+            doc.data().entryType,
+            doc.data().start,
+            doc.data().destination,
+            doc.data().startDate,
+            doc.data().startTime,
+            doc.data().description,
+            doc.data().price,
+            doc.data().transportType,
+            doc.data().length,
+            doc.data().width,
+            doc.data().height,
+            doc.data().seats,
+            doc.data().trackingStatus
+          ));
         }
-      }
-      return this.offers;
+      });
     });
- }
+    this.offers = offerArray;
+    return this.offers;
+  }
+
+  public async getVehiclesFromCurrentUser() {
+    const vehicleArray = [];
+    const vehiclesList =  this.afs.collection('vehicles', ref => ref.where('userId',  '==', this.currentUser.uid)).valueChanges();
+      vehiclesList.subscribe( v => {
+        v.forEach((element: Vehicle) => {
+          vehicleArray.push(element);
+        });
+      });
+    this.vehicles = vehicleArray;
+    return this.vehicles;
+  }
+
 }
 

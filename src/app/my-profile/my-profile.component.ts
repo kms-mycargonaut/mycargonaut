@@ -4,8 +4,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import {AuthService} from '../services/auth.service';
-import {ActivatedRoute, ParamMap} from '@angular/router';
-import {EntryService} from '../services/entry.service';
+
 
 @Component({
   selector: 'app-my-profile',
@@ -26,11 +25,10 @@ export class MyProfileComponent implements OnInit {
   constructor(
     public afs: AngularFirestore,
     public auth: AngularFireAuth,
-    public userService: AuthService,
-    private entryService: EntryService,
-    private route: ActivatedRoute) {
+    public userService: AuthService) {
     this.user = auth.user;
     this.userService.getOffersFromCurrentUser();
+    this.userService.getVehiclesFromCurrentUser();
   }
 
   ngOnInit(): void {
