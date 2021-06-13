@@ -1,0 +1,67 @@
+<!-- Header -->
+<div id="profileWrapper">
+  <div id="profileInnerWrapper">
+    <div class="d-flex justify-content-start align-items-start" [routerLink]="['/']">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-short"
+           viewBox="0 0 16 16" id="pfeil">
+        <path fill-rule="evenodd"
+              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+      </svg>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <h3 class="customFont font-weight-bold d-flex justify-content-center flex-col align-items-center pt-4">Meine Anfragen</h3>
+    </div>
+  </div>
+</div>
+
+<!-- Body confirmed -->
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+
+  <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5" *ngIf="showConfirmed">Bestätigt</h6>
+  <div class="d-flex justify-content-center flex-col align-items-center m-2"
+    *ngFor="let entry of this.confirmedEntryList; let i = index" >
+    <div class="card" style="width: 20rem;">
+      <div class="card-body">
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="card-title">{{entry.start}} - {{entry.destination}}</h5>
+        <h6 class="card-subtitle mb-4 text-muted">{{entry.startDate.day}}.{{entry.startDate.month}}.{{entry.startDate.year}}
+          - {{entry.startTime.hour}}:{{entry.startTime.minute}}</h6>
+        <button  class="btn mt-3 bgCustomGreen font-weight-bold text-white" (click)="book(entry)">
+          Jetzt buchen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body pending -->
+  <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5" *ngIf="showPending">Ausstehend</h6>
+  <div class="d-flex justify-content-center flex-col align-items-center m-2"
+       *ngFor="let entry of this.pendingEntryList; let i = index">
+    <div class="card" style="width: 20rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{entry.start}} - {{entry.destination}}</h5>
+        <h6 class="card-subtitle mb-4 text-muted">{{entry.startDate.day}}.{{entry.startDate.month}}.{{entry.startDate.year}}
+          - {{entry.startTime.hour}}:{{entry.startTime.minute}}</h6>
+        <p class="card-text">{{entry.description}}</p>
+        <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white">{{entry.price}} €</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body rejected -->
+  <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5" *ngIf="showRejected">Abgelehnt</h6>
+  <div class="d-flex justify-content-center flex-col align-items-center m-2 mb-5"
+       *ngFor="let entry of this.rejectedEntryList; let i = index">
+    <div class="card" style="width: 20rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{entry.start}} - {{entry.destination}}</h5>
+        <h6 class="card-subtitle mb-4 text-muted">{{entry.startDate.day}}.{{entry.startDate.month}}.{{entry.startDate.year}}
+          - {{entry.startTime.hour}}:{{entry.startTime.minute}}</h6>
+        <p class="card-text">{{entry.description}}</p>
+        <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white">{{entry.price}} €</span>
+      </div>
+    </div>
+  </div>
+</div>

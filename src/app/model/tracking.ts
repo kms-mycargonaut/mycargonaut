@@ -13,4 +13,8 @@ export class Tracking {
     this.date = date;
     this.done = done;
   }
+
+  public setDate(date: string): void {
+    this.date = date;
+  }
 }

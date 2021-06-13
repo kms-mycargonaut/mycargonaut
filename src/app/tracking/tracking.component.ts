@@ -6,7 +6,7 @@ import firebase from 'firebase';
 import {Rating} from '../model/rating';
 import {RatingService} from '../services/rating.service';
 import {EntryService} from '../services/entry.service';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {BookingService} from '../services/booking.service';
 import {Tracking} from '../model/tracking';
 import {TrackingService} from '../services/tracking.service';
@@ -48,7 +48,7 @@ export class TrackingComponent implements OnInit {
 
   constructor(public auth: AngularFireAuth, private ratingService: RatingService, private entryService: EntryService,
               private bookingService: BookingService, private trackingService: TrackingService,
-              private route: ActivatedRoute, private router: Router) {
+              private route: ActivatedRoute) {
     this.user = auth.user;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.bookingId = paramMap.get('bookingId');
@@ -71,7 +71,13 @@ export class TrackingComponent implements OnInit {
   public loadTrackingList(): void{
     this.trackingService.getTrackingByEntryId(this.entryId).then(trackings => {
       trackings.forEach(t => {
-        this.trackingList.push(new Tracking(t.entryId, t.status, t.date, t.done));
+        const tracking: Tracking = new Tracking(t.entryId, t.status, t.date, t.done);
+        if (this.bookingId !== null && t.status === 'booked') {
+          this.bookingService.getBooking(this.bookingId).then(booking => {
+            tracking.setDate(booking.bookingDate);
+          });
+        }
+        this.trackingList.push(tracking);
       });
     }).then(() => {
       this.setStatus();
@@ -145,7 +151,7 @@ export class TrackingComponent implements OnInit {
       const newRating: Rating = new Rating(this.form.value.rating, this.form.value.title, this.form.value.ratingDescription);
       this.ratingService.addRating(newRating, this.bookingId).then(() => {
         this.message = 'Deine Bewertung wurde abgeschickt';
-      }).catch((err) => {
+      }).catch(() => {
         this.message = 'Es tut uns Leid, aber es gab einen Fehler beim abschicken deiner Bewertung';
       });
     } else {
