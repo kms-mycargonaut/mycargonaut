@@ -3,6 +3,7 @@ import { SearchService } from './../services/search.service';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-home',
@@ -13,8 +14,14 @@ export class HomeComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public searchService: SearchService,
-    private router: Router
-  ) {}
+    protected afa: AngularFireAuth
+  ) {
+    this.afa.user.subscribe(user => {
+      if (user) {
+        this.loggedInUser = user;
+      }
+    });
+  }
   public year = new Date().getFullYear();
   public currentMonth = new Date().getMonth() + 1;
   public currentDay = new Date().getDate();
@@ -23,6 +30,7 @@ export class HomeComponent implements OnInit {
   public end: string;
   public date: NgbDate;
   public type: string = '';
+  public loggedInUser: any = null;
   ngOnInit(): void {}
   public search() {
     if (

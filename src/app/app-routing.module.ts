@@ -19,7 +19,7 @@ export const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'booking',
+    path: 'booking/:requestId',
     component: BookingComponent,
   },
   {

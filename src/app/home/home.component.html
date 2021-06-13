@@ -133,7 +133,7 @@
     <a
       class="btn mt-3 bgCustomGreen font-weight-bold text-white"
       [routerLink]="['/create-entry']"
-      *ngIf="this.authService.isLoggedIn"
+      *ngIf="this.loggedInUser != null"
     >
       Angebot/Gesuch erstellen
     </a>
