@@ -9,17 +9,17 @@
       </svg>
     </div>
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-      <h3 class="customFont font-weight-bold d-flex justify-content-center flex-col align-items-center pt-4" (click)="bookNow()">Meine Anfragen</h3>
+      <h3 class="customFont font-weight-bold d-flex justify-content-center flex-col align-items-center pt-4">Meine Anfragen</h3>
     </div>
   </div>
 </div>
 
 <!-- Body confirmed -->
-<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
 
   <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5" *ngIf="showConfirmed">Bestätigt</h6>
   <div class="d-flex justify-content-center flex-col align-items-center m-2"
-    *ngFor="let entry of this.confirmedEntryList; let i = index">
+    *ngFor="let entry of this.confirmedEntryList; let i = index" >
     <div class="card" style="width: 20rem;">
       <div class="card-body">
         <button type="button" class="close" aria-label="Close">

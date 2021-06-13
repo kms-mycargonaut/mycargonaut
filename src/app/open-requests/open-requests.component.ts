@@ -25,6 +25,7 @@ export class OpenRequestsComponent implements OnInit {
   public pendingEntryList: Entry[] = [];
   public rejectedEntryList: Entry[] = [];
   public openRequestEntry: any;
+  public userId: string;
   public entryId: string;
   public start: string;
   public end: string;
@@ -32,22 +33,22 @@ export class OpenRequestsComponent implements OnInit {
   public time: string;
 
   constructor(public openRequestService: OpenRequestsService, public authService: AuthService, public entryService: EntryService,
-              public auth: AngularFireAuth, private route: ActivatedRoute) {
-    this.user = auth.user;
+              private route: ActivatedRoute) {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.userId = paramMap.get('userId');
       this.entryId = paramMap.get('entryId');
     });
   }
 
   ngOnInit(): void {
-    this.user.subscribe((user) => {
-      this.currentUser = user;
-    });
+    this.bookNow();
   }
 
   async bookNow(): Promise<any> {
+    await this.authService.getcurrentUser().then((user) => {
+      this.userId = user.id;
+    });
     this.openRequestList = await this.openRequestService.getOpenRequests();
-    console.log(this.openRequestList);
     for (const openRequestEntry of this.openRequestList) {
       const entryId = openRequestEntry.entryId;
       const orentry = this.entryService.getEntry(entryId);
@@ -58,17 +59,16 @@ export class OpenRequestsComponent implements OnInit {
       } else if (openRequestEntry.rejected === true) {
         this.rejectedEntryList.push(await orentry);
       }
-      if (this.confirmedEntryList.length > 0){
+      if (this.confirmedEntryList.length > 0) {
         this.showConfirmed = true;
       }
-      if (this.pendingEntryList.length > 0){
+      if (this.pendingEntryList.length > 0) {
         this.showPending = true;
       }
-      if (this.rejectedEntryList.length > 0){
+      if (this.rejectedEntryList.length > 0) {
         this.showRejected = true;
       }
     }
-    console.log(this.confirmedEntryList);
   }
 
   book(entry: Entry): void {
