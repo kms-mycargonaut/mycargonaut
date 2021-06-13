@@ -19,6 +19,9 @@ import {Trackingstatus} from '../model/trackingstatus';
 })
 export class TrackingComponent implements OnInit {
   trackingList: Tracking[] = [];
+  isAuthorized: boolean;
+  suppliers: string[] = [];
+  searchers: string[] = [];
   started: Tracking;
   user: Observable<firebase.User>;
   authenticatedUser: firebase.User;
@@ -93,14 +96,32 @@ export class TrackingComponent implements OnInit {
   }
 
   public loadEntry(): void {
-    this.entryService.getEntry(this.entryId).then(value => {
-      this.start = value.start;
-      this.end = value.destination;
-      this.date = value.startDate.day + '.' + value.startDate.month + '.' + value.startDate.year;
-      this.time = value.startTime.hour + ':' + value.startTime.minute;
+    this.bookingService.getBookingByEntryId(this.entryId).then(bookings => {
+      bookings.forEach(booking => {
+        this.searchers.push(booking.searcher);
+        this.suppliers.push(booking.supplier);
+      });
     }).then(() => {
-      this.loadTrackingList();
+      if (this.isSupplier() || this.isSSearcher()) {
+        this.isAuthorized = true;
+      }
+      this.entryService.getEntry(this.entryId).then(value => {
+        this.start = value.start;
+        this.end = value.destination;
+        this.date = value.startDate.day + '.' + value.startDate.month + '.' + value.startDate.year;
+        this.time = value.startTime.hour + ':' + value.startTime.minute;
+      }).then(() => {
+        this.loadTrackingList();
+      });
     });
+  }
+
+  isSupplier(): boolean {
+    return this.suppliers.includes(this.authenticatedUser.uid);
+  }
+
+  isSSearcher(): boolean {
+    return this.searchers.includes(this.authenticatedUser.uid);
   }
 
   starting(): void {

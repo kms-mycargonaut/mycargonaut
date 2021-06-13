@@ -1,23 +1,27 @@
 import {Injectable} from '@angular/core';
-import {AuthService} from './auth.service';
 import {Vehicle} from '../model/vehicle';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {User} from '../model/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VehicleService {
 
+  user: firebase.User = null;
   private vehicleCollection: AngularFirestoreCollection<Vehicle>;
   private vehicles: Observable<Vehicle[]>;
 
-  constructor(private auth: AngularFireAuth, private afs: AngularFirestore, private authService: AuthService) {
-      this.vehicleCollection = afs.collection<Vehicle>('vehicles');
-      this.vehicles = this.vehicleCollection.valueChanges();
+  constructor(private auth: AngularFireAuth, private afs: AngularFirestore) {
+    this.auth.user.subscribe(user => {
+      if (user) {
+        this.user = user;
+      }
+    });
+    this.vehicleCollection = afs.collection<Vehicle>('vehicles');
+    this.vehicles = this.vehicleCollection.valueChanges();
   }
 
   addVehicle(vehicle: Vehicle): void {
@@ -34,5 +38,12 @@ export class VehicleService {
       });
     });
     return vehicles;
+  }
+
+  deleteVehicle(vehicleId: string, userId: string): Promise<void> {
+    if (userId === this.user.uid) {
+      return this.afs.collection('vehicles').doc(vehicleId).delete();
+    }
+    return null;
   }
 }
