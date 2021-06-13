@@ -19,6 +19,7 @@ import { TrackingComponent } from './tracking/tracking.component';
 import { RequestsComponent } from './requests/requests.component';
 import { SupplierProfileComponent } from './supplier-profile/supplier-profile.component';
 import { DetailPageComponent } from './detail-page/detail-page.component';
+import { BookingComponent } from './booking/booking.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { DetailPageComponent } from './detail-page/detail-page.component';
     RequestsComponent,
     SupplierProfileComponent,
     DetailPageComponent,
+    BookingComponent,
   ],
     imports: [
         BrowserModule,
