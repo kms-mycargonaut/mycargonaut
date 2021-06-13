@@ -32,14 +32,14 @@
 
 <app-alert></app-alert>
 
-<!-- Body *ngFor="let offer of this.userService.offersArray" *ngFor="let booking of this.userService.bookingsArray"-->
+<!-- Body -->
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
   <h3 class="d-flex justify-content-center flex-col align-items-center m-2">Deine Fahrten</h3>
   <h5>Angebotene Fahrten</h5>
   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let offer of this.userService.offers; let i = index">
     <div class="d-flex justify-content-center flex-col align-items-center">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <div  [routerLink]="['/tracking/entry/' + offer.entryId]" class="card m-2">
+        <div class="card m-2">
           <div class="card-body">
             <div class="row">
               <div class="col-12" style="margin-left: 10px">
@@ -47,6 +47,7 @@
                 <h6>{{offer.startDate.day}}.{{offer.startDate.month}}.{{offer.startDate.year}} - {{offer.startTime.hour}}:{{offer.startTime.minute}}</h6>
                 <p>{{offer.description}}</p>
                 <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white"> {{offer.price}}€</span>
+                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont m-2" style="color: white"  [routerLink]="['/tracking/entry/' + offer.entryId]"> Zum Tracking</span>
               </div>
             </div>
           </div>
@@ -59,13 +60,14 @@
   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
     <div class="d-flex justify-content-center flex-col align-items-center">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let request of this.userService.bookingsFromSelectedUser; let i = index">
-        <div  [routerLink]="['/tracking/booking/' + request.entryId]" class="card m-2">
+        <div class="card m-2">
           <div class="card-body">
             <div class="row">
               <div class="col-12" style="margin-left: 10px">
                 <h4 class="h4 customFont font-weight-bold">{{request.start}} - {{request.destination}}</h4>
                 <h6>{{request.startDate.day}}.{{request.startDate.month}}.{{request.startDate.year}} - {{request.startTime.hour}}:{{request.startTime.minute}}</h6>
                 <p>{{request.description}}</p>
+                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white" [routerLink]="['/tracking/booking/' + request.entryId]"> Zum Tracking</span>
               </div>
             </div>
           </div>
@@ -81,13 +83,11 @@
         <div class="card m-2">
           <div class="card-body">
             <div class="row">
-              <div class="col-6" style="margin-left: 10px">
+              <div class="col-9" style="margin-left: 10px">
                 <h4 class="h4 customFont font-weight-bold">{{vehicle.brand}}</h4>
-                <p style="margin-top: -10px">{{vehicle.numberOfSeats}}</p>
-                <p style="margin-top: -10px"> {{vehicle.yearOfManufacture}}</p>
-              </div>
-              <div class="col-5 d-flex justify-content-center flex-col align-items-center">
-                <button type="button" class="btn bgCustomGreen"> Löschen </button>
+                <p style="margin-top: -10px">Anzahl der Sitzplätze: {{vehicle.numberOfSeats}}</p>
+                <p style="margin-top: -10px">Baujahr:  {{vehicle.yearOfManufacture}}</p>
+                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white"> Fahrzeug löschen </span>
               </div>
             </div>
           </div>
