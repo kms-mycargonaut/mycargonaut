@@ -19,6 +19,9 @@ export class OpenRequestsComponent implements OnInit {
   currentUser: firebase.User;
   public openRequestList: OpenRequests[] = [];
   public confirmedEntryList: Entry[] = [];
+  public showConfirmed = false;
+  public showPending = false;
+  public showRejected = false;
   public pendingEntryList: Entry[] = [];
   public rejectedEntryList: Entry[] = [];
   public openRequestEntry: any;
@@ -54,6 +57,15 @@ export class OpenRequestsComponent implements OnInit {
         this.pendingEntryList.push(await orentry);
       } else if (openRequestEntry.rejected === true) {
         this.rejectedEntryList.push(await orentry);
+      }
+      if (this.confirmedEntryList.length > 0){
+        this.showConfirmed = true;
+      }
+      if (this.pendingEntryList.length > 0){
+        this.showPending = true;
+      }
+      if (this.rejectedEntryList.length > 0){
+        this.showRejected = true;
       }
     }
     console.log(this.confirmedEntryList);
