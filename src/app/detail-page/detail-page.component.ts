@@ -85,6 +85,7 @@ export class DetailPageComponent implements OnInit {
     });
     console.log(' this.element.id: ' +  this.element.userId);
     const newOpenRequest: OpenRequests = new OpenRequests(
+      this.openRequestId,
       this.element.id,
       this.element.userId,
       this.requestedUserId,

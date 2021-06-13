@@ -1,4 +1,5 @@
 export class OpenRequests {
+  public openRequestId?: string;
   public entryId: string;
   public userId: string;
   public requestedUserId: string;
@@ -9,6 +10,7 @@ export class OpenRequests {
   public cubicMetersNeeded?: string;
 
   constructor(
+    openRequestId: string,
     entryId: string,
     userId: string,
     requestedUserId: string,
@@ -17,6 +19,7 @@ export class OpenRequests {
     rejected: boolean,
     seatsNeeded: string,
     cubicMetersNeeded: string) {
+    this.openRequestId = openRequestId;
     this.entryId = entryId;
     this.requestedUserId = requestedUserId;
     this.confirmed = confirmed;
@@ -24,5 +27,6 @@ export class OpenRequests {
     this.rejected = rejected;
     this.seatsNeeded = seatsNeeded;
     this.cubicMetersNeeded = cubicMetersNeeded;
+
   }
 }
