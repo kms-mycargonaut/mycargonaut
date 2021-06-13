@@ -5,6 +5,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {VehicleService} from '../services/vehicle.service';
+import {Vehicle} from '../model/vehicle';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class MyProfileComponent implements OnInit {
   lastName;
   birthday;
   image;
+  public vehiclesList: Vehicle [] = [];
 
   constructor(
     public afs: AngularFirestore,
@@ -39,6 +41,10 @@ export class MyProfileComponent implements OnInit {
     this.userService.getOffersFromCurrentUser();
     this.userService.getVehiclesFromCurrentUser();
     this.userService.getBookingsFromCurrentUser();
+    this.vehicleService.getVehicles(this.authenticatedUser.uid).then(v => {
+      this.vehiclesList = v;
+      console.log(this.vehiclesList);
+    });
     // this.vehicleService.deleteVehicle();
 
     this.userService.getcurrentUser().then(user => {
