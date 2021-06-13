@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { SearchService } from '../services/search.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from '../services/auth.service';
+import {SearchService} from '../services/search.service';
+import {OpenRequestsService} from '../services/open-requests.service';
+import {OpenRequests} from '../model/open-requests';
 
 @Component({
   selector: 'app-detail-page',
@@ -13,7 +15,8 @@ export class DetailPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public auth: AuthService,
-    public search: SearchService
+    public search: SearchService,
+    public openRequestService: OpenRequestsService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.id = params.id;
@@ -26,16 +29,27 @@ export class DetailPageComponent implements OnInit {
       this.element = this.helper[0];
     }
   }
+
   public id: string;
   public art: string;
   public helper: any;
+  // element = user -- this.element.userId
+  // element = entryId -- this.element.id
   public element: any;
-  public name: string = '';
+  public name = '';
   public profileimage: string;
   public seats: any;
   public cubicmeters = [];
   public seatsNeeded = '';
   public cubicMetersNeeded = '';
+
+  // open requests attributes
+  public openRequestId: any;
+  public confirmed = false;
+  public pending = true;
+  public rejected = false;
+  public requestedUserId: string;
+
 
   ngOnInit(): void {
     this.fetchData().then(() => {
@@ -53,6 +67,7 @@ export class DetailPageComponent implements OnInit {
       this.router.navigate(['/search-page']);
     }
   }
+
   public createRequest() {
     if (this.element.transportType == 'Mitfahrgelegenheit') {
       console.log(
@@ -65,15 +80,29 @@ export class DetailPageComponent implements OnInit {
         this.cubicMetersNeeded
       );
     }
+    this.auth.getcurrentUser().then((user) => {
+      this.requestedUserId = user.id;
+    });
+    console.log(' this.element.id: ' +  this.element.userId);
+    const newOpenRequest: OpenRequests = new OpenRequests(
+      this.element.id,
+      this.element.userId,
+      this.requestedUserId,
+      this.confirmed,
+      this.pending,
+      this.rejected,
+      this.seatsNeeded,
+      this.cubicMetersNeeded);
+    this.openRequestService.addOpenRequest(newOpenRequest);
   }
 
-  
+
   public async fetchData() {
-    let searchArray = JSON.parse(localStorage.getItem('searchResults')).filter(
+    const searchArray = JSON.parse(localStorage.getItem('searchResults')).filter(
       (result: any) => result.id == this.id
     );
     this.search.search(JSON.parse(localStorage.getItem('searchQuery')));
-    let searchObject = searchArray[0];
+    const searchObject = searchArray[0];
 
     this.name = searchObject.name;
     this.profileimage = searchObject.profileimage;
@@ -81,6 +110,6 @@ export class DetailPageComponent implements OnInit {
       this.element = res;
       console.log('Element ', this.element);
     });
-    
+
   }
 }
