@@ -3,11 +3,11 @@ export class Tracking {
   id: string;
   entryId: string;
   status: string;
-  date: Date;
+  date: string;
   done: boolean;
 
 
-  constructor(entryId: string, status: string, date: Date, done: boolean) {
+  constructor(entryId: string, status: string, date: string, done: boolean) {
     this.entryId = entryId;
     this.status = status;
     this.date = date;
