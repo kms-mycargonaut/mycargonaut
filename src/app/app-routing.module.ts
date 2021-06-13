@@ -57,7 +57,7 @@ export const routes: Routes = [
     component: RequestsComponent,
   },
   {
-    path: 'supplier-profile',
+    path: 'supplier-profile/:userId',
     component: SupplierProfileComponent,
   },
   {
