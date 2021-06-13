@@ -75,14 +75,14 @@
   <h5>Deine Fahrzeuge</h5>
   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
     <div class="d-flex justify-content-center flex-col align-items-center">
-      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let vehicle of this.userService.vehicles; let i = index">
         <div class="card m-2">
           <div class="card-body">
             <div class="row">
               <div class="col-12" style="margin-left: 10px">
-                <h4 class="h4 customFont font-weight-bold">Mercedes Benz</h4>
-                <p style="margin-top: -10px">4 Sitzplätze</p>
-                <p style="margin-top: -10px"> 2010 </p>
+                <h4 class="h4 customFont font-weight-bold">{{vehicle.brand}}</h4>
+                <p style="margin-top: -10px">{{vehicle.numberOfSeats}}</p>
+                <p style="margin-top: -10px"> {{vehicle.yearOfManufacture}}</p>
               </div>
             </div>
           </div>
