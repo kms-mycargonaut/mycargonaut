@@ -16,9 +16,7 @@ export class VehicleService {
   private db;
 
   constructor(private auth: AngularFireAuth, private afs: AngularFirestore) {
-      this.db = firebase.firestore();
-      this.vehicleCollection = afs.collection<Vehicle>('vehicles');
-      this.vehicles = this.vehicleCollection.valueChanges();
+    this.db = firebase.firestore();
     this.auth.user.subscribe(user => {
       if (user) {
         this.user = user;
@@ -51,7 +49,7 @@ export class VehicleService {
         vehicleList.push(vehicle);
       });
     });
-    return vehicles;
+    return vehicleList;
   }
 
   deleteVehicle(vehicleId: string, userId: string): Promise<void> {
