@@ -20,8 +20,6 @@ export class DetailPageComponent implements OnInit {
   public id: string;
   public art: string;
   public helper: any;
-  // element = user -- this.element.userId
-  // element = entryId -- this.element.id
   public element: any;
   public name = '';
   public profileimage: string;
@@ -31,11 +29,9 @@ export class DetailPageComponent implements OnInit {
   public cubicMetersNeeded = '';
 
   // open requests attributes
-  public openRequestId: any;
   public confirmed = false;
   public pending = true;
   public rejected = false;
-  public requestedUserId: string;
 
   constructor(
     private router: Router,
