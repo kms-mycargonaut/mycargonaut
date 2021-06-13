@@ -43,18 +43,22 @@ export class CreateEntryComponent implements OnInit {
   public currentDay = new Date().getDate();
   time = {hour: 13, minute: 30};
   public message: string;
-  vehicles: Vehicle[];
+  vehicles: Vehicle[] = [];
 
   // tslint:disable-next-line:max-line-length
   constructor(public auth: AngularFireAuth, private router: Router, private entryService: EntryService,
               private trackingService: TrackingService, private vehicleService: VehicleService, private alertService: AlertService) {
     this.user = auth.user;
+    this.user.subscribe(user => {
+      if (user) {
+        this.authenticatedUser = user;
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.user.subscribe((user) => {
-      this.authenticatedUser = user;
-      this.vehicles = this.vehicleService.getVehicles(this.authenticatedUser);
+    this.vehicleService.getVehicles('VyUClws9c7d8bF9YN1zwVCuFDQz2').then(v => {
+      this.vehicles = v;
     });
   }
 

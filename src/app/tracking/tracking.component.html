@@ -1,5 +1,4 @@
 <!-- head -->
-<div *ngIf="isAuthorized; else notAuthorized">
 <div id="createWrapper">
   <div id="createInnerWrapper">
     <div class="d-flex justify-content-start align-items-start" [routerLink]="['/my-profile']">
@@ -49,7 +48,7 @@
               <p class="infotext mb-0">{{status1Message}}</p>
               <p class="infotext">{{start}} - {{end}}</p>
               <button
-                *ngIf="trackingEntryId && !status2.done && isSupplier()"
+                *ngIf="trackingEntryId && !status2.done"
                 type="button"
                 class="btn bgCustomGreen"
                 (click)="starting()"
@@ -68,7 +67,7 @@
               <p class="infotext mb-0">{{status2Message}}</p>
               <p class="infotext">{{start}}</p>
               <button
-                *ngIf="trackingEntryId && !status3.done && isSupplier()"
+                *ngIf="trackingEntryId && !status3.done"
                 type="button"
                 class="btn bgCustomGreen"
                 (click)="updating()"
@@ -87,7 +86,7 @@
               <p class="infotext mb-0">{{status3Message}}</p>
               <p class="infotext">{{end}}</p>
               <button
-                *ngIf="trackingEntryId && !status4.done && isSupplier()"
+                *ngIf="trackingEntryId && !status4.done"
                 type="button"
                 class="btn bgCustomGreen"
                 (click)="finished()"
@@ -167,6 +166,3 @@
     </div>
   </div>
 </div>
-</div>
-
-<ng-template #notAuthorized></ng-template>
