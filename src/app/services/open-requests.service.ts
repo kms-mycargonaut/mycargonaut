@@ -31,16 +31,22 @@ export class OpenRequestsService {
     await openRequestRef.where('requestedUserId', '==', this.user.id).get().then(request => {
       request.forEach(doc => {
         openRequestList.push(new OpenRequests(
-          doc.data().openRequestId,
           doc.data().entryId,
           doc.data().userId,
           doc.data().requestedUserId,
           doc.data().confirmed,
           doc.data().pending,
-          doc.data().rejected
+          doc.data().rejected,
+          doc.data().seatsNeeded,
+          doc.data().cubicMetersNeeded,
         ));
       });
     });
     return openRequestList;
+  }
+
+  async addOpenRequest(openRequest: OpenRequests): Promise<void> {
+    await this.openRequestCollection.add(Object.assign({}, openRequest));
+    console.log(openRequest);
   }
 }
