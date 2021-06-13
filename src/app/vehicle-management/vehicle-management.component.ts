@@ -5,6 +5,8 @@ import {VehicleService} from '../services/vehicle.service';
 import firebase from 'firebase';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
+import {Router} from '@angular/router';
+import {AlertService} from '../alert.service';
 
 @Component({
   selector: 'app-vehicle-management',
@@ -25,7 +27,8 @@ export class VehicleManagementComponent implements OnInit{
     yearOfManufacture: new FormControl()
   });
 
-  constructor(public auth: AngularFireAuth, private vehicleService: VehicleService) {
+  constructor(public auth: AngularFireAuth, private vehicleService: VehicleService, private router: Router,
+              private alertService: AlertService) {
     this.user = auth.user;
   }
 
@@ -55,8 +58,20 @@ export class VehicleManagementComponent implements OnInit{
       vehicle.transportType = this.vehicleFrontend.value.transportType;
       vehicle.yearOfManufacture = this.vehicleFrontend.value.yearOfManufacture;
       this.vehicleService.addVehicle(vehicle);
+      const alert = {
+        type: 'success',
+        message: 'Dein Fahrzeug wurde hinzugefügt'
+      };
+      this.router.navigate(['my-profile']);
+      this.alertService.ALERTS.push(alert);
+      setTimeout(() => this.alertService.close(alert), 5000);
     } else {
-      alert('Bitte alle Felder ausfüllen');
+      const alert = {
+        type: 'danger',
+        message: 'Bitte fülle alle Felder aus'
+      };
+      this.alertService.ALERTS.push(alert);
+      setTimeout(() => this.alertService.close(alert), 5000);
     }
   }
 }

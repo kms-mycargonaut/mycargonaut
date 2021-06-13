@@ -16,6 +16,7 @@ export class SupplierProfileComponent implements OnInit {
     });
     this.userService.getUserByUserId(this.userId);
     this.userService.getOffersFromSelectedUser(this.userId);
+    this.userService.getRatingsFromSelectedUser(this.userId);
   }
 
   ngOnInit(): void {

@@ -78,8 +78,7 @@
   <div class="form-group mt-5" *ngIf="this.auth.isLoggedIn">
     <label for="needSelection">Ich benötige:</label>
     <select
-      class="form-control"
-      id="needSelection"
+      class="form-control needSelection"
       *ngIf="this.element.transportType != 'Mitfahrgelegenheit'"
       name="cubicmeter-needed"
       [(ngModel)]="cubicMetersNeeded"

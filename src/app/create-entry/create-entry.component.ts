@@ -11,6 +11,7 @@ import {VehicleService} from '../services/vehicle.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
+import {AlertService} from '../alert.service';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class CreateEntryComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   constructor(public auth: AngularFireAuth, private router: Router, private entryService: EntryService,
-              private trackingService: TrackingService, private vehicleService: VehicleService) {
+              private trackingService: TrackingService, private vehicleService: VehicleService, private alertService: AlertService) {
     this.user = auth.user;
   }
 
@@ -69,13 +70,21 @@ export class CreateEntryComponent implements OnInit {
         this.entryService.addEntry(newEntry).then((entryId) => {
           this.initializeTracking(entryId);
         });
-        this.message = 'Eintrag erstellt';
+        const alert = {
+          type: 'success',
+          message: 'Dein Eintrag wurde erstellt'
+        };
         this.router.navigate(['']);
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
     } else {
-      this.message = 'Bitte fülle alle Felder aus';
+      const alert = {
+        type: 'danger',
+        message: 'Bitte fülle alle Felder aus'
+      };
+      this.alertService.ALERTS.push(alert);
+      setTimeout(() => this.alertService.close(alert), 5000);
     }
-    console.log(this.message);
-    alert(this.message);
   }
 
   private initializeTracking(entryId: string): void {
