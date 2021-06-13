@@ -37,7 +37,7 @@ export class VehicleService {
     await vehicleRef.where('userId', '==', userId).get().then(v => {
       v.forEach(doc => {
         const vehicle: Vehicle = new Vehicle();
-        vehicle.setVehicleId(doc.data().vehicleId);
+        vehicle.setVehicleId(doc.id);
         vehicle.setUserId(doc.data().userId);
         vehicle.setTransportType(doc.data().transportType);
         vehicle.setBrand(doc.data().brand);
