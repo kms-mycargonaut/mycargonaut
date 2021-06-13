@@ -31,7 +31,10 @@ export class AuthService {
   public vehicles: any;
   public currentUser: firebase.User | null = null;
   public selectedUser;
+  public entryId: any;
   public bookingId: any;
+  public offersArray: any;
+  public bookingsArray: any;
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth, private location: Location, private router: Router, public bookingService: BookingService) {
     this.auth.onAuthStateChanged((user) => {
@@ -171,7 +174,7 @@ export class AuthService {
     await offersList.where('userId', '==', this.currentUser.uid).get().then(offer => {
       offer.forEach(doc => {
         if (doc.data().entryType === 'Angebot') {
-          offerArray.push(new Entry(
+          const entry: Entry = new Entry(
             doc.data().entryType,
             doc.data().start,
             doc.data().destination,
@@ -185,12 +188,51 @@ export class AuthService {
             doc.data().height,
             doc.data().seats,
             doc.data().trackingStatus
-          ));
+          );
+          entry.setEntryId(doc.id);
+          offerArray.push(entry);
         }
       });
     });
     this.offers = offerArray;
     return this.offers;
+  }
+
+  public async getBookingsFromCurrentUser() {
+    const bookingsList = firebase.firestore().collection('booking');
+    bookingsList.where('searcher', '==', this.currentUser.uid).get().then(booking => {
+      booking.forEach(doc => {
+
+        const bookingId = doc.id;
+        const entry = doc.data().entry;
+        console.log(entry);
+
+        const requestsArray = [];
+        const requestsList = firebase.firestore().collection('entries');
+        requestsList.doc(entry).get().then(request => {
+          const request2: Entry = new Entry(
+            request.data().entryType,
+            request.data().start,
+            request.data().destination,
+            request.data().startDate,
+            request.data().startTime,
+            request.data().description,
+            request.data().price,
+            request.data().transportType,
+            request.data().length,
+            request.data().width,
+            request.data().height,
+            request.data().seats,
+            request.data().trackingStatus
+          );
+          request2.setEntryId(bookingId);
+          requestsArray.push(request2);
+        });
+        this.bookingsFromSelectedUser = requestsArray;
+        console.log(this.bookingsFromSelectedUser);
+        return this.bookingsFromSelectedUser;
+      });
+    });
   }
 
   public async getVehiclesFromCurrentUser() {

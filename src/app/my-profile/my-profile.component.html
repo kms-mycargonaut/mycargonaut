@@ -32,14 +32,14 @@
 
 <app-alert></app-alert>
 
-<!-- Body -->
+<!-- Body *ngFor="let offer of this.userService.offersArray" *ngFor="let booking of this.userService.bookingsArray"-->
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
   <h3 class="d-flex justify-content-center flex-col align-items-center m-2">Deine Fahrten</h3>
   <h5>Angebotene Fahrten</h5>
   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let offer of this.userService.offers; let i = index">
     <div class="d-flex justify-content-center flex-col align-items-center">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <div [routerLink]="['/tracking/entry/' + offer.entryId]" class="card m-2">
+        <div  [routerLink]="['/tracking/entry/' + offer.entryId]" class="card m-2">
           <div class="card-body">
             <div class="row">
               <div class="col-12" style="margin-left: 10px">
@@ -58,15 +58,15 @@
   <h5>Gebuchte Fahrten</h5>
   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
     <div class="d-flex justify-content-center flex-col align-items-center">
-      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <div [routerLink]="['/tracking/booking/rOADUDOSHUYiEjHHxvkt']" class="card m-2">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let request of this.userService.bookingsFromSelectedUser; let i = index">
+        <div  [routerLink]="['/tracking/booking/' + request.entryId]" class="card m-2">
           <div class="card-body">
             <div class="row">
               <div class="col-12" style="margin-left: 10px">
-                <h4 class="h4 customFont font-weight-bold">Köln - Berlin</h4>
-                <h6>02.06.2021 - 13:00</h6>
-                <p>Ich biete 25qm Ladefläche für die Fahrt von Köln nach Berlin.</p>
-                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white"> 20€</span>
+                <h4 class="h4 customFont font-weight-bold">{{request.start}} - {{request.destination}}</h4>
+                <h6>{{request.startDate.day}}.{{request.startDate.month}}.{{request.startDate.year}} - {{request.startTime.hour}}:{{request.startTime.minute}}</h6>
+                <p>{{request.description}}</p>
+                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white"> {{request.price}}€</span>
               </div>
             </div>
           </div>
@@ -87,6 +87,7 @@
                 <p style="margin-top: -10px">{{vehicle.numberOfSeats}}</p>
                 <p style="margin-top: -10px"> {{vehicle.yearOfManufacture}}</p>
               </div>
+              <button type="button" class="btn bgCustomGreen"> Löschen </button>
             </div>
           </div>
         </div>

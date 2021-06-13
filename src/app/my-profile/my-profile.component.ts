@@ -29,6 +29,7 @@ export class MyProfileComponent implements OnInit {
     this.user = auth.user;
     this.userService.getOffersFromCurrentUser();
     this.userService.getVehiclesFromCurrentUser();
+    this.userService.getBookingsFromCurrentUser();
   }
 
   ngOnInit(): void {
