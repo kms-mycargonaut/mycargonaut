@@ -71,7 +71,7 @@ export class TrackingComponent implements OnInit {
     }
   }
 
-  public loadTrackingList(): void{
+  public loadTrackingList(): void {
     this.trackingService.getTrackingByEntryId(this.entryId).then(trackings => {
       trackings.forEach(t => {
         const tracking: Tracking = new Tracking(t.entryId, t.status, t.date, t.done);
@@ -96,32 +96,15 @@ export class TrackingComponent implements OnInit {
   }
 
   public loadEntry(): void {
-    this.bookingService.getBookingByEntryId(this.entryId).then(bookings => {
-      bookings.forEach(booking => {
-        this.searchers.push(booking.searcher);
-        this.suppliers.push(booking.supplier);
-      });
+    this.entryService.getEntry(this.entryId).then(value => {
+      this.start = value.start;
+      this.end = value.destination;
+      this.date = value.startDate.day + '.' + value.startDate.month + '.' + value.startDate.year;
+      this.time = value.startTime.hour + ':' + value.startTime.minute;
     }).then(() => {
-      if (this.isSupplier() || this.isSSearcher()) {
-        this.isAuthorized = true;
-      }
-      this.entryService.getEntry(this.entryId).then(value => {
-        this.start = value.start;
-        this.end = value.destination;
-        this.date = value.startDate.day + '.' + value.startDate.month + '.' + value.startDate.year;
-        this.time = value.startTime.hour + ':' + value.startTime.minute;
-      }).then(() => {
-        this.loadTrackingList();
-      });
+      this.loadTrackingList();
     });
-  }
 
-  isSupplier(): boolean {
-    return this.suppliers.includes(this.authenticatedUser.uid);
-  }
-
-  isSSearcher(): boolean {
-    return this.searchers.includes(this.authenticatedUser.uid);
   }
 
   starting(): void {

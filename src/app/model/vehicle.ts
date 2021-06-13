@@ -1,5 +1,6 @@
 export class Vehicle {
 
+  vehicleId?: string;
   userId?: string;
   transportType?: string;
   brand?: string;
@@ -71,5 +72,9 @@ export class Vehicle {
 
   public setWidth(value: number): void {
     this.width = value;
+  }
+
+  public setVehicleId(value: string): void {
+    this.vehicleId = value;
   }
 }

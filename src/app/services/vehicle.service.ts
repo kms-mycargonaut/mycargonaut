@@ -12,8 +12,10 @@ export class VehicleService {
 
   private vehicleCollection: AngularFirestoreCollection<Vehicle>;
   private vehicles: Observable<Vehicle[]>;
+  private db;
 
   constructor(private auth: AngularFireAuth, private afs: AngularFirestore) {
+      this.db = firebase.firestore();
       this.vehicleCollection = afs.collection<Vehicle>('vehicles');
       this.vehicles = this.vehicleCollection.valueChanges();
   }
@@ -23,14 +25,24 @@ export class VehicleService {
     this.vehicleCollection.add(Object.assign({}, vehicle));
   }
 
-  getVehicles(user: firebase.User): Vehicle[] {
-    const vehicles: Vehicle[] = [];
-    const values = this.afs.collection('vehicles', ref => ref.where('userId', '==', user.uid)).valueChanges();
-    values.subscribe(v => {
-      v.forEach((element: Vehicle) => {
-        vehicles.push(element);
+  async getVehicles(userId: string): Promise<Vehicle[]> {
+    const vehicleList: Vehicle[] = [];
+    const vehicleRef = this.db.collection('vehicles');
+    await vehicleRef.where('userId', '==', userId).get().then(v => {
+      v.forEach(doc => {
+        const vehicle: Vehicle = new Vehicle();
+        vehicle.setVehicleId(doc.data().vehicleId);
+        vehicle.setUserId(doc.data().userId);
+        vehicle.setTransportType(doc.data().transportType);
+        vehicle.setBrand(doc.data().brand);
+        vehicle.setYearOfManufacture(doc.data().yearOfManufacture);
+        vehicle.setNumberOfSeats(doc.data().numberOfSeats);
+        vehicle.setLength(doc.data().length);
+        vehicle.setHeight(doc.data().height);
+        vehicle.setWidth(doc.data().width);
+        vehicleList.push(vehicle);
       });
     });
-    return vehicles;
+    return vehicleList;
   }
 }

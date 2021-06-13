@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Vehicle} from '../model/vehicle';
 import {VehicleService} from '../services/vehicle.service';
 import firebase from 'firebase';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {AlertService} from '../alert.service';
+import {Vehicle} from '../model/vehicle';
 
 @Component({
   selector: 'app-vehicle-management',
