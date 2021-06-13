@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
-import {AuthService} from './auth.service';
 import {Vehicle} from '../model/vehicle';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {User} from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +13,7 @@ export class VehicleService {
   private vehicleCollection: AngularFirestoreCollection<Vehicle>;
   private vehicles: Observable<Vehicle[]>;
 
-  constructor(private auth: AngularFireAuth, private afs: AngularFirestore, private authService: AuthService) {
+  constructor(private auth: AngularFireAuth, private afs: AngularFirestore) {
       this.vehicleCollection = afs.collection<Vehicle>('vehicles');
       this.vehicles = this.vehicleCollection.valueChanges();
   }
