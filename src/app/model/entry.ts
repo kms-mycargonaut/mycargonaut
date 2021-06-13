@@ -52,4 +52,8 @@ export class Entry {
   public getCubicMeter(): number {
     return this.length * this.width * this.height / 1000000;
   }
+
+  public setEntryId(entryId: string): void {
+    this.entryId = entryId;
+  }
 }
