@@ -4,6 +4,7 @@ import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireAuth } from '@angular/fire/auth';
+import {AlertService} from '../alert.service';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ export class HomeComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public searchService: SearchService,
+    public alertService: AlertService,
     protected afa: AngularFireAuth
   ) {
     this.afa.user.subscribe(user => {
@@ -29,19 +31,24 @@ export class HomeComponent implements OnInit {
   public start: string;
   public end: string;
   public date: NgbDate;
-  public type: string = '';
+  public type = '';
   public loggedInUser: any = null;
   ngOnInit(): void {}
-  public search() {
+  public search(): void {
     if (
-      this.start != undefined &&
-      this.end != undefined &&
-      this.date != undefined &&
-      this.type != ''
+      this.start !== undefined &&
+      this.end !== undefined &&
+      this.date !== undefined &&
+      this.type !== ''
     ) {
       this.searchService.setQuery(this.start, this.end, this.date, this.type);
     } else {
-      alert('Nicht alle Felder ausgefüllt!')
+      const alert = {
+        type: 'danger',
+        message: 'Bitte fülle alle Felder aus'
+      };
+      this.alertService.ALERTS.push(alert);
+      setTimeout(() => this.alertService.close(alert), 5000);
     }
   }
 }
