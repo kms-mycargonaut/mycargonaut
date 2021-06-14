@@ -17,6 +17,7 @@ import {BookingService} from './booking.service';
   providedIn: 'root'
 })
 export class AuthService {
+  private db;
   authState: any = null;
   users: Observable<User[]>;
   user: User | null = null;
@@ -37,6 +38,7 @@ export class AuthService {
   public bookingsArray: any;
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth, private location: Location, private router: Router, public bookingService: BookingService) {
+    this.db = firebase.firestore();
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.authState = user;
@@ -232,14 +234,31 @@ export class AuthService {
   }
 
   public async getVehiclesFromCurrentUser() {
-    const vehicleArray = [];
+    /*const vehicleArray = [];
     const vehiclesList = this.afs.collection('vehicles', ref => ref.where('userId', '==', this.currentUser.uid)).valueChanges();
     await vehiclesList.subscribe(v => {
       v.forEach((element: Vehicle) => {
         vehicleArray.push(element);
       });
+    });*/
+    const vehicleList: Vehicle[] = [];
+    const vehicleRef = this.db.collection('vehicles');
+    await vehicleRef.where('userId', '==', this.currentUser.uid).get().then(v => {
+      v.forEach(doc => {
+        const vehicle: Vehicle = new Vehicle();
+        vehicle.setVehicleId(doc.id);
+        vehicle.setUserId(doc.data().userId);
+        vehicle.setTransportType(doc.data().transportType);
+        vehicle.setBrand(doc.data().brand);
+        vehicle.setYearOfManufacture(doc.data().yearOfManufacture);
+        vehicle.setNumberOfSeats(doc.data().numberOfSeats);
+        vehicle.setLength(doc.data().length);
+        vehicle.setHeight(doc.data().height);
+        vehicle.setWidth(doc.data().width);
+        vehicleList.push(vehicle);
+      });
     });
-    this.vehicles = vehicleArray;
+    this.vehicles = vehicleList;
     return this.vehicles;
   }
 
