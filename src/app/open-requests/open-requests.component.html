@@ -17,12 +17,45 @@
 <!-- Body confirmed -->
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
 
+      <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5"
+          *ngIf="!showAllRequests && !showConfirmed && !showPending && !showRejected"
+          [routerLink]="['/']">Suche Deine Fahrt! </h6>
+
+
+  <!-- My requests -->
+  <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5" *ngIf="showAllRequests">Alle Anfragen</h6>
+  <div class="d-flex justify-content-center flex-col align-items-center m-2"
+       *ngFor="let entry of this.myConfirmedEntryList; let i = index">
+    <div class="card" style="width: 20rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{entry.firstName}} {{entry.lastName}}</h5>
+        <p >{{entry.start}} - {{entry.destination}}</p>
+        <p class="text-muted">{{entry.startDate.day}}.{{entry.startDate.month}}.{{entry.startDate.year}}
+          - {{entry.startTime.hour}}:{{entry.startTime.minute}}</p>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <button  class="btn mt-1 bgCustomGreen text-white" (click)="confirmRequests(entry.requestId)">
+                Bestätigen
+              </button>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <button  class="btn mt-1 bgCustomGreen text-white" (click)="rejectedRequests(entry.requestId)">
+                Ablehnen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5" *ngIf="showConfirmed">Bestätigt</h6>
   <div class="d-flex justify-content-center flex-col align-items-center m-2"
     *ngFor="let entry of this.confirmedEntryList; let i = index" >
     <div class="card" style="width: 20rem;">
       <div class="card-body">
-        <button type="button" class="close" aria-label="Close">
+        <button type="button" class="close" aria-label="Close" (click)="pullBackRequest(entry.requestId)">
           <span aria-hidden="true">&times;</span>
         </button>
         <h5 class="card-title">{{entry.start}} - {{entry.destination}}</h5>
