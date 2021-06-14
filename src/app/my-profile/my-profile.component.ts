@@ -59,7 +59,7 @@ export class MyProfileComponent implements OnInit {
 
   deleteVehicle(vehicleId): void {
     this.vehicleService.deleteVehicle(vehicleId, this.id).then(() => {
-      this.userService.getVehiclesFromCurrentUser(this.authenticatedUser.uid);
+      location.reload();
     });
   }
 }
