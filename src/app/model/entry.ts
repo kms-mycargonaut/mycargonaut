@@ -5,6 +5,8 @@ export class Entry {
 
   entryId: string;
   userId: string;
+  firstName: string;
+  lastName: string;
   entryType: string;
   start: string;
   destination: string;
@@ -55,5 +57,13 @@ export class Entry {
 
   public setEntryId(entryId: string): void {
     this.entryId = entryId;
+  }
+
+  public setFirstName(firstName: string): void {
+    this.firstName = firstName;
+  }
+
+  public setLastName(lastName: string): void {
+    this.lastName = lastName;
   }
 }

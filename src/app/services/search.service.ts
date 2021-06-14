@@ -3,19 +3,21 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import { Router } from '@angular/router';
+import {User} from '../model/user';
+import {AlertService} from '../alert.service';
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
   public allUsers = [];
   public searchResults: any;
-  public foundresult: boolean = false;
-  constructor(public afs: AngularFirestore, private router: Router) {}
-  public getUsers() {
+  public foundresult = false;
+  constructor(public afs: AngularFirestore, private router: Router, public alertService: AlertService) {}
+  public getUsers(): User[] {
     return this.allUsers;
   }
-  public setQuery(start: string, end: string, date: NgbDate, type: string) {
-    let query = {
+  public setQuery(start: string, end: string, date: NgbDate, type: string): void {
+    const query = {
       start,
       end,
       date,
@@ -27,29 +29,34 @@ export class SearchService {
       if (this.foundresult) {
         this.router.navigate(['/search-page']);
       } else {
-        alert('Kein Suchergebnis!');
+        const alert = {
+          type: 'danger',
+          message: 'Es gibt keine Ergebnisse zu deiner Suche!'
+        };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       }
     });
   }
-  public async search(query: any) {
+  public async search(query: any): Promise<void> {
     this.foundresult = false;
     return await firebase
       .firestore()
       .collection('entries')
       .get()
       .then((snap) => {
-        let helperArray = [];
+        const helperArray = [];
         for (const doc of snap.docs) {
           if (
-            doc.data().start == query.start &&
-            doc.data().destination == query.end &&
-            doc.data().startDate.day == query.date.day &&
-            doc.data().startDate.month == query.date.month &&
-            doc.data().startDate.year == query.date.year &&
-            doc.data().transportType == query.type
+            doc.data().start === query.start &&
+            doc.data().destination === query.end &&
+            doc.data().startDate.day === query.date.day &&
+            doc.data().startDate.month === query.date.month &&
+            doc.data().startDate.year === query.date.year &&
+            doc.data().transportType === query.type
           ) {
             this.foundresult = true;
-            let pushObject = doc.data();
+            const pushObject = doc.data();
             pushObject.id = doc.id;
             firebase
               .firestore()
@@ -84,6 +91,7 @@ export class SearchService {
         return doc.data();
       });
   }
+
   public async getEntry(id: any) {
     return firebase
       .firestore()

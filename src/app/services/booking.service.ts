@@ -10,6 +10,7 @@ import firebase from 'firebase';
 import { User } from '../model/user';
 import { OpenRequests } from '../model/open-requests';
 import { Router } from '@angular/router';
+import {AlertService} from '../alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,8 @@ export class BookingService {
   constructor(
     protected afs: AngularFirestore,
     protected auth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    public alertService: AlertService
   ) {
     this.db = firebase.firestore();
     this.bookingCollection = afs.collection('booking');
@@ -108,7 +110,12 @@ export class BookingService {
               });
           });
       } else {
-        alert('Platz nicht mehr vorhanden');
+        const alert = {
+        type: 'danger',
+        message: 'Platz nicht mehr vorhanden'
+      };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       }
     } else if (
       entry.data.transportType == 'Mitfahrgelegenheit' &&
@@ -139,7 +146,12 @@ export class BookingService {
               });
           });
       } else {
-        alert('Platz nicht mehr vorhanden');
+        const alert = {
+          type: 'danger',
+          message: 'Platz nicht mehr vorhanden!'
+        };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       }
     } else if (
       entry.data.transportType == 'Ladefläche' &&
@@ -170,7 +182,12 @@ export class BookingService {
               });
           });
       } else {
-        alert('Platz nicht mehr vorhanden');
+        const alert = {
+          type: 'danger',
+          message: 'Platz nicht mehr vorhanden!'
+        };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       }
     } else {
       booking.supplier = this.user.uid;
@@ -198,7 +215,12 @@ export class BookingService {
               });
           });
       } else {
-        alert('Platz nicht mehr vorhanden');
+        const alert = {
+        type: 'danger',
+        message: 'Platz nicht mehr vorhanden!'
+      };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       }
     }
   }
