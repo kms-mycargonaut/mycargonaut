@@ -11,11 +11,16 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
 import { TrackingComponent } from './tracking/tracking.component';
 import {OpenRequestsComponent} from './open-requests/open-requests.component';
 import { SupplierProfileComponent } from './supplier-profile/supplier-profile.component';
+import {BookingComponent} from './booking/booking.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+  },
+  {
+    path: 'booking/:requestId',
+    component: BookingComponent,
   },
   {
     path: 'create-entry',

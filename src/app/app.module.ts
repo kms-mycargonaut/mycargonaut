@@ -19,6 +19,7 @@ import { TrackingComponent } from './tracking/tracking.component';
 import { OpenRequestsComponent } from './open-requests/open-requests.component';
 import { SupplierProfileComponent } from './supplier-profile/supplier-profile.component';
 import { DetailPageComponent } from './detail-page/detail-page.component';
+import { BookingComponent } from './booking/booking.component';
 import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
@@ -35,6 +36,7 @@ import { AlertComponent } from './alert/alert.component';
     OpenRequestsComponent,
     SupplierProfileComponent,
     DetailPageComponent,
+    BookingComponent,
     AlertComponent,
   ],
     imports: [

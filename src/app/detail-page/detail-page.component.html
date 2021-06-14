@@ -55,7 +55,7 @@
       *ngIf="this.element.transportType != 'Mitfahrgelegenheit'"
     >
       <span>Ladefläche:</span>
-      <span>{{ this.element.cubicmeter }}m&sup3;</span>
+      <span>{{ this.element.cubicmeter }}m&#179;</span>
     </li>
     <li
       class="list-group-item"
@@ -88,7 +88,7 @@
         value="{{ i + 1 }}"
         *ngFor="let cubicmeter of cubicmeters; let i = index"
       >
-        {{ i + 1 }}m&sup3;
+        {{ i + 1 }}m&#179;
       </option>
     </select>
     <select

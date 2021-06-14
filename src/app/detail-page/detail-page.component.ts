@@ -61,13 +61,15 @@ export class DetailPageComponent implements OnInit {
       console.log(this.authenticatedUser);
     });
     this.fetchData().then(() => {
-      if (this.element.seats !== undefined) {
+      if (this.element.seats != undefined) {
         console.log(this.element.seats);
 
         // tslint:disable-next-line:radix
         this.seats = new Array(parseInt(this.element.seats));
         this.cubicmeters = [];
       } else {
+        console.log(this.element.cubicmeter);
+        
         this.cubicmeters = new Array(this.element.cubicmeter);
         this.seats = [];
       }
