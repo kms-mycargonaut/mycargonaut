@@ -244,4 +244,17 @@ export class BookingService {
       });
     return bookingList;
   }
+
+  async getBookingBySupplier(userId: string): Promise<Booking[]> {
+    const supplierBookings: Booking[] = [];
+    const bookingRef = this.db.collection('booking');
+    await bookingRef.where('supplier', '==', userId).get().then(bookings => {
+      bookings.forEach(b => {
+        const booking: Booking = new Booking(b.data().entry, b.data().searcher, b.data().supplier, b.data().bookingDate);
+        booking.setBookingId(b.id);
+        supplierBookings.push(booking);
+      });
+    });
+    return supplierBookings;
+  }
 }

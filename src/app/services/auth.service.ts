@@ -165,10 +165,10 @@ export class AuthService {
     });
   }
 
-  public async getOffersFromCurrentUser() {
+  public async getOffersFromCurrentUser(userId: string) {
     const offerArray = [];
     const offersList = firebase.firestore().collection('entries');
-    await offersList.where('userId', '==', this.currentUser.uid).get().then(offer => {
+    await offersList.where('userId', '==', userId).get().then(offer => {
       offer.forEach(doc => {
         if (doc.data().entryType === 'Angebot') {
           const entry: Entry = new Entry(
@@ -195,9 +195,9 @@ export class AuthService {
     return this.offers;
   }
 
-  public async getBookingsFromCurrentUser() {
+  public async getBookingsFromCurrentUser(userId: string) {
     const bookingsList = firebase.firestore().collection('booking');
-    bookingsList.where('searcher', '==', this.currentUser.uid).get().then(booking => {
+    bookingsList.where('searcher', '==', userId).get().then(booking => {
       booking.forEach(doc => {
         const bookingId = doc.id;
         const entry = doc.data().entry;
@@ -228,10 +228,10 @@ export class AuthService {
     });
   }
 
-  public async getVehiclesFromCurrentUser() {
+  public async getVehiclesFromCurrentUser(userId: string) {
     const vehicleList: Vehicle[] = [];
     const vehicleRef = this.db.collection('vehicles');
-    await vehicleRef.where('userId', '==', this.currentUser.uid).get().then(v => {
+    await vehicleRef.where('userId', '==', userId).get().then(v => {
       v.forEach(doc => {
         const vehicle: Vehicle = new Vehicle();
         vehicle.setVehicleId(doc.id);

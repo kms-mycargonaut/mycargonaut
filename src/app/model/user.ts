@@ -8,7 +8,7 @@ export class User {
   birthday?: string;
   image?: string;
 
-  constructor(id: string, email: string, password: string, firstName: string, lastName: string, birthday?: string,
+  constructor(id?: string, email?: string, password?: string, firstName?: string, lastName?: string, birthday?: string,
               image?: string) {
     this.id = id;
     this.email = email;

@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {VehicleService} from '../services/vehicle.service';
 import {Vehicle} from '../model/vehicle';
+import {RatingService} from '../services/rating.service';
 
 
 @Component({
@@ -29,11 +30,18 @@ export class MyProfileComponent implements OnInit {
     public afs: AngularFirestore,
     public auth: AngularFireAuth,
     public userService: AuthService,
-    public vehicleService: VehicleService) {
+    public vehicleService: VehicleService, private ratingService: RatingService) {
     this.user = auth.user;
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
-    });
+      this.userService.getOffersFromCurrentUser(this.authenticatedUser.uid).then(() => {
+          this.vehicleService.getVehicles(this.authenticatedUser.uid).then(vehicles => {
+            this.vehiclesList = vehicles;
+          });
+        }).then(() => {
+          this.userService.getBookingsFromCurrentUser(this.authenticatedUser.uid);
+        });
+      });
 
     this.userService.getcurrentUser().then(user => {
       this.id = user.id;
@@ -47,20 +55,11 @@ export class MyProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.userService.getOffersFromCurrentUser();
-    this.userService.getVehiclesFromCurrentUser();
-    this.userService.getBookingsFromCurrentUser();
-    /*this.vehicleService.getVehicles(this.id).then(v => {
-      this.vehiclesList = v;
-      console.log(this.vehiclesList);
-    });*/
-
   }
 
   deleteVehicle(vehicleId): void {
     this.vehicleService.deleteVehicle(vehicleId, this.id).then(() => {
-      this.userService.getVehiclesFromCurrentUser();
+      this.userService.getVehiclesFromCurrentUser(this.authenticatedUser.uid);
     });
   }
 }
