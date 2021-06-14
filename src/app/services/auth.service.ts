@@ -250,10 +250,10 @@ export class AuthService {
     return this.vehicles;
   }
 
-  public getUserByUserId(userId: string) {
+  async getUserByUserId(userId: string): Promise<User> {
     let user: User;
     const userRef = firebase.firestore().collection('users');
-    userRef.where('id', '==', userId).get().then(e => {
+    await userRef.where('id', '==', userId).get().then(e => {
       e.forEach(doc => {
         user = new User(
           doc.data().id,
@@ -266,8 +266,8 @@ export class AuthService {
         );
       });
       this.selectedUser = user;
-      return this.selectedUser;
     });
+    return this.selectedUser;
   }
 
   public async getOffersFromSelectedUser(userId: string) {

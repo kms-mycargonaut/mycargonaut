@@ -7,6 +7,7 @@ import {Entry} from '../model/entry';
 import {Observable} from 'rxjs';
 import firebase from 'firebase';
 import {BookingService} from '../services/booking.service';
+import {OpenRequests} from '../model/open-requests';
 
 @Component({
   selector: 'app-requests',
@@ -16,7 +17,10 @@ import {BookingService} from '../services/booking.service';
 export class OpenRequestsComponent implements OnInit {
   user: Observable<firebase.User>;
   public openRequestList: any = [];
+  public myOpenRequestList: any = [];
+  public myConfirmedEntryList: Entry[] = [];
   public confirmedEntryList: Entry[] = [];
+  public userList = [];
   public showConfirmed = false;
   public showPending = false;
   public showRejected = false;
@@ -24,10 +28,12 @@ export class OpenRequestsComponent implements OnInit {
   public rejectedEntryList: Entry[] = [];
   public userId: string;
   public entryId: string;
+  public requestedUserId: string;
   public start: string;
   public end: string;
   public date: string;
   public time: string;
+  public userData: any;
 
   constructor(
     public openRequestService: OpenRequestsService,
@@ -41,10 +47,12 @@ export class OpenRequestsComponent implements OnInit {
       this.userId = paramMap.get('userId');
       this.entryId = paramMap.get('entryId');
     });
+    this.authService.getUserByUserId(this.userId);
   }
 
   ngOnInit(): void {
     this.bookNow();
+    this.confirmRequests();
   }
 
   async bookNow(): Promise<any> {
@@ -57,7 +65,6 @@ export class OpenRequestsComponent implements OnInit {
       const orentry: any = await this.entryService.getEntry(entryId);
       if (openRequestEntry.confirmed === true) {
         orentry.requestId = openRequestEntry.requestId;
-        console.log(orentry);
 
         this.confirmedEntryList.push(await orentry);
       } else if (openRequestEntry.pending === true) {
@@ -80,5 +87,32 @@ export class OpenRequestsComponent implements OnInit {
   book(entry: Entry, requestId: string): void {
     this.booking.entry = entry;
     this.router.navigate(['/booking/' + requestId]);
+  }
+
+  async confirmRequests(): Promise<any> {
+    await this.authService.getcurrentUser().then((user) => {
+      this.userId = user.id;
+    });
+    this.myOpenRequestList = await this.openRequestService.getMyOpenRequests();
+    for (const myOpenRequestEntry of this.myOpenRequestList) {
+
+      // Loading html input
+      const entryId = myOpenRequestEntry.entryId;
+      const uId = myOpenRequestEntry.requestedUserId;
+      const myorentry: Entry = await this.entryService.getEntry(entryId);
+      const entry: Entry = new Entry(myorentry.entryType, myorentry.start, myorentry.destination, myorentry.startDate, myorentry.startTime, myorentry.description, myorentry.price,
+        myorentry.transportType, myorentry.length, myorentry.width, myorentry.height, myorentry.seats, myorentry.trackingStatus);
+
+      console.log(myorentry);
+      // Get current user
+      this.userData = await this.authService.getUserByUserId(uId);
+      entry.setFirstName(this.userData.firstName);
+      entry.setLastName(this.userData.lastName);
+      this.myConfirmedEntryList.push(entry);
+    }
+  }
+
+  rejectedRequests(): void {
+    this.openRequestService.getMyOpenRequests();
   }
 }
