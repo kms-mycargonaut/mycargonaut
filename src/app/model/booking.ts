@@ -1,4 +1,5 @@
 export class Booking {
+  bookingId: string;
   entry: string;
   searcher: string;
   supplier: string;
@@ -10,4 +11,9 @@ export class Booking {
     this.supplier = supplier;
     this.bookingDate = bookingDate;
   }
+
+  public setBookingId(value: string): void {
+    this.bookingId = value;
+  }
+
 }
