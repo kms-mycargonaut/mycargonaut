@@ -53,6 +53,8 @@ export class VehicleService {
   }
 
   deleteVehicle(vehicleId: string, userId: string): Promise<void> {
+    console.log(vehicleId);
+    console.log(userId);
     if (userId === this.user.uid) {
       return this.afs.collection('vehicles').doc(vehicleId).delete();
     }

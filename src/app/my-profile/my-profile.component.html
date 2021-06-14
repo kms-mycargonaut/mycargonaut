@@ -87,7 +87,7 @@
                 <h4 class="h4 customFont font-weight-bold">{{vehicle.brand}}</h4>
                 <p style="margin-top: -10px">Anzahl der Sitzplätze: {{vehicle.numberOfSeats}}</p>
                 <p style="margin-top: -10px">Baujahr:  {{vehicle.yearOfManufacture}}</p>
-                <span class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white"> Fahrzeug löschen </span>
+                <span (click)="deleteVehicle(vehicle.vehicleId)" class="badge rounded-pill bgCustomGreen font-weight-bold customFont" style="color: white"> Fahrzeug löschen </span>
               </div>
             </div>
           </div>

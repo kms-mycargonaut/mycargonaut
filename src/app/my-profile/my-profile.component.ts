@@ -34,18 +34,6 @@ export class MyProfileComponent implements OnInit {
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
     });
-  }
-
-  ngOnInit(): void {
-
-    this.userService.getOffersFromCurrentUser();
-    this.userService.getVehiclesFromCurrentUser();
-    this.userService.getBookingsFromCurrentUser();
-    this.vehicleService.getVehicles(this.authenticatedUser.uid).then(v => {
-      this.vehiclesList = v;
-      console.log(this.vehiclesList);
-    });
-    // this.vehicleService.deleteVehicle();
 
     this.userService.getcurrentUser().then(user => {
       this.id = user.id;
@@ -58,11 +46,23 @@ export class MyProfileComponent implements OnInit {
     });
   }
 
-  /*deleteVehicleByIdAndUser(): void {
-    const vehicleId: string = null;
-    const userId: string = null;
-    this.vehicleService.deleteVehicle(vehicleId, userId);
-  }*/
+  ngOnInit(): void {
+
+    this.userService.getOffersFromCurrentUser();
+    this.userService.getVehiclesFromCurrentUser();
+    this.userService.getBookingsFromCurrentUser();
+    /*this.vehicleService.getVehicles(this.id).then(v => {
+      this.vehiclesList = v;
+      console.log(this.vehiclesList);
+    });*/
+
+  }
+
+  deleteVehicle(vehicleId): void {
+    this.vehicleService.deleteVehicle(vehicleId, this.id).then(() => {
+      this.userService.getVehiclesFromCurrentUser();
+    });
+  }
 }
 
 
