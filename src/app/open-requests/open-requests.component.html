@@ -28,7 +28,7 @@
         <h5 class="card-title">{{entry.start}} - {{entry.destination}}</h5>
         <h6 class="card-subtitle mb-4 text-muted">{{entry.startDate.day}}.{{entry.startDate.month}}.{{entry.startDate.year}}
           - {{entry.startTime.hour}}:{{entry.startTime.minute}}</h6>
-        <button  class="btn mt-3 bgCustomGreen font-weight-bold text-white" (click)="book(entry)">
+        <button  class="btn mt-3 bgCustomGreen font-weight-bold text-white" (click)="book(entry, entry.requestId)">
           Jetzt buchen
         </button>
       </div>

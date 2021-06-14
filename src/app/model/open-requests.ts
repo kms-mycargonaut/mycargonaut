@@ -16,7 +16,8 @@ export class OpenRequests {
     pending: boolean,
     rejected: boolean,
     seatsNeeded: string,
-    cubicMetersNeeded: string) {
+    cubicMetersNeeded: string
+  ) {
     this.entryId = entryId;
     this.requestedUserId = requestedUserId;
     this.confirmed = confirmed;
@@ -24,6 +25,6 @@ export class OpenRequests {
     this.rejected = rejected;
     this.seatsNeeded = seatsNeeded;
     this.cubicMetersNeeded = cubicMetersNeeded;
-
+    this.userId = userId;
   }
 }
