@@ -57,7 +57,7 @@ export class CreateEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.vehicleService.getVehicles('VyUClws9c7d8bF9YN1zwVCuFDQz2').then(v => {
+    this.vehicleService.getVehicles(this.authenticatedUser.uid).then(v => {
       this.vehicles = v;
     });
   }
