@@ -157,7 +157,6 @@ export class AuthService {
                 user.image);
             }
             resolve(currentUser);
-            console.log(currentUser);
           }).catch((err) => {
             reject(err);
           });
@@ -200,11 +199,8 @@ export class AuthService {
     const bookingsList = firebase.firestore().collection('booking');
     bookingsList.where('searcher', '==', this.currentUser.uid).get().then(booking => {
       booking.forEach(doc => {
-
         const bookingId = doc.id;
         const entry = doc.data().entry;
-        console.log(entry);
-
         const requestsArray = [];
         const requestsList = firebase.firestore().collection('entries');
         requestsList.doc(entry).get().then(request => {
@@ -227,20 +223,12 @@ export class AuthService {
           requestsArray.push(request2);
         });
         this.bookingsFromSelectedUser = requestsArray;
-        console.log(this.bookingsFromSelectedUser);
         return this.bookingsFromSelectedUser;
       });
     });
   }
 
   public async getVehiclesFromCurrentUser() {
-    /*const vehicleArray = [];
-    const vehiclesList = this.afs.collection('vehicles', ref => ref.where('userId', '==', this.currentUser.uid)).valueChanges();
-    await vehiclesList.subscribe(v => {
-      v.forEach((element: Vehicle) => {
-        vehicleArray.push(element);
-      });
-    });*/
     const vehicleList: Vehicle[] = [];
     const vehicleRef = this.db.collection('vehicles');
     await vehicleRef.where('userId', '==', this.currentUser.uid).get().then(v => {
@@ -315,7 +303,6 @@ export class AuthService {
     await bookingsList.where('supplier', '==', userId).get().then(booking => {
       booking.forEach(doc => {
         const bookingId = doc.id;
-        console.log(bookingId);
         const ratingsArray = [];
         const ratingsList = firebase.firestore().collection('rating');
         ratingsList.where('bookingId', '==', bookingId).get().then(ratings => {
@@ -328,7 +315,6 @@ export class AuthService {
           });
         });
         this.ratingsFromSelectedUser = ratingsArray;
-        console.log(this.ratingsFromSelectedUser);
         return this.ratingsFromSelectedUser;
       });
     });
