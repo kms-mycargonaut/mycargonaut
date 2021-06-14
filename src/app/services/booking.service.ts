@@ -22,7 +22,7 @@ export class BookingService {
   constructor(
     protected afs: AngularFirestore,
     protected auth: AngularFireAuth,
-    private router: Router,
+    private router: Router
   ) {
     this.db = firebase.firestore();
     this.bookingCollection = afs.collection('booking');
@@ -79,7 +79,74 @@ export class BookingService {
     let entry: any = await this.getEntry(booking.entry);
     let entryId = entry.id;
     entriesDB.doc(entryId).update({});
-    if (entry.data.transportType == 'Ladefläche') {
+    if (
+      entry.data.transportType == 'Ladefläche' &&
+      entry.data.entryType == 'Angebot'
+    ) {
+      booking.supplier = entry.data.userId;
+      booking.searcher = this.user.uid;
+      if (requestedAmount <= entry.data.cubicmeter) {
+        console.log('Ladefläche buchen: ', requestedAmount);
+        entriesDB
+          .doc(entryId)
+          .update({ cubicmeter: entry.data.cubicmeter - requestedAmount })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection('booking')
+              .add(Object.assign({}, booking))
+              .then((res) => {
+                let bookingId = res.id;
+                firebase
+                  .firestore()
+                  .collection('open_requests')
+                  .doc(requestId)
+                  .delete()
+                  .then(() => {
+                    this.router.navigate(['/tracking/booking/' + bookingId]);
+                  });
+              });
+          });
+      } else {
+        alert('Platz nicht mehr vorhanden');
+      }
+    } else if (
+      entry.data.transportType == 'Mitfahrgelegenheit' &&
+      entry.data.entryType == 'Angebot'
+    ) {
+      booking.supplier = entry.data.userId;
+      booking.searcher = this.user.uid;
+      if (requestedAmount <= entry.data.seats) {
+        console.log('Entry ', entry);
+        entriesDB
+          .doc(entryId)
+          .update({ seats: entry.data.seats - requestedAmount })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection('booking')
+              .add(Object.assign({}, booking))
+              .then((res) => {
+                let bookingId = res.id;
+                firebase
+                  .firestore()
+                  .collection('open_requests')
+                  .doc(requestId)
+                  .delete()
+                  .then(() => {
+                    this.router.navigate(['/tracking/booking/' + bookingId]);
+                  });
+              });
+          });
+      } else {
+        alert('Platz nicht mehr vorhanden');
+      }
+    } else if (
+      entry.data.transportType == 'Ladefläche' &&
+      entry.data.entryType == 'Gesuch'
+    ) {
+      booking.supplier = this.user.uid;
+      booking.searcher = entry.data.userId;
       if (requestedAmount <= entry.data.cubicmeter) {
         console.log('Ladefläche buchen: ', requestedAmount);
         entriesDB
@@ -106,6 +173,8 @@ export class BookingService {
         alert('Platz nicht mehr vorhanden');
       }
     } else {
+      booking.supplier = this.user.uid;
+      booking.searcher = entry.data.userId;
       if (requestedAmount <= entry.data.seats) {
         console.log('Entry ', entry);
         entriesDB

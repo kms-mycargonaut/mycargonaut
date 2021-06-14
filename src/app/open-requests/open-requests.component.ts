@@ -62,7 +62,6 @@ export class OpenRequestsComponent implements OnInit {
       if (openRequestEntry.confirmed === true) {
         orentry.requestId = openRequestEntry.requestId;
         console.log(orentry);
-        
         this.confirmedEntryList.push(await orentry);
       } else if (openRequestEntry.pending === true) {
         this.pendingEntryList.push(await orentry);
