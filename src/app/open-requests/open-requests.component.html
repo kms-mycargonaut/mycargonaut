@@ -18,7 +18,7 @@
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
 
   <!-- My requests -->
-  <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5">Alle Anfragen</h6>
+  <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5" *ngIf="showAllRequests">Alle Anfragen</h6>
   <div class="d-flex justify-content-center flex-col align-items-center m-2"
        *ngFor="let entry of this.myConfirmedEntryList; let i = index">
     <div class="card" style="width: 20rem;">
@@ -50,7 +50,7 @@
     *ngFor="let entry of this.confirmedEntryList; let i = index" >
     <div class="card" style="width: 20rem;">
       <div class="card-body">
-        <button type="button" class="close" aria-label="Close">
+        <button type="button" class="close" aria-label="Close" (click)="pullBackRequest(entry.requestId)">
           <span aria-hidden="true">&times;</span>
         </button>
         <h5 class="card-title">{{entry.start}} - {{entry.destination}}</h5>

@@ -104,4 +104,10 @@ export class OpenRequestsService {
     await openRequestRef
       .doc(requestId).update({confirmed: true, pending: false, rejected: false});
   }
+
+  async deleteRequest(requestId: string): Promise<void>  {
+    const openRequestRef = this.db.collection('open_requests');
+    await openRequestRef
+      .doc(requestId).delete();
+  }
 }

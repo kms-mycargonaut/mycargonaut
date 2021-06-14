@@ -24,6 +24,7 @@ export class OpenRequestsComponent implements OnInit {
   public showConfirmed = false;
   public showPending = false;
   public showRejected = false;
+  public showAllRequests = false;
   public pendingEntryList: Entry[] = [];
   public rejectedEntryList: Entry[] = [];
   public userId: string;
@@ -56,6 +57,9 @@ export class OpenRequestsComponent implements OnInit {
   }
 
   async bookNow(): Promise<any> {
+    this.confirmedEntryList = [];
+    this.pendingEntryList = [];
+    this.rejectedEntryList = [];
     await this.authService.getcurrentUser().then((user) => {
       this.userId = user.id;
     });
@@ -126,6 +130,9 @@ export class OpenRequestsComponent implements OnInit {
       entry.lastName = this.userData.lastName;
       this.myConfirmedEntryList.push(entry);
     }
+    if (this.myConfirmedEntryList.length > 0){
+      this.showAllRequests = true;
+    }
   }
 
   rejectedRequests(requestId: string): void {
@@ -136,6 +143,12 @@ export class OpenRequestsComponent implements OnInit {
 
   confirmRequests(requestId: string): void {
     this.openRequestService.confirmRequest(requestId).then(() => {
+      this.getConfirmRequests();
+    });
+  }
+
+  pullBackRequest(requestId: string): void {
+    this.openRequestService.deleteRequest(requestId).then(() => {
       this.getConfirmRequests();
     });
   }
