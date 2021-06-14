@@ -1,14 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { OpenRequestsService } from '../services/open-requests.service';
-import { OpenRequests } from '../model/open-requests';
-import { AuthService } from '../services/auth.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { EntryService } from '../services/entry.service';
-import { Entry } from '../model/entry';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {OpenRequestsService} from '../services/open-requests.service';
+import {AuthService} from '../services/auth.service';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {EntryService} from '../services/entry.service';
+import {Entry} from '../model/entry';
+import {Observable} from 'rxjs';
 import firebase from 'firebase';
-import { BookingService } from '../services/booking.service';
+import {BookingService} from '../services/booking.service';
 
 @Component({
   selector: 'app-requests',
@@ -17,7 +15,6 @@ import { BookingService } from '../services/booking.service';
 })
 export class OpenRequestsComponent implements OnInit {
   user: Observable<firebase.User>;
-  currentUser: firebase.User;
   public openRequestList: any = [];
   public confirmedEntryList: Entry[] = [];
   public showConfirmed = false;
@@ -25,7 +22,6 @@ export class OpenRequestsComponent implements OnInit {
   public showRejected = false;
   public pendingEntryList: Entry[] = [];
   public rejectedEntryList: Entry[] = [];
-  public openRequestEntry: any;
   public userId: string;
   public entryId: string;
   public start: string;
@@ -62,7 +58,7 @@ export class OpenRequestsComponent implements OnInit {
       if (openRequestEntry.confirmed === true) {
         orentry.requestId = openRequestEntry.requestId;
         console.log(orentry);
-        
+
         this.confirmedEntryList.push(await orentry);
       } else if (openRequestEntry.pending === true) {
         this.pendingEntryList.push(await orentry);
