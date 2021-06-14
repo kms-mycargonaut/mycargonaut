@@ -17,6 +17,11 @@
 <!-- Body confirmed -->
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
 
+      <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5"
+          *ngIf="!showAllRequests && !showConfirmed && !showPending && !showRejected"
+          [routerLink]="['/']">Suche Deine Fahrt! </h6>
+
+
   <!-- My requests -->
   <h6 class="customFont font-weight-bold d-flex justify-content-left flex-col align-items-center mt-5" *ngIf="showAllRequests">Alle Anfragen</h6>
   <div class="d-flex justify-content-center flex-col align-items-center m-2"

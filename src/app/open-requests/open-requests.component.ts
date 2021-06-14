@@ -62,6 +62,9 @@ export class OpenRequestsComponent implements OnInit {
     this.confirmedEntryList = [];
     this.pendingEntryList = [];
     this.rejectedEntryList = [];
+    this.showConfirmed = false;
+    this.showPending = false;
+    this.showRejected = false;
     await this.authService.getcurrentUser().then((user) => {
       this.userId = user.id;
     });
@@ -97,6 +100,7 @@ export class OpenRequestsComponent implements OnInit {
 
   async getConfirmRequests(): Promise<any> {
     this.myConfirmedEntryList = [];
+    this.showAllRequests = false;
     await this.authService.getcurrentUser().then((user) => {
       this.userId = user.id;
     });
