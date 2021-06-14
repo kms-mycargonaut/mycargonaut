@@ -250,10 +250,10 @@ export class AuthService {
     return this.vehicles;
   }
 
-  public getUserByUserId(userId: string) {
+  public async getUserByUserId(userId: string): Promise<User> {
     let user: User;
     const userRef = firebase.firestore().collection('users');
-    userRef.where('id', '==', userId).get().then(e => {
+    await userRef.where('id', '==', userId).get().then(e => {
       e.forEach(doc => {
         user = new User(
           doc.data().id,
@@ -266,8 +266,8 @@ export class AuthService {
         );
       });
       this.selectedUser = user;
-      return this.selectedUser;
     });
+    return this.selectedUser;
   }
 
   public async getOffersFromSelectedUser(userId: string) {
@@ -298,28 +298,41 @@ export class AuthService {
     return this.offersFromSelectedUser;
   }
 
-  public async getRatingsFromSelectedUser(userId: string) {
-    const bookingsList = firebase.firestore().collection('booking');
-    await bookingsList.where('supplier', '==', userId).get().then(booking => {
-      booking.forEach(doc => {
-        const bookingId = doc.id;
-        const ratingsArray = [];
-        const ratingsList = firebase.firestore().collection('rating');
-        ratingsList.where('bookingId', '==', bookingId).get().then(ratings => {
-          ratings.forEach(doc => {
-            ratingsArray.push(new Rating(
-              doc.data().rating,
-              doc.data().title,
-              doc.data().description
-            ));
+  public async getRatingsFromSelectedUser(userId: string): Promise<Rating[]> {
+    return new Promise((resolve, reject) => {
+      const bookingsList = firebase.firestore().collection('booking');
+      bookingsList.where('supplier', '==', userId).get().then(booking => {
+        booking.forEach(doc => {
+          const bookingId = doc.id;
+          const ratingsArray = [];
+          const ratingsList = firebase.firestore().collection('rating');
+          ratingsList.where('bookingId', '==', bookingId).get().then(ratings => {
+            ratings.forEach(doc => {
+              ratingsArray.push(new Rating(
+                doc.data().rating,
+                doc.data().title,
+                doc.data().description
+              ));
+            });
+            this.ratingsFromSelectedUser = ratingsArray;
+            console.log(this.ratingsFromSelectedUser);
+            resolve(this.ratingsFromSelectedUser);
+          }).catch((err) => {
+            reject(err);
           });
         });
-        this.ratingsFromSelectedUser = ratingsArray;
-        return this.ratingsFromSelectedUser;
       });
     });
   }
 }
+
+
+
+
+
+
+
+
 
 
 
