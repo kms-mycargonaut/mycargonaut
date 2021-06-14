@@ -10,6 +10,7 @@ import firebase from 'firebase';
 import { User } from '../model/user';
 import { OpenRequests } from '../model/open-requests';
 import { Router } from '@angular/router';
+import {AlertService} from '../alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class BookingService {
     protected afs: AngularFirestore,
     protected auth: AngularFireAuth,
     private router: Router,
+    public alertService: AlertService
   ) {
     this.db = firebase.firestore();
     this.bookingCollection = afs.collection('booking');
@@ -79,7 +81,12 @@ export class BookingService {
     let entry: any = await this.getEntry(booking.entry);
     let entryId = entry.id;
     entriesDB.doc(entryId).update({});
-    if (entry.data.transportType == 'Ladefläche') {
+    if (
+      entry.data.transportType == 'Ladefläche' &&
+      entry.data.entryType == 'Angebot'
+    ) {
+      booking.supplier = entry.data.userId;
+      booking.searcher = this.user.uid;
       if (requestedAmount <= entry.data.cubicmeter) {
         console.log('Ladefläche buchen: ', requestedAmount);
         entriesDB
@@ -103,9 +110,19 @@ export class BookingService {
               });
           });
       } else {
-        alert('Platz nicht mehr vorhanden');
+        const alert = {
+        type: 'danger',
+        message: 'Platz nicht mehr vorhanden'
+      };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       }
-    } else {
+    } else if (
+      entry.data.transportType == 'Mitfahrgelegenheit' &&
+      entry.data.entryType == 'Angebot'
+    ) {
+      booking.supplier = entry.data.userId;
+      booking.searcher = this.user.uid;
       if (requestedAmount <= entry.data.seats) {
         console.log('Entry ', entry);
         entriesDB
@@ -129,7 +146,81 @@ export class BookingService {
               });
           });
       } else {
-        alert('Platz nicht mehr vorhanden');
+        const alert = {
+          type: 'danger',
+          message: 'Platz nicht mehr vorhanden!'
+        };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
+      }
+    } else if (
+      entry.data.transportType == 'Ladefläche' &&
+      entry.data.entryType == 'Gesuch'
+    ) {
+      booking.supplier = this.user.uid;
+      booking.searcher = entry.data.userId;
+      if (requestedAmount <= entry.data.cubicmeter) {
+        console.log('Ladefläche buchen: ', requestedAmount);
+        entriesDB
+          .doc(entryId)
+          .update({ cubicmeter: entry.data.cubicmeter - requestedAmount })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection('booking')
+              .add(Object.assign({}, booking))
+              .then((res) => {
+                let bookingId = res.id;
+                firebase
+                  .firestore()
+                  .collection('open_requests')
+                  .doc(requestId)
+                  .delete()
+                  .then(() => {
+                    this.router.navigate(['/tracking/booking/' + bookingId]);
+                  });
+              });
+          });
+      } else {
+        const alert = {
+          type: 'danger',
+          message: 'Platz nicht mehr vorhanden!'
+        };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
+      }
+    } else {
+      booking.supplier = this.user.uid;
+      booking.searcher = entry.data.userId;
+      if (requestedAmount <= entry.data.seats) {
+        console.log('Entry ', entry);
+        entriesDB
+          .doc(entryId)
+          .update({ seats: entry.data.seats - requestedAmount })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection('booking')
+              .add(Object.assign({}, booking))
+              .then((res) => {
+                let bookingId = res.id;
+                firebase
+                  .firestore()
+                  .collection('open_requests')
+                  .doc(requestId)
+                  .delete()
+                  .then(() => {
+                    this.router.navigate(['/tracking/booking/' + bookingId]);
+                  });
+              });
+          });
+      } else {
+        const alert = {
+        type: 'danger',
+        message: 'Platz nicht mehr vorhanden!'
+      };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       }
     }
   }

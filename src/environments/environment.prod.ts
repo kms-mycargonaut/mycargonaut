@@ -1,11 +1,11 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: 'AIzaSyDYcIHQJBfPMdWCbb72ZvXLJbaO4vRVzS8',
-    authDomain: 'kms-kargonaut.firebaseapp.com',
-    projectId: 'kms-kargonaut',
-    storageBucket: 'kms-kargonaut.appspot.com',
-    messagingSenderId: '342923029252',
-    appId: '1:342923029252:web:a12e635de9795352617e51'
+    apiKey: 'AIzaSyD1EQ6R5sGj9kpp4cHHVhXRDXHw9iiC4sk',
+    authDomain: 'kms-kargonaut-production.firebaseapp.com',
+    projectId: 'kms-kargonaut-production',
+    storageBucket: 'kms-kargonaut-production.appspot.com',
+    messagingSenderId: '623337410384',
+    appId: '1:623337410384:web:c42b2eba91e180569c2655'
   }
 };

@@ -16,6 +16,7 @@ import {OpenRequests} from '../model/open-requests';
 })
 export class OpenRequestsComponent implements OnInit {
   user: Observable<firebase.User>;
+  currentUser: firebase.User;
   public openRequestList: any = [];
   public myOpenRequestList: any = [];
   public myConfirmedEntryList = [];
@@ -27,6 +28,7 @@ export class OpenRequestsComponent implements OnInit {
   public showAllRequests = false;
   public pendingEntryList: Entry[] = [];
   public rejectedEntryList: Entry[] = [];
+  public openRequestEntry: any;
   public userId: string;
   public entryId: string;
   public requestedUserId: string;

@@ -21,9 +21,12 @@
     </div>
     <div class="d-flex justify-content-center align-items-center h-75">
       <div class="d-flex justify-content-center flex-col align-items-center">
-        <h1 class="h4 customFont font-weight-bold">
-          {{ this.search.searchResults.length }} Ergebnisse für Deine Route
+        <h1 class="h4 customFont font-weight-bold" *ngIf="this.search.searchResults.length == 1; else elseBlock">
+          {{ this.search.searchResults.length }} Ergebnis für Deine Route
         </h1>
+        <ng-template #elseBlock><h1 class="h4 customFont font-weight-bold">
+          {{ this.search.searchResults.length }} Ergebnisse für Deine Route
+        </h1> </ng-template>
         <h6>
           {{ this.search.searchResults[0].start }} - {{ this.search.searchResults[0].destination }}
         </h6>
@@ -31,7 +34,9 @@
     </div>
   </div>
 </div>
- 
+
+<app-alert></app-alert>
+
 <div
   *ngFor="let offer of this.search.searchResults; let i = index"
   [routerLink]="['/detail-page']"

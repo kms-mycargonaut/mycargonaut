@@ -49,16 +49,12 @@ export class CreateEntryComponent implements OnInit {
   constructor(public auth: AngularFireAuth, private router: Router, private entryService: EntryService,
               private trackingService: TrackingService, private vehicleService: VehicleService, private alertService: AlertService) {
     this.user = auth.user;
-    this.user.subscribe(user => {
-      if (user) {
-        this.authenticatedUser = user;
-      }
-    });
   }
 
   ngOnInit(): void {
-    this.vehicleService.getVehicles('VyUClws9c7d8bF9YN1zwVCuFDQz2').then(v => {
-      this.vehicles = v;
+    this.user.subscribe((user) => {
+      this.authenticatedUser = user;
+      this.loadVehicles();
     });
   }
 
@@ -101,5 +97,11 @@ export class CreateEntryComponent implements OnInit {
     addTracking(tracking2).then(() => this.trackingService.
     addTracking(tracking3).then(() => this.trackingService.
     addTracking(tracking4))));
+  }
+
+  loadVehicles(): void {
+    this.vehicleService.getVehicles(this.authenticatedUser.uid).then(v => {
+      this.vehicles = v;
+    });
   }
 }

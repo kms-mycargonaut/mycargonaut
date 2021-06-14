@@ -6,11 +6,12 @@ import firebase from 'firebase';
 import {Rating} from '../model/rating';
 import {RatingService} from '../services/rating.service';
 import {EntryService} from '../services/entry.service';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {BookingService} from '../services/booking.service';
 import {Tracking} from '../model/tracking';
 import {TrackingService} from '../services/tracking.service';
 import {Trackingstatus} from '../model/trackingstatus';
+import {AlertService} from '../alert.service';
 
 @Component({
   selector: 'app-tracking',
@@ -50,7 +51,7 @@ export class TrackingComponent implements OnInit {
 
   constructor(public auth: AngularFireAuth, private ratingService: RatingService, private entryService: EntryService,
               private bookingService: BookingService, private trackingService: TrackingService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute, private router: Router, public alertService: AlertService) {
     this.user = auth.user;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.bookingId = paramMap.get('bookingId');
@@ -153,13 +154,28 @@ export class TrackingComponent implements OnInit {
     if (this.form.value.rating !== null && this.form.value.title !== null && this.form.value.ratingDescription !== null) {
       const newRating: Rating = new Rating(this.form.value.rating, this.form.value.title, this.form.value.ratingDescription);
       this.ratingService.addRating(newRating, this.bookingId).then(() => {
-        this.message = 'Deine Bewertung wurde abgeschickt';
+        const alert = {
+          type: 'success',
+          message: 'Deine Bewertung wurde abgeschickt'
+        };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       }).catch(() => {
-        this.message = 'Es tut uns Leid, aber es gab einen Fehler beim abschicken deiner Bewertung';
+        const alert = {
+          type: 'danger',
+          message: 'Es tut uns Leid, aber es gab einen Fehler beim abschicken deiner Bewertung'
+        };
+        this.alertService.ALERTS.push(alert);
+        setTimeout(() => this.alertService.close(alert), 5000);
       });
     } else {
-      this.message = 'Bitte fülle alle Felder aus';
+      const alert = {
+        type: 'danger',
+        message: 'Bitte fülle alle Felder aus'
+      };
+      this.alertService.ALERTS.push(alert);
+      setTimeout(() => this.alertService.close(alert), 5000);
     }
-    alert(this.message);
+    this.router.navigate(['my-profile']);
   }
 }
