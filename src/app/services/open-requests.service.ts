@@ -68,19 +68,22 @@ export class OpenRequestsService {
       .get()
       .then((request) => {
         request.forEach((doc) => {
-          myOpenRequestList.push({
-            entryId: doc.data().entryId,
-            userId: doc.data().userId,
-            requestedUserId: doc.data().requestedUserId,
-            confirmed: doc.data().confirmed,
-            pending: doc.data().pending,
-            rejected: doc.data().rejected,
-            seatsNeeded: doc.data().seatsNeeded,
-            cubicMetersNeeded: doc.data().cubicMetersNeeded,
-            requestId: doc.id,
-          });
+          if (doc.data().pending) {
+            myOpenRequestList.push({
+              entryId: doc.data().entryId,
+              userId: doc.data().userId,
+              requestedUserId: doc.data().requestedUserId,
+              confirmed: doc.data().confirmed,
+              pending: doc.data().pending,
+              rejected: doc.data().rejected,
+              seatsNeeded: doc.data().seatsNeeded,
+              cubicMetersNeeded: doc.data().cubicMetersNeeded,
+              requestId: doc.id,
+            });
+          }
         });
       });
+
     return myOpenRequestList;
   }
 
@@ -90,31 +93,15 @@ export class OpenRequestsService {
     this.router.navigate(['/open-requests']);
   }
 
-  // async updateOpenRequest(openRequestId: string): Promise<void> {
-  //   this.openRequestCollection.doc(openRequestId).update({confirmed: false});
-  //       entriesDB
-  //         .doc(entryId)
-  //         .update({cubicmeter: entry.data.cubicmeter - requestedAmount})
-  //         .then(() => {
-  //           firebase
-  //             .firestore()
-  //             .collection('booking')
-  //             .add(Object.assign({}, booking))
-  //             .then((res) => {
-  //               let bookingId = res.id;
-  //               firebase
-  //                 .firestore()
-  //                 .collection('open_requests')
-  //                 .doc(requestId)
-  //                 .delete();
-  //             });
-  //         });
-  //     }
-      // deleteVehicle(openRequestId: string): Promise<void> {
-      //   console.log(openRequestId);
-      //   if (this.user.id === this.user.id) {
-      //     return this.afs.collection('vehicles').doc(vehicleId).delete();
-      //   }
-      //   return null;
-      // }
+  async rejectRequest(requestId: string): Promise<void> {
+    const openRequestRef = this.db.collection('open_requests');
+    await openRequestRef
+      .doc(requestId).update({confirmed: false, pending: false, rejected: true});
+  }
+
+  async confirmRequest(requestId: string): Promise<void> {
+    const openRequestRef = this.db.collection('open_requests');
+    await openRequestRef
+      .doc(requestId).update({confirmed: true, pending: false, rejected: false});
+  }
 }

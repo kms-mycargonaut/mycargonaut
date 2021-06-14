@@ -18,7 +18,7 @@ export class OpenRequestsComponent implements OnInit {
   user: Observable<firebase.User>;
   public openRequestList: any = [];
   public myOpenRequestList: any = [];
-  public myConfirmedEntryList: Entry[] = [];
+  public myConfirmedEntryList = [];
   public confirmedEntryList: Entry[] = [];
   public userList = [];
   public showConfirmed = false;
@@ -52,7 +52,7 @@ export class OpenRequestsComponent implements OnInit {
 
   ngOnInit(): void {
     this.bookNow();
-    this.confirmRequests();
+    this.getConfirmRequests();
   }
 
   async bookNow(): Promise<any> {
@@ -89,7 +89,8 @@ export class OpenRequestsComponent implements OnInit {
     this.router.navigate(['/booking/' + requestId]);
   }
 
-  async confirmRequests(): Promise<any> {
+  async getConfirmRequests(): Promise<any> {
+    this.myConfirmedEntryList = [];
     await this.authService.getcurrentUser().then((user) => {
       this.userId = user.id;
     });
@@ -100,19 +101,42 @@ export class OpenRequestsComponent implements OnInit {
       const entryId = myOpenRequestEntry.entryId;
       const uId = myOpenRequestEntry.requestedUserId;
       const myorentry: Entry = await this.entryService.getEntry(entryId);
-      const entry: Entry = new Entry(myorentry.entryType, myorentry.start, myorentry.destination, myorentry.startDate, myorentry.startTime, myorentry.description, myorentry.price,
-        myorentry.transportType, myorentry.length, myorentry.width, myorentry.height, myorentry.seats, myorentry.trackingStatus);
+      const entry = {
+        entryType: myorentry.entryType,
+        start: myorentry.start,
+        destination: myorentry.destination,
+        startDate: myorentry.startDate,
+        startTime: myorentry.startTime,
+        description: myorentry.description,
+        price: myorentry.price,
+        transportType: myorentry.transportType,
+        length: myorentry.length,
+        width: myorentry.width,
+        height: myorentry.height,
+        seats: myorentry.seats,
+        trackingStatus: myorentry.trackingStatus,
+        firstName: '',
+        lastName: '',
+        requestId: myOpenRequestEntry.requestId
+      };
 
-      console.log(myorentry);
       // Get current user
       this.userData = await this.authService.getUserByUserId(uId);
-      entry.setFirstName(this.userData.firstName);
-      entry.setLastName(this.userData.lastName);
+      entry.firstName = this.userData.firstName;
+      entry.lastName = this.userData.lastName;
       this.myConfirmedEntryList.push(entry);
     }
   }
 
-  rejectedRequests(): void {
-    this.openRequestService.getMyOpenRequests();
+  rejectedRequests(requestId: string): void {
+    this.openRequestService.rejectRequest(requestId).then(() => {
+      this.getConfirmRequests();
+    });
+  }
+
+  confirmRequests(requestId: string): void {
+    this.openRequestService.confirmRequest(requestId).then(() => {
+      this.getConfirmRequests();
+    });
   }
 }
