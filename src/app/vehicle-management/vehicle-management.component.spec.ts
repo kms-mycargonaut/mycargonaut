@@ -13,7 +13,7 @@ describe('VehicleManagementComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule.initializeApp(environment.test),
         AngularFireDatabaseModule,
         RouterTestingModule
       ],
@@ -26,9 +26,5 @@ describe('VehicleManagementComponent', () => {
     fixture = TestBed.createComponent(VehicleManagementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });

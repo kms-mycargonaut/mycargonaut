@@ -11,6 +11,14 @@ export const environment = {
     storageBucket: 'kms-kargonaut.appspot.com',
     messagingSenderId: '342923029252',
     appId: '1:342923029252:web:a12e635de9795352617e51'
+  },
+  test: {
+    apiKey: 'AIzaSyAKo3p0W9HK8-bEoHvcb-P7haV6-cVdv2A',
+    authDomain: 'kms-kargonaut-testing.firebaseapp.com',
+    projectId: 'kms-kargonaut-testing',
+    storageBucket: 'kms-kargonaut-testing.appspot.com',
+    messagingSenderId: '39750619917',
+    appId: '1:39750619917:web:cd649c4d963a96322b9644'
   }
 };
 

@@ -1,5 +1,46 @@
 # Mycargonaut
 
+## Umgesetzte Features
+- Registrierung von „Cargonauten“
+  (Nutzern)
+- Profilansicht
+- Fahrzeugverwaltung
+- Angebot/Gesuch erstellen
+- Tracking
+- Bewertung nach Abschluss der Fahrt
+ 
+
+## Infrastruktur
+- GitHub
+- Travis-CI
+- Hound-CI
+- GitHub-Pages
+- TypeScript
+- Angular
+- Bootstrap
+- Jasmine and Karma for Tests
+- Figma for Mockups and Wireframes
+- Trello for Scrum Board
+
+## WireFrames und Mockups
+Die Wireframs und Mockups wurden mit Figma erstellt. [Link zu den Wireframes und Mockups](https://www.figma.com/file/POBCVCE3S3cPGvloxHIiwK/MyCargonaut?node-id=0%3A1)
+
+## UML Diagramme 
+
+### Domänenmodell
+![Domänenmodell](./documentation/uml-files/domaenenmodell.jpg)
+
+### UML-Diagramm
+![Klassendiagramm](./documentation/uml-files/class%20diagram%20mycargonaut_final.jpg)
+
+## Teststrategie
+Bei jedem Push und Pull-Request wird die CI-Pipeline mittels Travis-CI gestartet und die Tests durchgeführt. 
+Sollten Tests fehlschlagen kann ein Pull-Request in einen Branch nicht ausgeführt werden. Die Entwickler:innen müssen zunächst die Bugs beheben.
+Wenn ein Push in den Main-Branch gemacht wird es nach erfolgreicher CI-Pipeline ein Deployment zu den [GitHub-Pages](https://kms-mycargonaut.github.io/mycargonaut/) geben.
+
+
+
+## Information for Development
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.12.
 
 ## Development server

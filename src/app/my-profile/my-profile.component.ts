@@ -34,14 +34,16 @@ export class MyProfileComponent implements OnInit {
     this.user = auth.user;
     this.user.subscribe((user) => {
       this.authenticatedUser = user;
-      this.userService.getOffersFromCurrentUser(this.authenticatedUser.uid).then(() => {
+      if (this.authenticatedUser.uid !== null) {
+        this.userService.getOffersFromCurrentUser(this.authenticatedUser.uid).then(() => {
           this.vehicleService.getVehicles(this.authenticatedUser.uid).then(vehicles => {
             this.vehiclesList = vehicles;
           });
         }).then(() => {
           this.userService.getBookingsFromCurrentUser(this.authenticatedUser.uid);
         });
-      });
+      }
+    });
 
     this.userService.getcurrentUser().then(user => {
       this.id = user.id;
