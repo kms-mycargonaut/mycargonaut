@@ -14,7 +14,7 @@ describe('TrackingComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule.initializeApp(environment.test),
         AngularFireDatabaseModule,
         RouterTestingModule,
         NgbModule
@@ -28,9 +28,5 @@ describe('TrackingComponent', () => {
     fixture = TestBed.createComponent(TrackingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });

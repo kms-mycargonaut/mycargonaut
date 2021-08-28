@@ -13,7 +13,7 @@ describe('VehicleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule.initializeApp(environment.test),
         AngularFireDatabaseModule,
         RouterTestingModule
       ],

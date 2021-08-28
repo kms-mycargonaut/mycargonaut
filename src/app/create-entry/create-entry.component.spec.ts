@@ -14,7 +14,7 @@ describe('CreateEntryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule.initializeApp(environment.test),
         AngularFireDatabaseModule,
         RouterTestingModule,
         NgbModule
