@@ -23,7 +23,7 @@ jobs:
       script:
         - ng build --prod --base-href /mycargonaut/
     - stage: deployment
-      before_deploy:
+      script:
         - cd dist/mycargonaut
         - cp dist/mycargonaut/index.html dist/mycargonaut/404.html
       deploy:
