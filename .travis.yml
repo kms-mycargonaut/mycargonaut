@@ -1,24 +1,23 @@
-language: node_js
-node_js:
-  - 14
-cache:
-  directories:
-    - ./node-modules
-
 stages:
-  - test
-  - build
+  - test-app
+  - build-app
   - deployment
 
 install:
   - npm install -g @angular/cli
   - npm install
 
-test:
+test-app:
   script:
     - ng test --watch=false --browsers ChromeHeadless
 
-build:
+build-app:
+  language: node_js
+  node_js:
+    - 14
+  cache:
+    directories:
+      - ./node-modules
   script:
     - ng build --prod --base-href /mycargonaut/
 
