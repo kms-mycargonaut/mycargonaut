@@ -100,10 +100,9 @@ export class CreateEntryComponent implements OnInit {
   }
 
   loadVehicles(): void {
-    if (this.authenticatedUser.uid !== null) {
       this.vehicleService.getVehicles(this.authenticatedUser.uid).then(v => {
         this.vehicles = v;
       });
-    }
+
   }
 }
