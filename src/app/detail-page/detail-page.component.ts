@@ -56,12 +56,14 @@ export class DetailPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.user.subscribe((user) => {
-      this.authenticatedUser = user.uid;
-      console.log('current user');
-      console.log(this.authenticatedUser);
+      if (user.uid !== undefined) {
+        this.authenticatedUser = user.uid;
+        console.log('current user');
+        console.log(this.authenticatedUser);
+      }
     });
     this.fetchData().then(() => {
-      if (this.element.seats != undefined) {
+      if (this.element.seats !== undefined) {
         console.log(this.element.seats);
 
         // tslint:disable-next-line:radix
@@ -69,7 +71,6 @@ export class DetailPageComponent implements OnInit {
         this.cubicmeters = [];
       } else {
         console.log(this.element.cubicmeter);
-        
         this.cubicmeters = new Array(this.element.cubicmeter);
         this.seats = [];
       }

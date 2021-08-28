@@ -13,7 +13,7 @@ describe('DetailPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule.initializeApp(environment.test),
         AngularFireDatabaseModule,
         RouterTestingModule,
       ],
@@ -59,7 +59,7 @@ describe('DetailPageComponent', () => {
         },
       ])
     );
-    component.id = "BZ632IoHWt8GCmJJtHL6";
+    component.id = 'BZ632IoHWt8GCmJJtHL6';
     component.element = {
       startTime: {
         minute: 30,
@@ -90,9 +90,4 @@ describe('DetailPageComponent', () => {
         'https://cdn.pixabay.com/photo/2019/03/24/12/16/harry-potter-4077470_1280.png',
     };
   });
-  /*
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-  */
 });

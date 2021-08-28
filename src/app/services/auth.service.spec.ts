@@ -7,13 +7,13 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {RegisterComponent} from '../register/register.component';
 import {RouterTestingModule} from '@angular/router/testing';
 
-/*describe('AuthService', () => {
+describe('AuthService', () => {
   let service: AuthService;
 
 
   beforeEach(() => {
     TestBed.configureTestingModule({imports: [
-        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule.initializeApp(environment.test),
         AngularFireDatabaseModule,
         RouterTestingModule
       ],
@@ -26,4 +26,4 @@ import {RouterTestingModule} from '@angular/router/testing';
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-});*/
+});

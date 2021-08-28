@@ -11,9 +11,9 @@ import {AngularFireAuth} from '@angular/fire/auth';
 export class VehicleService {
 
   user: firebase.User = null;
-  private vehicleCollection: AngularFirestoreCollection<Vehicle>;
-  private vehicles: Observable<Vehicle[]>;
-  private db;
+  vehicleCollection: AngularFirestoreCollection<Vehicle>;
+  vehicles: Observable<Vehicle[]>;
+  db;
 
   constructor(private auth: AngularFireAuth, private afs: AngularFirestore) {
     this.db = firebase.firestore();
@@ -26,38 +26,37 @@ export class VehicleService {
     this.vehicles = this.vehicleCollection.valueChanges();
   }
 
-  addVehicle(vehicle: Vehicle): void {
-    vehicle.setUserId(firebase.auth().currentUser.uid);
+  addVehicle(vehicle: Vehicle, userId: string): void {
+    vehicle.setUserId(userId);
     this.vehicleCollection.add(Object.assign({}, vehicle));
   }
 
   async getVehicles(userId: string): Promise<Vehicle[]> {
-    const vehicleList: Vehicle[] = [];
-    const vehicleRef = this.db.collection('vehicles');
-    await vehicleRef.where('userId', '==', userId).get().then(v => {
-      v.forEach(doc => {
-        const vehicle: Vehicle = new Vehicle();
-        vehicle.setVehicleId(doc.id);
-        vehicle.setUserId(doc.data().userId);
-        vehicle.setTransportType(doc.data().transportType);
-        vehicle.setBrand(doc.data().brand);
-        vehicle.setYearOfManufacture(doc.data().yearOfManufacture);
-        vehicle.setNumberOfSeats(doc.data().numberOfSeats);
-        vehicle.setLength(doc.data().length);
-        vehicle.setHeight(doc.data().height);
-        vehicle.setWidth(doc.data().width);
-        vehicleList.push(vehicle);
+    return new Promise((resolve, reject) => {
+      const vehicleList: Vehicle[] = [];
+      const vehicleRef = this.db.collection('vehicles');
+      vehicleRef.where('userId', '==', userId).get().then(v => {
+        v.forEach(doc => {
+          const vehicle: Vehicle = new Vehicle();
+          vehicle.setVehicleId(doc.id);
+          vehicle.setUserId(doc.data().userId);
+          vehicle.setTransportType(doc.data().transportType);
+          vehicle.setBrand(doc.data().brand);
+          vehicle.setYearOfManufacture(doc.data().yearOfManufacture);
+          vehicle.setNumberOfSeats(doc.data().numberOfSeats);
+          vehicle.setLength(doc.data().length);
+          vehicle.setHeight(doc.data().height);
+          vehicle.setWidth(doc.data().width);
+          vehicleList.push(vehicle);
+        });
+        resolve(vehicleList);
+      }).catch((err) => {
+        reject(err);
       });
     });
-    return vehicleList;
   }
 
   deleteVehicle(vehicleId: string, userId: string): Promise<void> {
-    console.log(vehicleId);
-    console.log(userId);
-    if (userId === this.user.uid) {
-      return this.afs.collection('vehicles').doc(vehicleId).delete();
-    }
-    return null;
+    return this.afs.collection('vehicles').doc(vehicleId).delete();
   }
 }
