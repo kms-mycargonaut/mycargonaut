@@ -13,6 +13,7 @@ stage:
 install:
   - npm install -g @angular/cli
   - npm install
+  - ng add angular-cli-ghpages
 
 jobs:
   include:
