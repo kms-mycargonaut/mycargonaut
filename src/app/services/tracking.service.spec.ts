@@ -5,6 +5,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../environments/environment';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {RouterTestingModule} from '@angular/router/testing';
+import {Tracking} from '../model/tracking';
 
 describe('TrackingService', () => {
   let service: TrackingService;
@@ -12,7 +13,7 @@ describe('TrackingService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule.initializeApp(environment.test),
         AngularFireDatabaseModule,
         RouterTestingModule
       ],

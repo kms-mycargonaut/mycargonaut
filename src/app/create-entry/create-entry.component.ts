@@ -13,12 +13,12 @@ import {Observable} from 'rxjs';
 import firebase from 'firebase';
 import {AlertService} from '../alert.service';
 
-
 @Component({
   selector: 'app-create-entry',
   templateUrl: './create-entry.component.html',
   styleUrls: ['./create-entry.component.css']
 })
+
 export class CreateEntryComponent implements OnInit {
   user: Observable<firebase.User>;
   authenticatedUser: firebase.User;

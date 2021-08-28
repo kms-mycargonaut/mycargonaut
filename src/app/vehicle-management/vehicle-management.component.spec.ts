@@ -5,6 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../environments/environment';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {Vehicle} from '../model/vehicle';
 
 describe('VehicleManagementComponent', () => {
   let component: VehicleManagementComponent;

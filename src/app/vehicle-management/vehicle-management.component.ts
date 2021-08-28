@@ -57,7 +57,7 @@ export class VehicleManagementComponent implements OnInit{
       vehicle.numberOfSeats = this.vehicleFrontend.value.numberOfSeats;
       vehicle.transportType = this.vehicleFrontend.value.transportType;
       vehicle.yearOfManufacture = this.vehicleFrontend.value.yearOfManufacture;
-      this.vehicleService.addVehicle(vehicle);
+      this.vehicleService.addVehicle(vehicle, this.authenticatedUser.uid);
       const alert = {
         type: 'success',
         message: 'Dein Fahrzeug wurde hinzugefügt'
