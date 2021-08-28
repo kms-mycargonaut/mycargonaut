@@ -24,6 +24,7 @@ build:
 
 deployment:
   before_deploy:
+    - cd dist/mycargonaut
     - cp dist/mycargonaut/index.html dist/mycargonaut/404.html
   deploy:
     provider: pages
