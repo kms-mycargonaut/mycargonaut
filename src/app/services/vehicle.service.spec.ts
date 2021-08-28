@@ -24,10 +24,10 @@ describe('VehicleService', () => {
     service = TestBed.inject(VehicleService);
   });
 
-  afterAll(() => {
+  /*afterAll(() => {
     console.log('afterall');
     service.deleteVehicle(vehicleIdToDelete, '123456789');
-    });
+    });*/
 
   it('should be created', () => {
     expect(service).toBeTruthy();
