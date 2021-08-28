@@ -1,38 +1,41 @@
-stages:
-  - test-app
-  - build-app
+language: node_js
+node_js:
+  - 14
+cache:
+  directories:
+    - ./node-modules
+
+stage:
+  - test
+  - build
   - deployment
 
 install:
   - npm install -g @angular/cli
   - npm install
 
-test-app:
-  script:
-    - ng test --watch=false --browsers ChromeHeadless
+jobs:
+  include:
+    - stage: test
+      script:
+        - ng test --watch=false --browsers ChromeHeadless
+    - stage: build
+      script:
+        - ng build --prod --base-href /mycargonaut/
+    - stage: deployment
+      before_deploy:
+        - cd dist/mycargonaut
+        - cp dist/mycargonaut/index.html dist/mycargonaut/404.html
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        keep_history: true
+        local_dir: dist/mycargonaut
+        on:
+          branch: main
 
-build-app:
-  language: node_js
-  node_js:
-    - 14
-  cache:
-    directories:
-      - ./node-modules
-  script:
-    - ng build --prod --base-href /mycargonaut/
 
-deployment:
-  before_deploy:
-    - cd dist/mycargonaut
-    - cp dist/mycargonaut/index.html dist/mycargonaut/404.html
-  deploy:
-    provider: pages
-    skip_cleanup: true
-    github_token: $GITHUB_TOKEN
-    keep_history: true
-    local_dir: dist/mycargonaut
-    on:
-      branch: main
 
 
 
