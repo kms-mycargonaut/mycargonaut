@@ -5,15 +5,15 @@ cache:
   directories:
     - ./node-modules
 
-stage:
-  - test
-  - build and deploy
-  - deployment
+stages:
+  - name: test
+  - name: build and deploy
+  - name: deployment
+    if: branch = main
 
 install:
   - npm install -g @angular/cli
   - npm install
-  - ng add angular-cli-ghpages
 
 jobs:
   include:
@@ -25,13 +25,8 @@ jobs:
         - ng build --prod --base-href /mycargonaut/
     - stage: deployment
       script:
+        - ng add angular-cli-ghpages
         - ng deploy --base-href /mycargonaut/
-      branches:
-        only:
-          - main
-
-
-
 
 
 
